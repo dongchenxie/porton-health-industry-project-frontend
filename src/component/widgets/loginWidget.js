@@ -24,27 +24,18 @@ export default function FormDialog(props) {
           Login
         </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+          <DialogTitle id="form-dialog-title">Login</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To subscribe to this website, please enter your email address here. We will send updates
-              occasionally.
+              <TextField required id="email-login" label="Email" autoComplete="username" variant="outlined" />
             </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Email Address"
-              type="email"
-              fullWidth
-            />
+            <DialogContentText>
+            <TextField required id="password-login" label="Password"   type="password" autoComplete="current-password" variant="outlined" />
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleClose} color="primary">
-              Subscribe
+            <Button onClick={handleClose} variant="contained" onClick={handleClose} color="primary">
+              Login
             </Button>
           </DialogActions>
         </Dialog>

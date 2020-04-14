@@ -20,31 +20,25 @@ export default function FormDialog(props) {
   
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={handleClickOpen}>
-          register
+        <Button variant="contained" color="default" className={props.className} onClick={handleClickOpen}>
+          Register
         </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+          <DialogTitle id="form-dialog-title">Register</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To subscribe to this website, please enter your email address here. We will send updates
-              occasionally.
+              <TextField required id="email-register" label="Email" autoComplete="username" variant="outlined" />
             </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Email Address"
-              type="email"
-              fullWidth
-            />
+            <DialogContentText>
+              <TextField required id="Name-register" label="Name" autoComplete="first-name"  variant="outlined" />
+            </DialogContentText>
+            <DialogContentText>
+            <TextField required id="password-register" label="Password"   type="password" autoComplete="current-password" variant="outlined" />
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleClose} color="primary">
-              Subscribe
+            <Button onClick={handleClose} variant="contained" onClick={handleClose} color="primary">
+              Register
             </Button>
           </DialogActions>
         </Dialog>
