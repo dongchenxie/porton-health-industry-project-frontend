@@ -14,20 +14,20 @@ import AuthContext from "../../data/AuthContext"
 export default function PrivateRoute({ children, ...rest }) {
     let authContext=React.useContext(AuthContext)
     let { path, url } = useRouteMatch();
-    React.useEffect(() => {
-      console.log("==========================here")
-      // if(localStorage.getItem('token')){
-      //   authContext.setAuthState({
-      //     isAuthenticated:true,
-      //     token:localStorage.getItem('token')
-      //   })
-    // }
-    });
+    React.useEffect(()=>{
+      console.log("checking token in localStorage")
+        if(localStorage.getItem("token")){
+        console.log("found token in localStorage")
+        authContext.setAuthState((prev)=>{
+          return {...prev, token:localStorage.getItem("token"),isAuthenticated:true}
+        })
+      }
+    },[])
     return (
       <Route
         {...rest}
         render={({ location }) =>
-        authContext.authState.isAuthenticated ? (
+        authContext.authState.isAuthenticated||localStorage.getItem("token") ? (
             children
           ) : (
             <Redirect

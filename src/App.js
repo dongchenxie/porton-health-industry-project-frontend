@@ -1,44 +1,68 @@
 import React from 'react';
 import MainRouter from './router/MainRouter'
 import './App.css';
-import AuthContext from  "./data/AuthContext"
+import AuthContext from "./data/AuthContext"
 import axios from 'axios'
 const baseURL = "http://localhost:3333/api/"
 function App() {
+  /*
+    return upon request success {status:200,...data}
+    return upon request failure {status:???,error:[ERROR MESSAGE]}
+  */
   const dataAccessService = {
-    login:async function(username,password){
-        console.log("login")
-        let result = await axios.post(`${baseURL}user/login`, {
-            "email": username,
-            "password": password,
-        }).catch((e)=>{
-          console.log(e.response)
-          return {status:e.response.status,error:e.response.data.error}
+    login: async function (username, password) {// API call without the token
+      console.log("login")
+      let result = await axios.post(`${baseURL}user/login`, {
+        "email": username,
+        "password": password,
+      }).catch((e) => {
+        console.log(e.response)
+        return { status: e.response.status, error: e.response.data.error }//Error example
+      })
+      console.log("after login request")
+      if (result.status == 200) {
+        console.log(result.data.token);
+        setAuthState((prev) => {
+          return { ...prev, isAuthenticated: true, token: result.data.token }
         })
-        console.log("after login request")
-        if (result.status == 200 ) {
-            console.log(result.data.token);
-            setAuthState((prev)=>{
-              return {...prev, isAuthenticated:true,token:result.data.token}
-            })
-            return { status: 200, token: result.data.token};
-        } else {
-            return result
-        }
+        localStorage.setItem("token", result.token)
+        return { status: 200, token: result.data.token };//Success example
+      } else {
+        return result
+      }
     },
-    signOut:function(){
-        console.log(authState.isAuthenticated)
-        localStorage.removeItem("token");
-        setAuthState((prev)=>{
-          return {...prev, isAuthenticated:false, token:null}
-        })
+    signOut: function () {
+      console.log(authState.isAuthenticated)
+      localStorage.removeItem("token");
+      setAuthState((prev) => {
+        return { ...prev, isAuthenticated: false, token: null }
+      })
+    },
+    //example for getting secure data using 
+    getSecureData: async function () {
+      let result = await axios(
+        {
+          method: "get",
+          url: `${baseURL}posts`,
+          headers: {
+            "auth-token":localStorage.getItem("token")
+          }
+        }
+      ).catch((e) => 
+        { return { status: e.response.status, error: e.response.data.error }
+      })
+      if (result.status == 200) {
+        return { status: 200, data: result.data };
+      } else {
+        return result
+      }
     }
-}
+  }
   //The state 
-  const [authState,setAuthState]=React.useState({isAuthenticated:false,token:null})
+  const [authState, setAuthState] = React.useState({ isAuthenticated: false, token: null })
 
   return (
-    < AuthContext.Provider value={{data:"testing data",authState: authState,setAuthState: setAuthState,API:dataAccessService}}>
+    < AuthContext.Provider value={{ data: "testing data", authState: authState, setAuthState: setAuthState, API: dataAccessService }}>
       <MainRouter />
     </AuthContext.Provider>
   );

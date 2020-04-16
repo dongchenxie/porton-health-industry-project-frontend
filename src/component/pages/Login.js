@@ -30,11 +30,19 @@ export default function CheckIn() {
             history.replace(from);
         }else{
             console.log (result)
-        }
-        
-        
-        
+        }  
     };
+    // React.useEffect(()=>{
+    //     return ()=>{
+    //       if(localStorage.getItem("token")){
+    //           console.log("here")
+    //       console.log("found token in localStorage")
+    //       authContext.setAuthState((prev)=>{
+    //         return {...prev, token:localStorage.getItem("token"),isAuthenticated:true}
+    //       })
+    //       history.replace(from);
+    //     }}
+    //   },[authContext,history,from])
 
     return (
         <div>

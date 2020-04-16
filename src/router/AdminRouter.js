@@ -199,5 +199,12 @@ function About() {
 }
 
 function Users() {
+  const authContext =React.useContext(AuthContext)
+  React.useEffect(() =>{
+    const start= async()=>{
+      console.log(await authContext.API.getSecureData())
+    }
+    start()
+  },[])
   return <h2>Users (secure data)</h2>;
 }
