@@ -17,6 +17,12 @@ export default function FormDialog(props) {
     const handleClose = () => {
       setOpen(false);
     };
+
+    React.useEffect(()=>{
+      if(!props.auth){
+        setOpen(true);
+      }
+    },[])
   
     return (
       <div>
