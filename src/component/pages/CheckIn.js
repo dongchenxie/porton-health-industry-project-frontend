@@ -1,16 +1,17 @@
 import React from "react";
-
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-
 import CssBaseline from "@material-ui/core/CssBaseline";
-
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import {
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+} from "@material-ui/core/styles";
+import { green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,6 +29,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
+  },
+});
+
 export default function CheckIn() {
   const classes = useStyles();
 
@@ -35,8 +42,8 @@ export default function CheckIn() {
     <div>
       <Grid>
         <Typography
-          component="h2"
-          variant="h2"
+          component="h1"
+          variant="h1"
           color="inherit"
           align="center"
           noWrap
@@ -45,9 +52,7 @@ export default function CheckIn() {
           <br />
           <br />
           <br />
-          <br />
           WELCOME
-          <br />
           <br />
           <br />
         </Typography>
@@ -56,21 +61,18 @@ export default function CheckIn() {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
-          
           <form className={classes.form} noValidate>
-          <Link to={`https://www.googel.ca`}>
-            <Button fullWidth variant="contained" color="primary">
-            <Typography component="h1" variant="h5">
-            Check-In
-          </Typography>
-
-            </Button>
+            <Link to={`https://www.googel.ca`}>
+              <ThemeProvider theme={theme}>
+                <Button fullWidth variant="contained" color="primary">
+                  <Typography component="h1" variant="h2">
+                    Check-In
+                  </Typography>
+                </Button>
+              </ThemeProvider>
             </Link>
             <Grid container>
-
-              <Grid item>
-                
-              </Grid>
+              <Grid item></Grid>
             </Grid>
           </form>
         </div>
