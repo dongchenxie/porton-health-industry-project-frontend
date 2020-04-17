@@ -59,22 +59,20 @@ export default function CheckIn() {
   let history = useHistory();
   let location = useLocation();
   const authContext = React.useContext(AuthContext);
-  let [username, setUsername] = React.useState("");
-  const handleTextChange = (e) => {
-    // console.log(e.target.value);
-    setUsername(e.target.value);
-  };
-  let [password, setPassword] = React.useState("");
-  const handlePasswordChange = (e) => {
-    // console.log(e.target.value);
-    setPassword(e.target.value);
-  };
+let [username, setUsername]= React.useState("")
+const handleTextChange= (e)=>{
+    console.log(e.target.value)
+    setUsername(e.target.value)
+}
+let [password, setPassword]= React.useState("")
+const handlePasswordChange= (e)=>{
+    console.log(e.target.value)
+    setPassword(e.target.value)
+}
   let { from } = location.state || { from: { pathname: "/" } };
 
   let login = async () => {
-    let result = await authContext.API.login({username}, {password});
-    //testing purpose "results var"
-    // let result = await authContext.API.login("xxx@x.com", "password");
+    let result = await authContext.API.login("xxx@x.com", "password");
     if (result.status == 200) {
       console.log(result);
       localStorage.setItem("token", result.token);
@@ -101,6 +99,7 @@ export default function CheckIn() {
   //     }}
   //   },[authContext,history,from])
 
+
   return (
     <div>
       <button onClick={login}>test Log in with preset account</button>
@@ -114,10 +113,10 @@ export default function CheckIn() {
             Sign in
           </Typography>
 
-          <form
-            className={classes.form}
-              noValidate
+          <form className={classes.form} 
+        //   noValidate
           >
+              
             <TextField
               variant="outlined"
               margin="normal"
@@ -128,9 +127,21 @@ export default function CheckIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              
+            /> 
+                        {/* <input
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="User Name"
+              name="username"
+              autoComplete="username"
+              autoFocus
+              value={username}
               onChange={handleTextChange}
-            />
-
+            ></input> */}
             <TextField
               variant="outlined"
               margin="normal"
@@ -141,16 +152,32 @@ export default function CheckIn() {
               type="password"
               id="password"
               autoComplete="current-password"
-              onChange={handlePasswordChange}
+              
             />
+
+                        {/* <input
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              label="Password"
+              name="password"
+              autoComplete="password"
+              autoFocus
+              value={password}
+              onChange={handlePasswordChange}
+            ></input> */}
 
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
             <Button
-              onClick={login}
-              //   type="submit"
+
+// <button onClick={login}>test Log in with preset account</button>
+
+              type="submit"
               fullWidth
               variant="contained"
               color="primary"
