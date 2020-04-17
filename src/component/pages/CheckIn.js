@@ -20,6 +20,7 @@ import Container from '@material-ui/core/Container';
 
 
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
       background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
@@ -132,10 +133,26 @@ export default function CheckIn() {
           </Grid>
         </form>
       </div>
+      <Box mt={8}>
+        <Copyright />
+      </Box>
     </Container>
     </div>
   );
 }
+
+function Copyright() {
+    return (
+      <Typography variant="body2" color="textSecondary" align="center">
+        {'Copyright © '}
+        <Link color="inherit" href="https://material-ui.com/">
+          Website Here
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
 
 
 // const useStyles = makeStyles((theme) => ({
