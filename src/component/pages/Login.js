@@ -103,7 +103,6 @@ export default function CheckIn() {
 
   return (
     <div>
-      <button onClick={login}>test Log in with preset account</button>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
