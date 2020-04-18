@@ -61,22 +61,26 @@ export default function CheckIn() {
   const authContext = React.useContext(AuthContext);
   let [username, setUsername] = React.useState("");
   const handleTextChange = (e) => {
-    // console.log(e.target.value);
+    console.log(e.target.value);
     setUsername(e.target.value);
   };
   let [password, setPassword] = React.useState("");
   const handlePasswordChange = (e) => {
-    // console.log(e.target.value);
+    console.log(e.target.value);
     setPassword(e.target.value);
   };
   let { from } = location.state || { from: { pathname: "/" } };
 
   let login = async () => {
-    let result = await authContext.API.login({username}, {password});
+    // console.log({username});console.log({password});
+
+    let result = await authContext.API.login(`${username}`, `${password}`);
+    
     //testing purpose "results var"
     // let result = await authContext.API.login("xxx@x.com", "password");
+    console.log(result);
     if (result.status == 200) {
-      console.log(result);
+      
       localStorage.setItem("token", result.token);
       authContext.setAuthState((prev) => {
         return {
@@ -117,6 +121,7 @@ export default function CheckIn() {
             className={classes.form}
               noValidate
           >
+            xxx@x.com    password
             <TextField
               variant="outlined"
               margin="normal"
@@ -153,10 +158,11 @@ export default function CheckIn() {
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
+              // className={classes.submit}
             >
               Sign In
             </Button>
+            {/* <button onClick={login}>test Log in with preset account</button> */}
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
