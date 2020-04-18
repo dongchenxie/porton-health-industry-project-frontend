@@ -16,11 +16,15 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  useHistory,
+  useLocation,
   
   Redirect
   
 } from "react-router-dom";
-const BASE_URL = "http://localhost:5000/api/user"; //not sure about port number
+import AuthContext from "../../data/AuthContext";
+import AuthAPI from "../../data/DataAccessService";
+const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
 
 function Copyright() {
   return (
