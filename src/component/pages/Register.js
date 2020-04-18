@@ -26,18 +26,7 @@ import AuthContext from "../../data/AuthContext";
 import AuthAPI from "../../data/DataAccessService";
 const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Porton Health Check-In Kiosk
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 function Register(props){
     const[formData, setFormData] = useState({
@@ -158,5 +147,17 @@ export default function SignUp() {
         <Copyright />
       </Box>
     </Container>
+  );
+}
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Porton Health Check-In Kiosk
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
   );
 }
