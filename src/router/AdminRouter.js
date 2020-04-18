@@ -132,6 +132,10 @@ export default function App() {
               <Link to={`${url}/`}>Home(not secure)</Link>
             </li>
             <li>
+              <Link to={`${url}/register`}>Register(secure)</Link>
+            </li>
+            
+            <li>
               <Link to={`${url}/about`}>About(secure)</Link>
             </li>
             <li>
@@ -156,6 +160,9 @@ export default function App() {
           <PrivateRoute path={`${path}/about`}>
             <About />
           </PrivateRoute>
+          <Route path={`${path}/register`}>
+            <Register />
+          </Route>
           <Route path={`${path}/login`}>
             <LoginPage />
           </Route>
@@ -197,6 +204,10 @@ function Home() {
 function About() {
   return <h2>About (secure data)</h2>;
 }
+
+ function Register() {
+   return <h2>Register (secure data)</h2>;
+ }
 
 function Users() {
   const authContext =React.useContext(AuthContext)
