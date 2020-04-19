@@ -160,9 +160,9 @@ export default function App() {
           <PrivateRoute path={`${path}/about`}>
             <About />
           </PrivateRoute>
-          <Route path={`${path}/register`}>
+          <PrivateRoute path={`${path}/register`}>
             <Register />
-          </Route>
+          </PrivateRoute>
           <Route path={`${path}/login`}>
             <LoginPage />
           </Route>
