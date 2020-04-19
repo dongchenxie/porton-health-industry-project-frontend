@@ -1,5 +1,6 @@
 import React from 'react';
 import MainRouter from './router/MainRouter'
+//import AdminRouter from './router/AdminRouter'
 import './App.css';
 import AuthContext from "./data/AuthContext"
 import axios from 'axios'
@@ -20,7 +21,7 @@ function App() {
         return { status: e.response.status, error: e.response.data.error }//Error example
       })
       console.log("after login request")
-      if (result.status == 200) {
+      if (result.status === 200) {
         console.log(result.data.token);
         setAuthState((prev) => {
           return { ...prev, isAuthenticated: true, token: result.data.token }

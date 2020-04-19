@@ -3,8 +3,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
- import Checkbox from '@material-ui/core/Checkbox';
+//import FormControlLabel from '@material-ui/core/FormControlLabel';
+ //import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -16,32 +16,31 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+ 
+  Redirect,
   useHistory,
-  useLocation,
-  Link,
-  
-  Redirect
-  
+  useLocation
+
 } from "react-router-dom";
 import AuthContext from "../../data/AuthContext";
 import AuthAPI from "../../data/DataAccessService";
-const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
+//const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
 
 
 
-function Register(props){
-    const[formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: ""
+ function Register(props){
+     const[formData, setFormData] = useState({
+         name: "",
+         email: "",
+         password: ""
 
-    });
-    const{ name, email, password } = formData;
-    const onChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-      }
+     });
+     const{ name, email, password } = formData;
+//     const onChange = e => {
+//         setFormData({ ...formData, [e.target.name]: e.target.value });
+//       }
     
-}
+ }
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -110,6 +109,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                // value={email}
+                //  onChange={e => onChange(e)}
               />
             </Grid>
             <Grid item xs={12}>

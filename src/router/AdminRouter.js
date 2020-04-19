@@ -205,9 +205,9 @@ function About() {
   return <h2>About (secure data)</h2>;
 }
 
- function Register() {
-   return <h2>Register (secure data)</h2>;
- }
+  function Register() {
+    return <h2>Register (secure data)</h2>;
+  }
 
 function Users() {
   const authContext =React.useContext(AuthContext)
