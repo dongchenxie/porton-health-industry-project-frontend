@@ -37,17 +37,19 @@ const theme = createMuiTheme({
 });
 
 const state = {
-  pages: [<Welcome />, <SelectAppTime />, <AuthenticateUser />],
+  pages: [<Welcome />, <SelectAppTime />, <AuthenticateUser />, <AppDetails />],
   idx: 0,
 };
+
 
 export default function CheckIn() {
   const [paged, setPaged] = useState(state.pages[state.idx]);
 
+
   return (
     <div
       onClick={() =>
-        setPaged(state.pages[(state.idx++)%3]) & console.log(state.idx)
+        setPaged(state.pages[(state.idx++)%state.pages.length]) & console.log(state.idx)
       }
     >
       {paged}
@@ -150,6 +152,22 @@ function AuthenticateUser() {
       </h1>
       <Typography variant="body2" color="textSecondary" align="center">
         Authentication Test
+      </Typography>
+    </div>
+  );
+}
+
+function AppDetails() {
+  return (
+    <div>
+      <h1>
+      <br />
+      <br />
+      <br />
+      <br />
+      </h1>
+      <Typography variant="body2" color="textSecondary" align="center">
+        Appointment Details ie. Address Checking
       </Typography>
     </div>
   );
