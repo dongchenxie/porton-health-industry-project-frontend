@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
@@ -35,9 +36,44 @@ const theme = createMuiTheme({
   },
 });
 
-export default function CheckIn() {
-  const classes = useStyles();
+const state = {
+  pages: [<Welcome />, <SelectAppTime />, <AuthenticateUser />],
+  idx: 0,
+};
 
+export default function CheckIn() {
+  const [paged, setPaged] = useState(state.pages[state.idx]);
+
+  return (
+    <div
+      onClick={() =>
+        setPaged(state.pages[(state.idx++)%3]) & console.log(state.idx)
+      }
+    >
+      {paged}
+
+      <Box mt={8}>
+        <Copyright />
+      </Box>
+    </div>
+  );
+}
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="https://material-ui.com/">
+        Porton Health
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+function Welcome() {
+  const classes = useStyles();
   return (
     <div>
       <Grid>
@@ -62,37 +98,59 @@ export default function CheckIn() {
         <CssBaseline />
         <div className={classes.paper}>
           <form className={classes.form} noValidate>
-            <Link to={`https://www.googel.ca`}>
-              <ThemeProvider theme={theme}>
-                <Button fullWidth variant="contained" color="primary">
-                  <Typography component="h1" variant="h2">
-                    Check-In
-                  </Typography>
-                </Button>
-              </ThemeProvider>
-            </Link>
+            {/* <Link href="/admin/login"> */}
+            <ThemeProvider theme={theme}>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                // onClick={() => state.idx++& console.log(state.idx)}
+              >
+                <Typography component="h1" variant="h2">
+                  Check-In
+                </Typography>
+              </Button>
+            </ThemeProvider>
+            {/* </Link> */}
             <Grid container>
               <Grid item></Grid>
             </Grid>
           </form>
         </div>
-        <Box mt={8}>
-          <Copyright />
-        </Box>
       </Container>
     </div>
   );
 }
 
-function Copyright() {
+function SelectAppTime() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Porton Health
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
+    <div>
+      <h1>
+      <br />
+      <br />
+      <br />
+      <br />
+      </h1>
+
+      <Typography variant="body2" color="textSecondary" align="center">
+        Select your appointnment
+      </Typography>
+    </div>
+  );
+}
+
+function AuthenticateUser() {
+  return (
+    <div>
+      <h1>
+      <br />
+      <br />
+      <br />
+      <br />
+      </h1>
+      <Typography variant="body2" color="textSecondary" align="center">
+        Authentication Test
+      </Typography>
+    </div>
   );
 }
