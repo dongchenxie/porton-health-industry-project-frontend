@@ -9,6 +9,7 @@ import {
     Redirect
     
 } from "react-router-dom";
+
 function MainRouter() {
     return (
         <Router>
@@ -21,7 +22,6 @@ function MainRouter() {
                         <AdminRouter />
                     </Route>
                     <Route path="*" render={() => <Redirect to path="/"/>}/>
-
                 </Switch>
             </div>
         </Router>
