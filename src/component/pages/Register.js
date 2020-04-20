@@ -12,6 +12,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+//import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
 import {
   BrowserRouter as Router,
   Switch,
@@ -45,6 +51,14 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+
 }));
 
 export default function SignUp() {
@@ -74,6 +88,19 @@ export default function SignUp() {
     console.log(e.target.value);
     setRole(e.target.value);
   };
+
+    const [state, setState] = React.useState({
+      SystemAdmin: '',
+      ClientAdmin: '',
+    });
+  
+    const handleChange = (event) => {
+      const name = event.target.name;
+      setState({
+        ...state,
+        [name]: event.target.value,
+      });
+    };
 
 
 
@@ -179,16 +206,23 @@ export default function SignUp() {
             </Grid>
 
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="role"
-                label="Role"
-                type="role"
-                id="role"
-              
-              />
+            <FormControl className={classes.formControl}>
+        <InputLabel htmlFor="age-native-simple">Role</InputLabel>
+        <Select
+          native
+          value={state.role}
+          onChange={handleChange}
+          inputProps={{
+            name: 'role',
+            id: 'role-native-simple',
+          }}
+        >
+          <option aria-label="None" value="" />
+          <option >System Admin</option>
+          <option>ClientAdmin</option>
+          
+        </Select>
+      </FormControl>
             </Grid>
             
           </Grid>
@@ -228,4 +262,4 @@ function Copyright() {
       {'.'}
     </Typography>
   );
-}
+  }
