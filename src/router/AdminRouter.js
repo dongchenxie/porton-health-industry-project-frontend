@@ -161,9 +161,9 @@ export default function App() {
           <PrivateRoute path={`${path}/about`}>
             <About />
           </PrivateRoute>
-          <PrivateRoute path={`${path}/register`}>
+          <Route path={`${path}/register`}>
             <Register />
-          </PrivateRoute>
+          </Route>
           <Route path={`${path}/login`}>
             <LoginPage />
           </Route>
