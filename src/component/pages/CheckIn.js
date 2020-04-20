@@ -14,11 +14,14 @@ import {
   withStyles,
 } from "@material-ui/core/styles";
 import { green, red } from "@material-ui/core/colors";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 
 import Card from "@material-ui/core/Card";
-// import CardActions from "@material-ui/core/CardActions";
-// import CardContent from "@material-ui/core/CardContent";
-// import CardHeader from "@material-ui/core/CardHeader";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,13 +39,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 const GreenButton = withStyles((theme) => ({
   root: {
     color: theme.palette.getContrastText(green[500]),
     backgroundColor: green[500],
-    '&:hover': {
+    "&:hover": {
       backgroundColor: green[700],
     },
   },
@@ -52,12 +53,11 @@ const RedButton = withStyles((theme) => ({
   root: {
     color: theme.palette.getContrastText(red[500]),
     backgroundColor: red[500],
-    '&:hover': {
+    "&:hover": {
       backgroundColor: red[700],
     },
   },
 }))(Button);
-
 
 const state = {
   pages: [<Welcome />, <SelectAppTime />, <AuthenticateUser />, <AppDetails />],
@@ -124,17 +124,17 @@ function Welcome() {
           <form className={classes.form} noValidate>
             {/* <Link href="/admin/login"> */}
 
-              <GreenButton variant="contained" color="primary" className={classes.margin}
-                fullWidth
-                onClick={() =>
-                  state.idx++ &
-                  console.log(state.idx)
-                }
-              >
-                <Typography component="h1" variant="h2">
-                  Check-In
-                </Typography>
-              </GreenButton>
+            <GreenButton
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+              fullWidth
+              onClick={() => state.idx++ & console.log(state.idx)}
+            >
+              <Typography component="h1" variant="h2">
+                Check-In
+              </Typography>
+            </GreenButton>
 
             {/* </Link> */}
             <Grid container>
@@ -150,9 +150,6 @@ function Welcome() {
 function SelectAppTime() {
   const tiers = [
     {
-      // title: "Free",
-      // price: "0",
-      // description: ["Description"],
       buttonText: "1:00 PM",
       buttonVariant: "contained",
     },
@@ -238,48 +235,17 @@ function SelectAppTime() {
               sm={tier.title === "Enterprise" ? 12 : 6}
               md={4}
             >
-              {/* <Card>
-                <CardHeader
-                title={tier.title}
-                subheader={tier.subheader}
-                titleTypographyProps={{ align: "center" }}
-                subheaderTypographyProps={{ align: "center" }}
-                className={classes.cardHeader}
-                />
-                <CardContent>
-                  <div className={classes.cardPricing}>
-                    <Typography component="h2" variant="h3" color="textPrimary">
-                      ${tier.price}
-                    </Typography>
-                    <Typography variant="h6" color="textSecondary">
-                      /mo
-                    </Typography>
-                  </div>
-                  <ul>
-                    {tier.description.map((line) => (
-                      <Typography
-                        component="li"
-                        variant="subtitle1"
-                        align="center"
-                        key={line}
-                      >
-                        {line}
-                      </Typography>
-                    ))}
-                  </ul> */}
-              <Button fullWidth variant={tier.buttonVariant} color="primary"
-              onClick={() =>
-                state.idx++ &
-                console.log(state.idx)
-              }
+              
+              <Button
+                fullWidth
+                variant={tier.buttonVariant}
+                color="primary"
+                onClick={() => state.idx++ & console.log(state.idx)}
               >
                 <Typography component="h1" variant="h2">
                   {tier.buttonText}
                 </Typography>
               </Button>
-              {/* </CardContent>
-                <CardActions></CardActions>
-              </Card> */}
             </Grid>
           ))}
         </Grid>
@@ -378,17 +344,16 @@ function AuthenticateUser() {
               sm={tier.title === "Enterprise" ? 12 : 6}
               md={4}
             >
-              <Button fullWidth variant={tier.buttonVariant} color="primary"
-              onClick={() =>
-                state.idx++ &
-                console.log(state.idx)
-              }
+              <Button
+                fullWidth
+                variant={tier.buttonVariant}
+                color="primary"
+                onClick={() => state.idx++ & console.log(state.idx)}
               >
                 <Typography component="h1" variant="h2">
                   {tier.buttonText}
                 </Typography>
               </Button>
-
             </Grid>
           ))}
         </Grid>
@@ -400,27 +365,109 @@ function AuthenticateUser() {
         <br />
       </h1>
       <Container component="main" maxWidth="xs">
-              <RedButton
-                // fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() =>
-                  (state.idx--) &
-                  console.log(state.idx)
-                }
-              >
-                <Typography component="h1" variant="h2">
-                  Back
-                </Typography>
-              </RedButton>
-            </Container>
-     
-      
+        <RedButton
+          // fullWidth
+          variant="contained"
+          color="primary"
+          onClick={() => state.idx-- & console.log(state.idx)}
+        >
+          <Typography component="h1" variant="h2">
+            Back
+          </Typography>
+        </RedButton>
+      </Container>
     </div>
   );
 }
 
 function AppDetails() {
+  const tiers = [
+    {
+      gridSpace: 3,
+      required: true,
+      id: "firstName",
+      name: "firstName",
+      title: "First Name",
+      autoComplete: "fname",
+      description: ["Description"],
+      buttonVariant: "contained",
+      //Example Details
+      placeholder: "Don",
+    },
+    {
+      gridSpace: 3,
+      required: true,
+      id: "lastName",
+      name: "lastName",
+      title: "Last Name",
+      autoComplete: "lname",
+      description: ["Description"],
+      buttonVariant: "contained",
+      //Example Details
+      placeholder: "Chen",
+    },
+    {
+      gridSpace: 3,
+      required: false,
+      id: "phoneNum",
+      name: "phoneNum",
+      title: "Phone Number",
+      autoComplete: "pnum",
+      description: ["Description"],
+      buttonVariant: "contained",
+      //Example Details
+      placeholder: "(123) 456 - 5555",
+    },
+    {
+      gridSpace: 12,
+      required: true,
+      id: "address",
+      name: "address",
+      title: "Address line",
+      autoComplete: "billing address-line",
+      description: ["Description"],
+      buttonVariant: "contained",
+      //Example Details
+      placeholder: "123123",
+    },
+    
+    {
+      gridSpace: 3,
+      required: true,
+      id: "city",
+      name: "city",
+      title: "City",
+      autoComplete: "billing address-level2",
+      description: ["Description"],
+      buttonVariant: "contained",
+      //Example Details
+      placeholder: "Vancouver",
+    },
+    {
+      gridSpace: 3,
+      required: false,
+      id: "state",
+      name: "state",
+      title: "State/Province/Region",
+      autoComplete: "billing address-level2",
+      description: ["Description"],
+      buttonVariant: "contained",
+      //Example Details
+      placeholder: "British Columbia",
+    },
+    {
+      gridSpace: 3,
+      required: false,
+      id: "zip",
+      name: "zip",
+      title: "Zip / Postal code",
+      autoComplete: "billing postal-code",
+      description: ["Description"],
+      buttonVariant: "contained",
+      //Example Details
+      placeholder: "V4V 4V4",
+    },
+  ];
   return (
     <div>
       <h1>
@@ -429,9 +476,115 @@ function AppDetails() {
         <br />
         <br />
       </h1>
-      <Typography variant="body2" color="textSecondary" align="center">
-        Appointment Details ie. Address Checking
-      </Typography>
+
+      {/* Hero unit */}
+      <Container>
+        <Grid container spacing={5} alignItems="flex-end">
+          <Grid item xs={12}>
+            <Card>
+              <Typography
+                component="h1"
+                variant="h2"
+                align="center"
+                color="textPrimary"
+                gutterBottom
+              >
+                Please Review Details
+              </Typography>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+      {/* End hero unit */}
+      <h1>
+        <br />
+        <br />
+        <br />
+        <br />
+      </h1>
+      <Container maxWidth="xl" component="main">
+        <Grid container spacing={5} alignItems="flex-end">
+          {tiers.map((tier) => (
+            // Enterprise card is full width at sm breakpoint
+            <Grid item key={tier.title} xs={12} sm={tier.gridSpace}>
+              <Card>
+                <CardHeader
+                  title={tier.title}
+                  titleTypographyProps={{ align: "center" }}
+                />
+                <CardContent>
+                  <TextField
+                    required={tier.required}
+                    id={tier.id}
+                    name={tier.firstName}
+                    fullWidth
+                    autoComplete={tier.autoComplete}
+                    placeholder={tier.placeholder}
+                    default = {tier.default}
+                  />
+
+                  {/* <ul>
+                    {tier.description.map((line) => (
+                      <Typography
+                        component="li"
+                        variant="subtitle1"
+                        align="center"
+                        key={line}
+                      >
+                        {line}
+                      </Typography>
+                    ))}
+                  </ul> */}
+                </CardContent>
+                <CardActions>
+
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+      <h1>
+        <br />
+        <br />
+        <br />
+        <br />
+      </h1>
+      <Container component="main" maxWidth="md">
+
+      <Grid container spacing={5} alignItems="flex-end">
+          <Grid item xs={4}>
+          <RedButton
+          variant="contained"
+          color="primary"
+          onClick={() => state.idx-- & console.log(state.idx)}
+        >
+          <Typography component="h1" variant="h2">
+            Back
+          </Typography>
+        </RedButton>
+          </Grid>
+
+          <Grid item xs={4}>
+          <GreenButton
+          variant="contained"
+          color="primary"
+          onClick={() => state.idx++ & console.log(state.idx)}
+        >
+          <Typography component="h1" variant="h2">
+            Complete Check-In
+          </Typography>
+        </GreenButton>
+          </Grid>
+        </Grid>
+
+
+
+
+
+       
+      
+      </Container>
     </div>
   );
 }
