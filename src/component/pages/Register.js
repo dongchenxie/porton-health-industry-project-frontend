@@ -3,7 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-//import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
  //import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
@@ -26,21 +26,6 @@ import AuthContext from "../../data/AuthContext";
 import AuthAPI from "../../data/DataAccessService";
 //const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
 
-
-
- function Register(props){
-     const[formData, setFormData] = useState({
-         name: "",
-         email: "",
-         password: ""
-
-     });
-     const{ name, email, password } = formData;
-//     const onChange = e => {
-//         setFormData({ ...formData, [e.target.name]: e.target.value });
-//       }
-    
- }
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -65,6 +50,71 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
 
+  
+    let history = useHistory();
+    let location = useLocation();
+    const authContext = React.useContext(AuthContext);
+    let [name, setName] = React.useState("");
+  const handleNameChange = (e) => {
+    console.log(e.target.value);
+    setName(e.target.value);
+  }
+  let [email, setEmail] = React.useState("");
+  const handleEmailChange = (e) => {
+    console.log(e.target.value);
+    setEmail(e.target.value);
+  };
+  let [password, setPassword] = React.useState("");
+  const handlePasswordChange = (e) => {
+    console.log(e.target.value);
+    setPassword(e.target.value);
+  };
+  let [role, setRole] = React.useState("");
+  const handleRoleChange = (e) => {
+    console.log(e.target.value);
+    setRole(e.target.value);
+  };
+
+
+
+
+
+
+
+
+  let { from } = location.state || { from: { pathname: "/" } };
+      let register = async() => {
+          let result =await authContext.API.register("xxx@x.com", "password")
+          if(result.status == 200){
+              console.log(result)
+              localStorage.setItem("token", result.token)
+              authContext.setAuthState((prev) => {
+              return {
+                  ...prev,
+                  isAuthenticated: true
+              }
+              })
+              history.replace(from);
+          }else{
+              console.log (result)
+          }  
+      };
+  
+  
+  //  function Register(props){
+  //      const[formData, setFormData] = useState({
+  //          name: "",
+  //          email: "",
+  //          password: ""
+  
+  //      });
+  //      const{ name, email, password } = formData;
+  // //     const onChange = e => {
+  // //         setFormData({ ...formData, [e.target.name]: e.target.value });
+  // //       }
+      
+  //  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -76,6 +126,7 @@ export default function SignUp() {
           Sign up
         </Typography>
         <form className={classes.form} noValidate>
+        
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField

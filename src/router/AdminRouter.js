@@ -21,9 +21,10 @@ import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
-// import LoginWidget from '../component/widgets/loginWidget'
-// import RegisterWidget from '../component/widgets/registerWidget'
+ import LoginWidget from '../component/widgets/loginWidget'
+ import RegisterWidget from '../component/widgets/registerWidget'
 import PrivateRoute from '../component/middleware/PrivateRoute'
+import Register from '../component/pages/Register'
 import LoginPage from '../component/pages/Login'
 import NotFoundPage from '../component/pages/NotFoundPage'
 import AuthAPI from "../data/AuthContext"
@@ -205,9 +206,9 @@ function About() {
   return <h2>About (secure data)</h2>;
 }
 
-  function Register() {
-    return <h2>Register (secure data)</h2>;
-  }
+  // function Register() {
+  //   return <h2>Register (secure data)</h2>;
+  // }
 
 function Users() {
   const authContext =React.useContext(AuthContext)

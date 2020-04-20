@@ -11,16 +11,17 @@ function App() {
     return upon request failure {status:???,error:[ERROR MESSAGE]}
   */
   const dataAccessService = {
-    login: async function (username, password) {// API call without the token
-      console.log("login")
-      let result = await axios.post(`${baseURL}user/login`, {
-        "email": username,
+    register: async function ( name ,email, password) {// API call without the token
+      console.log("register")
+      let result = await axios.post(`${baseURL}user/register`, {
+        "name" : name,
+        "email": email,
         "password": password,
       }).catch((e) => {
         console.log(e.response)
         return { status: e.response.status, error: e.response.data.error }//Error example
       })
-      console.log("after login request")
+      console.log("after register request")
       if (result.status === 200) {
         console.log(result.data.token);
         setAuthState((prev) => {
