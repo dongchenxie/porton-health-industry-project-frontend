@@ -11,12 +11,13 @@ function App() {
     return upon request failure {status:???,error:[ERROR MESSAGE]}
   */
   const dataAccessService = {
-    register: async function ( name ,email, password) {// API call without the token
+    register: async function ( name ,email, password, role) {// API call without the token
       console.log("register")
       let result = await axios.post(`${baseURL}user/register`, {
         "name" : name,
         "email": email,
         "password": password,
+        "role" : role
       }).catch((e) => {
         console.log(e.response)
         return { status: e.response.status, error: e.response.data.error }//Error example
