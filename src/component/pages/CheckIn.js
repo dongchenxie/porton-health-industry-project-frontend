@@ -11,13 +11,14 @@ import {
   createMuiTheme,
   makeStyles,
   ThemeProvider,
+  withStyles,
 } from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
+import { green, red } from "@material-ui/core/colors";
 
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
+// import CardActions from "@material-ui/core/CardActions";
+// import CardContent from "@material-ui/core/CardContent";
+// import CardHeader from "@material-ui/core/CardHeader";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,11 +36,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const theme = createMuiTheme({
-  palette: {
-    primary: green,
+
+
+const GreenButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(green[500]),
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700],
+    },
   },
-});
+}))(Button);
+
+const RedButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(red[500]),
+    backgroundColor: red[500],
+    '&:hover': {
+      backgroundColor: red[700],
+    },
+  },
+}))(Button);
+
 
 const state = {
   pages: [<Welcome />, <SelectAppTime />, <AuthenticateUser />, <AppDetails />],
@@ -52,7 +70,7 @@ export default function CheckIn() {
   return (
     <div
       onClick={() =>
-        setPaged(state.pages[state.idx++ % state.pages.length]) &
+        setPaged(state.pages[state.idx % state.pages.length]) &
         console.log(state.idx)
       }
     >
@@ -105,18 +123,19 @@ function Welcome() {
         <div className={classes.paper}>
           <form className={classes.form} noValidate>
             {/* <Link href="/admin/login"> */}
-            <ThemeProvider theme={theme}>
-              <Button
+
+              <GreenButton variant="contained" color="primary" className={classes.margin}
                 fullWidth
-                variant="contained"
-                color="primary"
-                // onClick={() => state.idx++& console.log(state.idx)}
+                onClick={() =>
+                  state.idx++ &
+                  console.log(state.idx)
+                }
               >
                 <Typography component="h1" variant="h2">
                   Check-In
                 </Typography>
-              </Button>
-            </ThemeProvider>
+              </GreenButton>
+
             {/* </Link> */}
             <Grid container>
               <Grid item></Grid>
@@ -202,6 +221,12 @@ function SelectAppTime() {
         </Grid>
       </Container>
       {/* End hero unit */}
+      <h1>
+        <br />
+        <br />
+        <br />
+        <br />
+      </h1>
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
           {tiers.map((tier) => (
@@ -242,17 +267,17 @@ function SelectAppTime() {
                       </Typography>
                     ))}
                   </ul> */}
-                  <Button
-                    fullWidth
-                    variant={tier.buttonVariant}
-                    color="primary"
-                  >
-                    <Typography component="h1" variant="h2">
-                    {tier.buttonText}
+              <Button fullWidth variant={tier.buttonVariant} color="primary"
+              onClick={() =>
+                state.idx++ &
+                console.log(state.idx)
+              }
+              >
+                <Typography component="h1" variant="h2">
+                  {tier.buttonText}
                 </Typography>
-                    
-                  </Button>
-                {/* </CardContent>
+              </Button>
+              {/* </CardContent>
                 <CardActions></CardActions>
               </Card> */}
             </Grid>
@@ -264,6 +289,35 @@ function SelectAppTime() {
 }
 
 function AuthenticateUser() {
+  const tiers = [
+    {
+      // title: "Free",
+      // price: "0",
+      // description: ["Description"],
+      buttonText: "98473",
+      buttonVariant: "contained",
+    },
+    {
+      buttonText: "43894",
+      buttonVariant: "outlined",
+    },
+    {
+      buttonText: "83049",
+      buttonVariant: "contained",
+    },
+    {
+      buttonText: "29384",
+      buttonVariant: "outlined",
+    },
+    {
+      buttonText: "29384",
+      buttonVariant: "contained",
+    },
+    {
+      buttonText: "38492",
+      buttonVariant: "outlined",
+    },
+  ];
   return (
     <div>
       <h1>
@@ -272,9 +326,96 @@ function AuthenticateUser() {
         <br />
         <br />
       </h1>
-      <Typography variant="body2" color="textSecondary" align="center">
-        Authentication Test
-      </Typography>
+
+      {/* Hero unit */}
+      <Container>
+        <Grid container spacing={5} alignItems="flex-end">
+          <Grid item xs={12}>
+            <Card>
+              <Typography
+                component="h1"
+                variant="h2"
+                align="center"
+                color="textPrimary"
+                gutterBottom
+              >
+                Please Verify Care Card Last 5 Digits
+              </Typography>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Card>
+              <Typography
+                component="h1"
+                variant="h2"
+                align="center"
+                color="textPrimary"
+                gutterBottom
+              >
+                Example Images here
+              </Typography>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+      {/* End hero unit */}
+      <h1>
+        <br />
+        <br />
+        <br />
+        <br />
+      </h1>
+
+      <Container maxWidth="md" component="main">
+        <Grid container spacing={5} alignItems="flex-end">
+          {tiers.map((tier) => (
+            // Enterprise card is full width at sm breakpoint
+            <Grid
+              item
+              key={tier.title}
+              xs={12}
+              sm={tier.title === "Enterprise" ? 12 : 6}
+              md={4}
+            >
+              <Button fullWidth variant={tier.buttonVariant} color="primary"
+              onClick={() =>
+                state.idx++ &
+                console.log(state.idx)
+              }
+              >
+                <Typography component="h1" variant="h2">
+                  {tier.buttonText}
+                </Typography>
+              </Button>
+
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+      <h1>
+        <br />
+        <br />
+        <br />
+        <br />
+      </h1>
+      <Container component="main" maxWidth="xs">
+              <RedButton
+                // fullWidth
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  (state.idx--) &
+                  console.log(state.idx)
+                }
+              >
+                <Typography component="h1" variant="h2">
+                  Back
+                </Typography>
+              </RedButton>
+            </Container>
+     
+      
     </div>
   );
 }
