@@ -14,6 +14,11 @@ import {
 } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -41,15 +46,14 @@ const state = {
   idx: 0,
 };
 
-
 export default function CheckIn() {
   const [paged, setPaged] = useState(state.pages[state.idx]);
-
 
   return (
     <div
       onClick={() =>
-        setPaged(state.pages[(state.idx++)%state.pages.length]) & console.log(state.idx)
+        setPaged(state.pages[state.idx++ % state.pages.length]) &
+        console.log(state.idx)
       }
     >
       {paged}
@@ -125,18 +129,133 @@ function Welcome() {
 }
 
 function SelectAppTime() {
+  const tiers = [
+    {
+      // title: "Free",
+      // price: "0",
+      // description: ["Description"],
+      buttonText: "1:00 PM",
+      buttonVariant: "contained",
+    },
+    {
+      buttonText: "1:30 PM",
+      buttonVariant: "outlined",
+    },
+    {
+      buttonText: "2:00 PM",
+      buttonVariant: "contained",
+    },
+    {
+      buttonText: "2:30 PM",
+      buttonVariant: "outlined",
+    },
+    {
+      buttonText: "3:00 PM",
+      buttonVariant: "contained",
+    },
+    {
+      buttonText: "3:30 PM",
+      buttonVariant: "outlined",
+    },
+  ];
   return (
     <div>
       <h1>
-      <br />
-      <br />
-      <br />
-      <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </h1>
 
-      <Typography variant="body2" color="textSecondary" align="center">
-        Select your appointnment
-      </Typography>
+      {/* Hero unit */}
+      <Container>
+        <Grid container spacing={5} alignItems="flex-end">
+          <Grid item xs={8}>
+            <Card>
+              <Typography
+                component="h1"
+                variant="h2"
+                align="center"
+                color="textPrimary"
+                gutterBottom
+              >
+                Please Select Appointment Time
+              </Typography>
+            </Card>
+          </Grid>
+
+          <Grid item xs={4}>
+            <Card>
+              <Typography
+                component="h1"
+                variant="h2"
+                align="center"
+                color="textPrimary"
+                gutterBottom
+              >
+                Current Time
+                <br />
+                12:00 AM
+              </Typography>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+      {/* End hero unit */}
+      <Container maxWidth="md" component="main">
+        <Grid container spacing={5} alignItems="flex-end">
+          {tiers.map((tier) => (
+            // Enterprise card is full width at sm breakpoint
+            <Grid
+              item
+              key={tier.title}
+              xs={12}
+              sm={tier.title === "Enterprise" ? 12 : 6}
+              md={4}
+            >
+              <Card>
+                <CardHeader
+                // title={tier.title}
+                // subheader={tier.subheader}
+                // titleTypographyProps={{ align: "center" }}
+                // subheaderTypographyProps={{ align: "center" }}
+                // className={classes.cardHeader}
+                />
+                <CardContent>
+                  {/* <div className={classes.cardPricing}>
+                    <Typography component="h2" variant="h3" color="textPrimary">
+                      ${tier.price}
+                    </Typography>
+                    <Typography variant="h6" color="textSecondary">
+                      /mo
+                    </Typography>
+                  </div>
+                  <ul>
+                    {tier.description.map((line) => (
+                      <Typography
+                        component="li"
+                        variant="subtitle1"
+                        align="center"
+                        key={line}
+                      >
+                        {line}
+                      </Typography>
+                    ))}
+                  </ul> */}
+                  <Button
+                    fullWidth
+                    variant={tier.buttonVariant}
+                    color="primary"
+                  >
+                    {tier.buttonText}
+                  </Button>
+                </CardContent>
+                <CardActions></CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </div>
   );
 }
@@ -145,10 +264,10 @@ function AuthenticateUser() {
   return (
     <div>
       <h1>
-      <br />
-      <br />
-      <br />
-      <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </h1>
       <Typography variant="body2" color="textSecondary" align="center">
         Authentication Test
@@ -161,10 +280,10 @@ function AppDetails() {
   return (
     <div>
       <h1>
-      <br />
-      <br />
-      <br />
-      <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </h1>
       <Typography variant="body2" color="textSecondary" align="center">
         Appointment Details ie. Address Checking
