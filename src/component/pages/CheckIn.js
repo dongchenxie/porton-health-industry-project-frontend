@@ -213,16 +213,16 @@ function SelectAppTime() {
               sm={tier.title === "Enterprise" ? 12 : 6}
               md={4}
             >
-              <Card>
+              {/* <Card>
                 <CardHeader
-                // title={tier.title}
-                // subheader={tier.subheader}
-                // titleTypographyProps={{ align: "center" }}
-                // subheaderTypographyProps={{ align: "center" }}
-                // className={classes.cardHeader}
+                title={tier.title}
+                subheader={tier.subheader}
+                titleTypographyProps={{ align: "center" }}
+                subheaderTypographyProps={{ align: "center" }}
+                className={classes.cardHeader}
                 />
                 <CardContent>
-                  {/* <div className={classes.cardPricing}>
+                  <div className={classes.cardPricing}>
                     <Typography component="h2" variant="h3" color="textPrimary">
                       ${tier.price}
                     </Typography>
@@ -247,11 +247,14 @@ function SelectAppTime() {
                     variant={tier.buttonVariant}
                     color="primary"
                   >
+                    <Typography component="h1" variant="h2">
                     {tier.buttonText}
+                </Typography>
+                    
                   </Button>
-                </CardContent>
+                {/* </CardContent>
                 <CardActions></CardActions>
-              </Card>
+              </Card> */}
             </Grid>
           ))}
         </Grid>
