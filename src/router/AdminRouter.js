@@ -57,10 +57,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   btn: {
-      marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2),
   },
-  flex:{
-      display: "flex",
+  flex: {
+    display: "flex",
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -120,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
 //       authContext.setAuthState({
 //         isAuthenticated:true,
 //         token:localStorage.getItem('token')
-       
+
 //       })
 //     }else{
 //       console.log("here")
@@ -150,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
 //   }
 //   return (
 //     <Router>
-        
+
 //          <div className={classes.root}>
 //       <AppBar position="static">
 
@@ -203,7 +203,7 @@ const useStyles = makeStyles((theme) => ({
 //         </Toolbar>
 //       </AppBar>
 //     </div>
-     
+
 //       <div>
 //         <nav>
 //           <ul>
@@ -227,7 +227,7 @@ const useStyles = makeStyles((theme) => ({
 
 //         {/* A <Switch> looks through its children <Route>s and
 //             renders the first one that matches the current URL. */}
-        
+
 //         <Switch>
 //           <Route exact path={path}>
 //             <Home />
@@ -253,95 +253,111 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function AdminRouter(props) {
- //get router path and url
- let { path, url } = useRouteMatch();
+  //get router path and url
+  let { path, url } = useRouteMatch();
 
- const { container } = props;
- const theme = useTheme();
+  const { container } = props;
+  const theme = useTheme();
 
- //material ui build-in style hook
- const classes = useStyles();
+  //material ui build-in style hook
+  const classes = useStyles();
 
- //state indicate if the user is authenticated
- const [auth, setAuth] = React.useState(true);
- const authContext = React.useContext(AuthContext)
+  //state indicate if the user is authenticated
+  const [auth, setAuth] = React.useState(true);
+  const authContext = React.useContext(AuthContext)
 
- //state indicate if the profile meun is opened
- const [anchorEl, setAnchorEl] = React.useState(null);
- const [mobileOpen, setMobileOpen] = React.useState(false);
+  //state indicate if the profile meun is opened
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
- const open = Boolean(anchorEl);
- React.useEffect(() => {
-   if(localStorage.getItem('token')){
-     authContext.setAuthState({
-       isAuthenticated:true,
-       token:localStorage.getItem('token')
-      
-     })
-   }else{
-     console.log("here")
-     authContext.setAuthState({
-       isAuthenticated:false,
-       token:"123123"
-     })
-   }
-   console.log(authContext.authState.token)
-   console.log(authContext.authState.isAuthenticated)
- },[]);
- // const handleLoginChange = (event) => {
- //   authContext.setAuthState((prev)=>{
- //     return {...prev,isAuthenticated:event.target.checked}});
- // };
+  const open = Boolean(anchorEl);
+  React.useEffect(() => {
+    if (localStorage.getItem('token')) {
+      authContext.setAuthState({
+        isAuthenticated: true,
+        token: localStorage.getItem('token')
 
- const handleProfileMenu = (event) => {
-   setAnchorEl(event.currentTarget);
- };
+      })
+    } else {
+      console.log("here")
+      authContext.setAuthState({
+        isAuthenticated: false,
+        token: "123123"
+      })
+    }
+    console.log(authContext.authState.token)
+    console.log(authContext.authState.isAuthenticated)
+  }, []);
+  // const handleLoginChange = (event) => {
+  //   authContext.setAuthState((prev)=>{
+  //     return {...prev,isAuthenticated:event.target.checked}});
+  // };
 
- const handleProfileClose = () => {
-   setAnchorEl(null);
- };
- const handleSignOut = () =>{
-     authContext.API.signOut()
-     handleProfileClose()
- }
+  const handleProfileMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSignOut = () => {
+    authContext.API.signOut()
+    handleProfileClose()
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   //local component:
-   const drawer = (
-     <div>
-       <div className={classes.toolbar} />
-       <Divider />
-       <List>
-         {['Create Account', 'Account List'].map((text, index) => (
-           <ListItem button key={text}>
-           <ListItemText primary={text} />
-           </ListItem>
-         ))}
-       </List>
-       <Divider />   
-       <List>
-         {['Home', 'About'].map((text, index) => (
-           <ListItem button key={text}>
-           <ListItemText primary={text} />
-           </ListItem>
-         ))}
-       </List>
-       <Divider />    
-      
-      </div>
-   );
+  const drawer = (
+    <div>
+      <div className={classes.toolbar} />
+      <Divider />
+      <List>
+        <ListItem button>
+          <ListItemText primary="Create Account" />
+        </ListItem >
+        <ListItem button>
+          <ListItemText primary="Account List" />
+        </ListItem >
+      </List>
+      <Divider />
+
+      <List>
+        <ListItem button>
+          <ListItemText primary="Home" />
+        </ListItem >
+        <ListItem button>
+          <ListItemText primary="About" />
+        </ListItem >
+        <ListItem button onClick={handleProfileClose}>
+          <ListItemText primary="Profile" />
+        </ListItem >
+        <ListItem button onClick={handleSignOut}>
+          <ListItemText primary="Sign Out" />
+        </ListItem >
+      </List>
+      <Divider />
+    </div>
+  );
+
+
+  //  <ListItem button>
+  //  <ListItemIcon>
+  //    <InboxIcon />
+  //  </ListItemIcon>
+  //  <ListItemText primary="Inbox" />
 
 
   return (
     <Router>
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          {/* <IconButton
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            {/* <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
@@ -353,129 +369,127 @@ export default function AdminRouter(props) {
           <Typography variant="h6" noWrap>
           Porton Heath Admin Panel
           </Typography> */}
-               <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="open drawer"
-                onClick={handleDrawerToggle}
-               >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap className={classes.title}>
-            Porton Heath Admin Panel
+            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="open drawer"
+              onClick={handleDrawerToggle}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap className={classes.title}>
+              Porton Heath Admin Panel
           </Typography>
-          {authContext.authState.isAuthenticated ?(
-            <div>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleProfileMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}
-                onClose={handleProfileClose}
-              >
-                <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
-                <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
-              </Menu>
-            </div>
-          ):(
-            <div className={classes.flex}>
-                {/* <LoginWidget className={classes.btn} auth={authContext.authState.isAuthenticated}/>
+            {authContext.authState.isAuthenticated ? (
+              <div>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleProfileMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                  onClose={handleProfileClose}
+                >
+                </Menu>
+              </div>
+            ) : (
+                <div className={classes.flex}>
+                  {/* <LoginWidget className={classes.btn} auth={authContext.authState.isAuthenticated}/>
                 <RegisterWidget className={classes.btn}/> */}
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to={`${url}/`}>Home(not secure)</Link>
-            </li>
-            <li>
-              <Link to={`${url}/about`}>About(secure)</Link>
-            </li>
-            <li>
-              <Link to={`${url}/users`}>Users(secure)</Link>
-            </li>
-          </ul>
+                </div>
+              )}
+          </Toolbar>
+        </AppBar>
+        <nav className={classes.drawer} aria-label="mailbox folders">
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Hidden smUp implementation="css">
+            <Drawer
+              container={container}
+              variant="temporary"
+              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile.
+              }}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <Hidden xsDown implementation="css">
+            <Drawer
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              variant="permanent"
+              open
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
         </nav>
-        {/* <FormGroup>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <div>
+            <nav>
+              <ul>
+                <li>
+                  <Link to={`${url}/`}>Home(not secure)</Link>
+                </li>
+                <li>
+                  <Link to={`${url}/about`}>About(secure)</Link>
+                </li>
+                <li>
+                  <Link to={`${url}/users`}>Users(secure)</Link>
+                </li>
+              </ul>
+            </nav>
+            {/* <FormGroup>
         <FormControlLabel
           control={<SwitchComponent checked={authContext.authState.isAuthenticated} onChange={handleLoginChange} aria-label="login switch" />}
           label={authContext.authState.isAuthenticated ? 'Logout' : 'Login'}
         />
       </FormGroup> */}
 
-        {/* A <Switch> looks through its children <Route>s and
+            {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-        
-        <Switch>
-          <Route exact path={path}>
-            <Home />
-          </Route>
-          <PrivateRoute path={`${path}/about`}>
-            <About />
-          </PrivateRoute>
-          <Route path={`${path}/login`}>
-            <LoginPage />
-          </Route>
-          <PrivateRoute path={`${path}/users`}>
-            <Users />
-          </PrivateRoute>
-          <Route path="*">
-            <NotFoundPage />
-          </Route>
-        </Switch>
+
+            <Switch>
+              <Route exact path={path}>
+                <Home />
+              </Route>
+              <PrivateRoute path={`${path}/about`}>
+                <About />
+              </PrivateRoute>
+              <Route path={`${path}/login`}>
+                <LoginPage />
+              </Route>
+              <PrivateRoute path={`${path}/users`}>
+                <Users />
+              </PrivateRoute>
+              <Route path="*">
+                <NotFoundPage />
+              </Route>
+            </Switch>
+          </div>
+        </main>
       </div>
-      </main>
-    </div>
     </Router>
   );
 }
@@ -495,12 +509,12 @@ function About() {
 
 
 function Users() {
-  const authContext =React.useContext(AuthContext)
-  React.useEffect(() =>{
-    const start= async()=>{
+  const authContext = React.useContext(AuthContext)
+  React.useEffect(() => {
+    const start = async () => {
       console.log(await authContext.API.getSecureData())
     }
     start()
-  },[])
+  }, [])
   return <h2>Users (secure data)</h2>;
 }
