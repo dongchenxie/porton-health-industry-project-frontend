@@ -45,163 +45,7 @@ import AuthAPI from "../data/AuthContext"
 
 
 ////////////////////////////////////////////
-
-
-
-
-export default function App() {
-  //get router path and url
-  let { path, url } = useRouteMatch();
-  //material ui build-in style hook
-  const classes = useStyles();
-  //state indicate if the user is authenticated
-  const [auth, setAuth] = React.useState(true);
-  const authContext =React.useContext(AuthContext)
-  //state indicate if the profile meun is opened
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  React.useEffect(() => {
-    if(localStorage.getItem('token')){
-      authContext.setAuthState({
-        isAuthenticated:true,
-        token:localStorage.getItem('token')
-       
-      })
-    }else{
-      console.log("here")
-      authContext.setAuthState({
-        isAuthenticated:false,
-        token:"123123"
-      })
-    }
-    console.log(authContext.authState.token)
-    console.log(authContext.authState.isAuthenticated)
-  },[]);
-  // const handleLoginChange = (event) => {
-  //   authContext.setAuthState((prev)=>{
-  //     return {...prev,isAuthenticated:event.target.checked}});
-  // };
-
-  const handleProfileMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleProfileClose = () => {
-    setAnchorEl(null);
-  };
-  const handleSignOut = () =>{
-      authContext.API.signOut()
-      handleProfileClose()
-  }
-  return (
-    <Router>
-        
-         <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Porton Heath Admin Panel
-          </Typography>
-          {authContext.authState.isAuthenticated ?(
-            <div>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleProfileMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}
-                onClose={handleProfileClose}
-              >
-                <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
-                <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
-              </Menu>
-            </div>
-          ):(
-            <div className={classes.flex}>
-                {/* <LoginWidget className={classes.btn} auth={authContext.authState.isAuthenticated}/>
-                <RegisterWidget className={classes.btn}/> */}
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
-     
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to={`${url}/`}>Home(not secure)</Link>
-            </li>
-            <li>
-              <Link to={`${url}/about`}>About(secure)</Link>
-            </li>
-            <li>
-              <Link to={`${url}/users`}>Users(secure)</Link>
-            </li>
-          </ul>
-        </nav>
-        {/* <FormGroup>
-        <FormControlLabel
-          control={<SwitchComponent checked={authContext.authState.isAuthenticated} onChange={handleLoginChange} aria-label="login switch" />}
-          label={authContext.authState.isAuthenticated ? 'Logout' : 'Login'}
-        />
-      </FormGroup> */}
-
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        
-        <Switch>
-          <Route exact path={path}>
-            <Home />
-          </Route>
-          <PrivateRoute path={`${path}/about`}>
-            <About />
-          </PrivateRoute>
-          <Route path={`${path}/login`}>
-            <LoginPage />
-          </Route>
-          <PrivateRoute path={`${path}/users`}>
-            <Users />
-          </PrivateRoute>
-          <Route path="*">
-            <NotFoundPage />
-          </Route>
-        </Switch>
-         <ResponsiveDrawer/> 
-      </div>
-    </Router>
-  );
-}
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     flexGrow: 1,
-//   },
-//   menuButton: {
-//     marginRight: theme.spacing(2),
-//   },
-
-// }));
-
+//App styles:
 
 const drawerWidth = 240;
 
@@ -248,36 +92,224 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Home() {
-  return <h2>Home (not secure data)</h2>;
-}
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     flexGrow: 1,
+//   },
+//   menuButton: {
+//     marginRight: theme.spacing(2),
+//   },
+// }));
 
-function About() {
-  return <h2>About (secure data)</h2>;
-}
-
-function Users() {
-  const authContext =React.useContext(AuthContext)
-  React.useEffect(() =>{
-    const start= async()=>{
-      console.log(await authContext.API.getSecureData())
-    }
-    start()
-  },[])
-  return <h2>Users (secure data)</h2>;
-}
+////////////////////////////////
 
 
-function ResponsiveDrawer(props) {
-  const { container } = props;
-  const classes = useStyles();
-  const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+// export default function AdminRouter() {
+//   //get router path and url
+//   let { path, url } = useRouteMatch();
+//   //material ui build-in style hook
+//   const classes = useStyles();
+//   //state indicate if the user is authenticated
+//   const [auth, setAuth] = React.useState(true);
+//   const authContext =React.useContext(AuthContext)
+//   //state indicate if the profile meun is opened
+//   const [anchorEl, setAnchorEl] = React.useState(null);
+//   const open = Boolean(anchorEl);
+//   React.useEffect(() => {
+//     if(localStorage.getItem('token')){
+//       authContext.setAuthState({
+//         isAuthenticated:true,
+//         token:localStorage.getItem('token')
+       
+//       })
+//     }else{
+//       console.log("here")
+//       authContext.setAuthState({
+//         isAuthenticated:false,
+//         token:"123123"
+//       })
+//     }
+//     console.log(authContext.authState.token)
+//     console.log(authContext.authState.isAuthenticated)
+//   },[]);
+//   // const handleLoginChange = (event) => {
+//   //   authContext.setAuthState((prev)=>{
+//   //     return {...prev,isAuthenticated:event.target.checked}});
+//   // };
+
+//   const handleProfileMenu = (event) => {
+//     setAnchorEl(event.currentTarget);
+//   };
+
+//   const handleProfileClose = () => {
+//     setAnchorEl(null);
+//   };
+//   const handleSignOut = () =>{
+//       authContext.API.signOut()
+//       handleProfileClose()
+//   }
+//   return (
+//     <Router>
+        
+//          <div className={classes.root}>
+//       <AppBar position="static">
+
+
+
+
+//         <Toolbar>
+//           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+//             <MenuIcon />
+//           </IconButton>
+//           <Typography variant="h6" className={classes.title}>
+//             Porton Heath Admin Panel
+//           </Typography>
+//           {authContext.authState.isAuthenticated ?(
+//             <div>
+//               <IconButton
+//                 aria-label="account of current user"
+//                 aria-controls="menu-appbar"
+//                 aria-haspopup="true"
+//                 onClick={handleProfileMenu}
+//                 color="inherit"
+//               >
+//                 <AccountCircle />
+//               </IconButton>
+//               <Menu
+//                 id="menu-appbar"
+//                 anchorEl={anchorEl}
+//                 anchorOrigin={{
+//                   vertical: 'top',
+//                   horizontal: 'right',
+//                 }}
+//                 keepMounted
+//                 transformOrigin={{
+//                   vertical: 'top',
+//                   horizontal: 'right',
+//                 }}
+//                 open={open}
+//                 onClose={handleProfileClose}
+//               >
+//                 <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
+//                 <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
+//               </Menu>
+//             </div>
+//           ):(
+//             <div className={classes.flex}>
+//                 {/* <LoginWidget className={classes.btn} auth={authContext.authState.isAuthenticated}/>
+//                 <RegisterWidget className={classes.btn}/> */}
+//             </div>
+//           )}
+//         </Toolbar>
+//       </AppBar>
+//     </div>
+     
+//       <div>
+//         <nav>
+//           <ul>
+//             <li>
+//               <Link to={`${url}/`}>Home(not secure)</Link>
+//             </li>
+//             <li>
+//               <Link to={`${url}/about`}>About(secure)</Link>
+//             </li>
+//             <li>
+//               <Link to={`${url}/users`}>Users(secure)</Link>
+//             </li>
+//           </ul>
+//         </nav>
+//         {/* <FormGroup>
+//         <FormControlLabel
+//           control={<SwitchComponent checked={authContext.authState.isAuthenticated} onChange={handleLoginChange} aria-label="login switch" />}
+//           label={authContext.authState.isAuthenticated ? 'Logout' : 'Login'}
+//         />
+//       </FormGroup> */}
+
+//         {/* A <Switch> looks through its children <Route>s and
+//             renders the first one that matches the current URL. */}
+        
+//         <Switch>
+//           <Route exact path={path}>
+//             <Home />
+//           </Route>
+//           <PrivateRoute path={`${path}/about`}>
+//             <About />
+//           </PrivateRoute>
+//           <Route path={`${path}/login`}>
+//             <LoginPage />
+//           </Route>
+//           <PrivateRoute path={`${path}/users`}>
+//             <Users />
+//           </PrivateRoute>
+//           <Route path="*">
+//             <NotFoundPage />
+//           </Route>
+//         </Switch>
+//          <ResponsiveDrawer/> 
+//       </div>
+//     </Router>
+//   );
+// }
+
+
+export default function AdminRouter(props) {
+ //get router path and url
+ let { path, url } = useRouteMatch();
+
+ const { container } = props;
+ const theme = useTheme();
+
+ //material ui build-in style hook
+ const classes = useStyles();
+
+ //state indicate if the user is authenticated
+ const [auth, setAuth] = React.useState(true);
+ const authContext = React.useContext(AuthContext)
+
+ //state indicate if the profile meun is opened
+ const [anchorEl, setAnchorEl] = React.useState(null);
+ const [mobileOpen, setMobileOpen] = React.useState(false);
+
+ const open = Boolean(anchorEl);
+ React.useEffect(() => {
+   if(localStorage.getItem('token')){
+     authContext.setAuthState({
+       isAuthenticated:true,
+       token:localStorage.getItem('token')
+      
+     })
+   }else{
+     console.log("here")
+     authContext.setAuthState({
+       isAuthenticated:false,
+       token:"123123"
+     })
+   }
+   console.log(authContext.authState.token)
+   console.log(authContext.authState.isAuthenticated)
+ },[]);
+ // const handleLoginChange = (event) => {
+ //   authContext.setAuthState((prev)=>{
+ //     return {...prev,isAuthenticated:event.target.checked}});
+ // };
+
+ const handleProfileMenu = (event) => {
+   setAnchorEl(event.currentTarget);
+ };
+
+ const handleProfileClose = () => {
+   setAnchorEl(null);
+ };
+ const handleSignOut = () =>{
+     authContext.API.signOut()
+     handleProfileClose()
+ }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  //local component:
    const drawer = (
      <div>
        <div className={classes.toolbar} />
@@ -302,13 +334,14 @@ function ResponsiveDrawer(props) {
      </div>
    );
 
+
   return (
+    <Router>
     <div className={classes.root}>
-      <p>test</p>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
@@ -319,7 +352,51 @@ function ResponsiveDrawer(props) {
           </IconButton>
           <Typography variant="h6" noWrap>
           Porton Heath Admin Panel
+          </Typography> */}
+               <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="open drawer"
+                onClick={handleDrawerToggle}
+               >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap className={classes.title}>
+            Porton Heath Admin Panel
           </Typography>
+          {authContext.authState.isAuthenticated ?(
+            <div>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleProfileMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleProfileClose}
+              >
+                <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
+                <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
+              </Menu>
+            </div>
+          ):(
+            <div className={classes.flex}>
+                {/* <LoginWidget className={classes.btn} auth={authContext.authState.isAuthenticated}/>
+                <RegisterWidget className={classes.btn}/> */}
+            </div>
+          )}
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
@@ -355,18 +432,48 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-          facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-          gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-          donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-          Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-          imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-          arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-          donec massa sapien faucibus et molestie ac.
-        </Typography>
+        <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to={`${url}/`}>Home(not secure)</Link>
+            </li>
+            <li>
+              <Link to={`${url}/about`}>About(secure)</Link>
+            </li>
+            <li>
+              <Link to={`${url}/users`}>Users(secure)</Link>
+            </li>
+          </ul>
+        </nav>
+        {/* <FormGroup>
+        <FormControlLabel
+          control={<SwitchComponent checked={authContext.authState.isAuthenticated} onChange={handleLoginChange} aria-label="login switch" />}
+          label={authContext.authState.isAuthenticated ? 'Logout' : 'Login'}
+        />
+      </FormGroup> */}
+
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        
+        <Switch>
+          <Route exact path={path}>
+            <Home />
+          </Route>
+          <PrivateRoute path={`${path}/about`}>
+            <About />
+          </PrivateRoute>
+          <Route path={`${path}/login`}>
+            <LoginPage />
+          </Route>
+          <PrivateRoute path={`${path}/users`}>
+            <Users />
+          </PrivateRoute>
+          <Route path="*">
+            <NotFoundPage />
+          </Route>
+        </Switch>
+      </div>
         <Typography paragraph>
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
           facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
@@ -380,5 +487,31 @@ function ResponsiveDrawer(props) {
         </Typography>
       </main>
     </div>
+    </Router>
   );
+}
+
+
+//child component, render results in:
+// <main className={classes.content}>
+
+function Home() {
+  return <h2>Home (not secure data)</h2>;
+}
+
+
+function About() {
+  return <h2>About (secure data)</h2>;
+}
+
+
+function Users() {
+  const authContext =React.useContext(AuthContext)
+  React.useEffect(() =>{
+    const start= async()=>{
+      console.log(await authContext.API.getSecureData())
+    }
+    start()
+  },[])
+  return <h2>Users (secure data)</h2>;
 }
