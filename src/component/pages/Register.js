@@ -125,23 +125,15 @@ export default function SignUp() {
               history.replace(from);
           }else{
               console.log (result)
-          }  
+          } 
+          if(result.status === 404){
+           
+            return ("Signing up failed")
+          } 
       };
   
   
-  //  function Register(props){
-  //      const[formData, setFormData] = useState({
-  //          name: "",
-  //          email: "",
-  //          password: ""
   
-  //      });
-  //      const{ name, email, password } = formData;
-  // //     const onChange = e => {
-  // //         setFormData({ ...formData, [e.target.name]: e.target.value });
-  // //       }
-      
-  //  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -151,7 +143,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+         Create A New Account
         </Typography>
         <form className={classes.form} noValidate>
      
@@ -222,8 +214,8 @@ export default function SignUp() {
           }}
         >
           <option aria-label="None" value="{state.role}" />
-          <option >System Admin</option>
-          <option value >Client Admin</option>
+          <option value = "SYSTEM_ADMIN" >System Admin</option>
+          <option value = "CLIENT_ADMIN">Client Admin</option>
           
         </Select>
       {/* </FormControl> */}
@@ -239,14 +231,14 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Create a New Account
           </Button>
           <Grid container justify="flex-end">
-            <Grid item>
+            {/* <Grid item>
               <Link href="#" variant="body2">
                 {"Already have an account? Sign in"}
               </Link>
-            </Grid>
+            </Grid> */}
           </Grid>
         </form>
       </div>
