@@ -296,11 +296,11 @@ export default function AdminRouter(props) {
               <Route path={`${path}/login`}>
                 <LoginPage />
               </Route>
-              <PrivateRoute path={`${path}/users`}>
-                <UserList />
-              </PrivateRoute>
               <PrivateRoute path={`${path}/users/:id`}>
                 <UserDetail />
+              </PrivateRoute>
+              <PrivateRoute path={`${path}/users`}>
+                <UserList />
               </PrivateRoute>
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />

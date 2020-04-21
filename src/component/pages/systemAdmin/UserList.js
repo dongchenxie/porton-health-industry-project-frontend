@@ -1,15 +1,6 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-  useRouteMatch
- } from "react-router-dom";
-import UserDetail from './User'
-import PrivateRoute from '../../middleware/PrivateRoute'
+import { BrowserRouter, Link, useRouteMatch } from "react-router-dom";
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -38,7 +29,7 @@ const useStyles = makeStyles({
 
 export default function Users() {
     const classes = useStyles();
-    let { path, url } = useRouteMatch();
+    let { url } = useRouteMatch();
 
     const authContext = React.useContext(AuthContext)
     const [users, setUsers] = React.useState(null);
@@ -51,16 +42,9 @@ export default function Users() {
       start()
     }, [])
 
-    //example data:
-     // date: "2020-04-11T01:51:55.596Z"
-     // email: "donana@donana.com"
-     // isEnabled: false
-     // name: "donana"
-     // _id: "5e9122c85ce2627044323a7d"
-
     const renderUsers = (usersArr) => {
-        let userList =  usersArr.users.map(user =>  ( 
-            <Card className={classes.root} variant="outlined">
+        let userList =  usersArr.users.map((user, index) =>  ( 
+            <Card className={classes.root} variant="outlined" key={index}>
             <CardContent>
               <Typography variant="h5" component="h2">
                   {user.email}
@@ -68,12 +52,9 @@ export default function Users() {
               <Typography className={classes.pos} color="textSecondary">
                 Account created: {user.date}
               </Typography>
-              <Typography variant="body2" component="p">
-               {user.isEnabled ? "Clinic status currently open.": "Clinic status currently closed." }
-              </Typography>
             </CardContent>
             <CardActions>
-            <Link to={`${url}1`} style={{textDecoration: 'none', color: 'inherit'}}> 
+            <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit'}}> 
               <Button size="small">Learn More</Button>
             </Link>
             </CardActions>
