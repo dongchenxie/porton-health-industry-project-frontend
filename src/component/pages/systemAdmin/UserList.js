@@ -73,7 +73,7 @@ export default function Users() {
               </Typography>
             </CardContent>
             <CardActions>
-            <Link to={`${url}/user/1`} style={{textDecoration: 'none', color: 'inherit'}}> 
+            <Link to={`${url}1`} style={{textDecoration: 'none', color: 'inherit'}}> 
               <Button size="small">Learn More</Button>
             </Link>
             </CardActions>

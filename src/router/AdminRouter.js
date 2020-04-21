@@ -28,10 +28,11 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 
 //custom components:
-import PrivateRoute from '../component/middleware/PrivateRoute'
-import LoginPage from '../component/pages/Login'
-import NotFoundPage from '../component/pages/NotFoundPage'
-import UserList from '../component/pages/systemAdmin/UserList'
+import PrivateRoute from '../component/middleware/PrivateRoute';
+import LoginPage from '../component/pages/Login';
+import NotFoundPage from '../component/pages/NotFoundPage';
+import UserList from '../component/pages/systemAdmin/UserList';
+import UserDetail from '../component/pages/systemAdmin/User';
 import AuthAPI from "../data/AuthContext"
 // import LoginWidget from '../component/widgets/loginWidget'
 // import RegisterWidget from '../component/widgets/registerWidget'
@@ -297,6 +298,9 @@ export default function AdminRouter(props) {
               </Route>
               <PrivateRoute path={`${path}/users`}>
                 <UserList />
+              </PrivateRoute>
+              <PrivateRoute path={`${path}/users/:id`}>
+                <UserDetail />
               </PrivateRoute>
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />
