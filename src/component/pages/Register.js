@@ -221,9 +221,9 @@ export default function SignUp() {
             id: 'role-native-simple',
           }}
         >
-          <option aria-label="None" value="" />
-          <option value >System Admin</option>
-          <option value >ClientAdmin</option>
+          <option aria-label="None" value="{state.role}" />
+          <option >System Admin</option>
+          <option value >Client Admin</option>
           
         </Select>
       {/* </FormControl> */}
