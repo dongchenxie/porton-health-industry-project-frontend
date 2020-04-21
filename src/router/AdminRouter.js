@@ -111,17 +111,21 @@ export default function AdminRouter(props) {
 
   const open = Boolean(anchorEl);
   React.useEffect(() => {
-    async function readToken(){
-      await  authContext.API.readToken()
-      console.log(authContext.authState.token)
-      console.log(authContext.authState.role)
-      console.log(authContext.authState.isAuthenticated)
+    if (localStorage.getItem('token')) {
+      authContext.setAuthState({
+        isAuthenticated: true,
+        token: localStorage.getItem('token')
+
+      })
+    } else {
+      console.log("here")
+      authContext.setAuthState({
+        isAuthenticated: false,
+        token: "123123"
+      })
     }
-    if (localStorage.getItem('token')&&!authContext.authState.isAuthenticated) {
-      readToken()
-    }
-    console.log(localStorage.getItem("user"))
-    console.log(localStorage.getItem("token"))
+    console.log(authContext.authState.token)
+    console.log(authContext.authState.isAuthenticated)
   }, []);
   // const handleLoginChange = (event) => {
   //   authContext.setAuthState((prev)=>{
@@ -153,16 +157,12 @@ export default function AdminRouter(props) {
     <div>
       <div className={classes.toolbar} />
       <List>
-      
-         
-        
       <Divider />
         <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}> 
           <ListItem button>
             <ListItemText primary="Create Account" />
           </ListItem >
         </Link> 
-        
         
         <Link to={`${url}/users`} style={{textDecoration: 'none', color: 'inherit'}}>  
           <ListItem button>
@@ -209,7 +209,7 @@ export default function AdminRouter(props) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap className={classes.title}>
-              Porton Heath Admin Panel {localStorage.getItem("user")? `Hello you are ${JSON.parse(localStorage.getItem("user")).email}`:""}
+              Porton Heath Admin Panel
           </Typography>
             {authContext.authState.isAuthenticated ? (
               <div>
@@ -326,8 +326,7 @@ function Home() {
 }
 
 function About() {
-  const authContext = React.useContext(AuthContext)
-  return <h2>About (secure data){localStorage.getItem("user").email}</h2>;
+  return <h2>About (secure data)</h2>;
 }
 
 function Users() {
@@ -346,7 +345,7 @@ function Users() {
 
 function CreateAccount() {
   return(
-    <div><h2>click here to create new client accountfsdfs</h2>
+    <div><h2>click here to create new client account</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
       Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
       Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 

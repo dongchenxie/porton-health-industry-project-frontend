@@ -22,13 +22,10 @@ function App() {
       console.log("after login request")
       if (result.status == 200) {
         console.log(result.data.token);
-        console.log(result.data.role)
         setAuthState((prev) => {
-          return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
+          return { ...prev, isAuthenticated: true, token: result.data.token }
         })
-        localStorage.setItem("token", result.data.token)
-        localStorage.setItem("user", JSON.stringify(result.data.user))
-
+        localStorage.setItem("token", result.token)
         return { status: 200, token: result.data.token };//Success example
       } else {
         return result
@@ -37,30 +34,9 @@ function App() {
     signOut: function () {
       console.log(authState.isAuthenticated)
       localStorage.removeItem("token");
-      localStorage.removeItem("user");
       setAuthState((prev) => {
         return { ...prev, isAuthenticated: false, token: null }
       })
-    },
-    readToken:async function(){
-      console.log(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
-      let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
-      .catch((e) => {
-        console.log(e.response)
-        return { status: e.response.status, error: e.response.data.error }//Error example
-      })
-      if(result.status==200){
-        localStorage.setItem("user", JSON.stringify(result.data))
-       
-       
-        setAuthState((prev) => {
-          return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
-        })
-        console.log(authState)
-        return { status: 200}
-      }else{
-        return this.signOut()
-      }
     },
     //example for getting secure data using 
     getSecureData: async function () {

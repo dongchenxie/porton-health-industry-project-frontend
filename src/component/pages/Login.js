@@ -17,10 +17,9 @@ export default function CheckIn() {
 
     let { from } = location.state || { from: { pathname: "/" } };
     let login = async() => {
-        console.log("here")
-        let result =await authContext.API.login("k@k.com","password")
+        let result =await authContext.API.login("xxx@x.com","password")
         if(result.status==200){
-            console.log(result.role)
+            console.log(result)
             localStorage.setItem("token", result.token)
             authContext.setAuthState((prev) => {
             return {
