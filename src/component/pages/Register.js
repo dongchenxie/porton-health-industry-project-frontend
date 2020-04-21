@@ -192,7 +192,7 @@ export default function SignUp() {
                 //  onChange={e => onChange(e)}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} >
               <TextField
                 variant="outlined"
                 required
@@ -205,10 +205,10 @@ export default function SignUp() {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs= {12} >
             
-            <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="age-native-simple">Role</InputLabel>
+            {/* <FormControl className={classes.formControl}> */}
+        <InputLabel htmlFor="role-native-simple">Role</InputLabel>
         <Select
           variant="outlined"
                  required
@@ -226,7 +226,7 @@ export default function SignUp() {
           <option value >ClientAdmin</option>
           
         </Select>
-      </FormControl>
+      {/* </FormControl> */}
       
             </Grid>
             
