@@ -15,8 +15,8 @@ import {
 } from "@material-ui/core/styles";
 import { green, red } from "@material-ui/core/colors";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+// import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import Checkbox from "@material-ui/core/Checkbox";
 
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -42,9 +42,9 @@ const useStyles = makeStyles((theme) => ({
 const GreenButton = withStyles((theme) => ({
   root: {
     color: theme.palette.getContrastText(green[500]),
-    backgroundColor: green[500],
+    backgroundColor: "#5aac5c",
     "&:hover": {
-      backgroundColor: green[700],
+      backgroundColor: "#5aac5c",
     },
   },
 }))(Button);
@@ -69,6 +69,11 @@ export default function CheckIn() {
 
   return (
     <div
+      style={{
+        backgroundColor: "#ff991d",
+        color: "white",
+        height: "100vh",
+      }}
       onClick={() =>
         setPaged(state.pages[state.idx % state.pages.length]) &
         console.log(state.idx)
@@ -111,7 +116,6 @@ function Welcome() {
           <br />
           <br />
           <br />
-          <br />
           WELCOME
           <br />
           <br />
@@ -148,58 +152,68 @@ function Welcome() {
 }
 
 function SelectAppTime() {
-  const tiers = [
+  const timeSlots = [
     {
+      id: "timeSlot1",
       buttonText: "1:00 PM",
       buttonVariant: "contained",
     },
     {
+      id: "timeSlot2",
       buttonText: "1:30 PM",
       buttonVariant: "outlined",
     },
     {
+      id: "timeSlot3",
       buttonText: "2:00 PM",
       buttonVariant: "contained",
     },
     {
+      id: "timeSlot4",
       buttonText: "2:30 PM",
       buttonVariant: "outlined",
     },
     {
+      id: "timeSlot5",
       buttonText: "3:00 PM",
       buttonVariant: "contained",
     },
     {
+      id: "timeSlot6",
       buttonText: "3:30 PM",
       buttonVariant: "outlined",
     },
   ];
   return (
-    <div>
-      <h1>
+    <div
+      style={{
+        //gray #ECECEC
+        backgroundColor: "white",
+        color: "white",
+        width: "84vw",
+        height: "100vh",
+        margin: "auto",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "black",
+          color: "white",
+          height: "110px",
+          margin: "auto",
+          padding:"0 0 0 100px",
+        }}
+      >
         <br />
-        <br />
-        <br />
-        <br />
-      </h1>
-
+        <Typography component="h1" variant="h2" align="left"  gutterBottom>
+          Select Appointment Time
+        </Typography>
+      </div>
+      <br />
+      <br />
       {/* Hero unit */}
       <Container>
         <Grid container spacing={5} alignItems="flex-end">
-          <Grid item xs={8}>
-            <Card>
-              <Typography
-                component="h1"
-                variant="h2"
-                align="center"
-                color="textPrimary"
-                gutterBottom
-              >
-                Please Select Appointment Time
-              </Typography>
-            </Card>
-          </Grid>
-
           <Grid item xs={4}>
             <Card>
               <Typography
@@ -218,32 +232,42 @@ function SelectAppTime() {
         </Grid>
       </Container>
       {/* End hero unit */}
-      <h1>
-        <br />
-        <br />
-        <br />
-        <br />
-      </h1>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <Typography
+        component="h1"
+        variant="h4"
+        align="center"
+        color="textPrimary"
+        gutterBottom
+      >
+        Please select your given appointment:
+      </Typography>
+      <br />
+      <br />
+      <br />
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
-          {tiers.map((tier) => (
+          {timeSlots.map((tSlot) => (
             // Enterprise card is full width at sm breakpoint
             <Grid
               item
-              key={tier.title}
+              key={tSlot.id}
               xs={12}
-              sm={tier.title === "Enterprise" ? 12 : 6}
+              sm={tSlot.id === "Enterprise" ? 12 : 6}
               md={4}
             >
-              
               <Button
                 fullWidth
-                variant={tier.buttonVariant}
+                variant={tSlot.buttonVariant}
                 color="primary"
                 onClick={() => state.idx++ & console.log(state.idx)}
               >
                 <Typography component="h1" variant="h2">
-                  {tier.buttonText}
+                  {tSlot.buttonText}
                 </Typography>
               </Button>
             </Grid>
@@ -255,83 +279,99 @@ function SelectAppTime() {
 }
 
 function AuthenticateUser() {
+  const classes = useStyles();
   const tiers = [
     {
-      // title: "Free",
-      // price: "0",
-      // description: ["Description"],
+      id: "vf1",
       buttonText: "98473",
       buttonVariant: "contained",
     },
     {
+      id: "vf2",
       buttonText: "43894",
       buttonVariant: "outlined",
     },
     {
+      id: "vf3",
       buttonText: "83049",
       buttonVariant: "contained",
     },
     {
+      id: "vf4",
       buttonText: "29384",
       buttonVariant: "outlined",
     },
     {
+      id: "vf5",
       buttonText: "29384",
       buttonVariant: "contained",
     },
     {
+      id: "vf6",
       buttonText: "38492",
       buttonVariant: "outlined",
     },
   ];
   return (
-    <div>
-      <h1>
+    <div
+      style={{
+        //gray #ECECEC
+        backgroundColor: "white",
+        color: "white",
+        width: "84vw",
+        height: "100vh",
+        margin: "auto",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "black",
+          color: "white",
+          height: "110px",
+          margin: "auto",
+          padding:"0 0 0 100px",
+        }}
+      >
         <br />
+        <Typography component="h1" variant="h2" align="left" gutterBottom>
+          Patient Verification
+        </Typography>
         <br />
-        <br />
-        <br />
-      </h1>
-
+      </div>
+      <br />
+      <br />
+      <br />
+      <Typography
+        component="h1"
+        variant="h4"
+        align="center"
+        color="textPrimary"
+        gutterBottom
+      >
+        Please verify your Care Card # below:
+      </Typography>
+      <br />
+      <br />
       {/* Hero unit */}
       <Container>
-        <Grid container spacing={5} alignItems="flex-end">
-          <Grid item xs={12}>
-            <Card>
-              <Typography
-                component="h1"
-                variant="h2"
-                align="center"
-                color="textPrimary"
-                gutterBottom
-              >
-                Please Verify Care Card Last 5 Digits
-              </Typography>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Card>
-              <Typography
-                component="h1"
-                variant="h2"
-                align="center"
-                color="textPrimary"
-                gutterBottom
-              >
-                Example Images here
-              </Typography>
-            </Card>
-          </Grid>
+        <Grid item xs={12}>
+          <Card>
+            <Typography
+              component="h1"
+              variant="h2"
+              align="center"
+              color="textPrimary"
+              gutterBottom
+            >
+              Example Images
+            </Typography>
+          </Card>
         </Grid>
       </Container>
       {/* End hero unit */}
-      <h1>
-        <br />
-        <br />
-        <br />
-        <br />
-      </h1>
+      <br />
+      <br />
+      <br />
 
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
@@ -339,9 +379,9 @@ function AuthenticateUser() {
             // Enterprise card is full width at sm breakpoint
             <Grid
               item
-              key={tier.title}
+              key={tier.id}
               xs={12}
-              sm={tier.title === "Enterprise" ? 12 : 6}
+              sm={tier.id === "Enterprise" ? 12 : 6}
               md={4}
             >
               <Button
@@ -366,7 +406,8 @@ function AuthenticateUser() {
       </h1>
       <Container component="main" maxWidth="xs">
         <RedButton
-          // fullWidth
+          fullWidth
+          className={classes.margin}
           variant="contained"
           color="primary"
           onClick={() => state.idx-- & console.log(state.idx)}
@@ -430,7 +471,7 @@ function AppDetails() {
       //Example Details
       placeholder: "123123",
     },
-    
+
     {
       gridSpace: 3,
       required: true,
@@ -470,43 +511,41 @@ function AppDetails() {
   ];
   return (
     <div>
-      <h1>
+      <div
+        style={{
+          backgroundColor: "black",
+          color: "white",
+          height: "110px",
+          margin: "auto",
+          padding:"0 0 0 100px",
+        }}
+      >
         <br />
+        <Typography component="h1" variant="h2" align="left" gutterBottom>
+          Review Details
+        </Typography>
         <br />
-        <br />
-        <br />
-      </h1>
+      </div>
+      <br />
+      <br />
 
-      {/* Hero unit */}
-      <Container>
-        <Grid container spacing={5} alignItems="flex-end">
-          <Grid item xs={12}>
-            <Card>
-              <Typography
-                component="h1"
-                variant="h2"
-                align="center"
-                color="textPrimary"
-                gutterBottom
-              >
-                Please Review Details
-              </Typography>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-      {/* End hero unit */}
-      <h1>
-        <br />
-        <br />
-        <br />
-        <br />
-      </h1>
+      <Typography
+        component="h1"
+        variant="h4"
+        align="center"
+        color="textPrimary"
+        gutterBottom
+      >
+        Please review and verify your details below:
+      </Typography>
+      <br />
+      <br />
+
       <Container maxWidth="xl" component="main">
         <Grid container spacing={5} alignItems="flex-end">
           {tiers.map((tier) => (
             // Enterprise card is full width at sm breakpoint
-            <Grid item key={tier.title} xs={12} sm={tier.gridSpace}>
+            <Grid item key={tier.id} xs={12} sm={tier.gridSpace}>
               <Card>
                 <CardHeader
                   title={tier.title}
@@ -520,25 +559,10 @@ function AppDetails() {
                     fullWidth
                     autoComplete={tier.autoComplete}
                     placeholder={tier.placeholder}
-                    default = {tier.default}
+                    default={tier.default}
                   />
-
-                  {/* <ul>
-                    {tier.description.map((line) => (
-                      <Typography
-                        component="li"
-                        variant="subtitle1"
-                        align="center"
-                        key={line}
-                      >
-                        {line}
-                      </Typography>
-                    ))}
-                  </ul> */}
                 </CardContent>
-                <CardActions>
-
-                </CardActions>
+                <CardActions></CardActions>
               </Card>
             </Grid>
           ))}
@@ -551,39 +575,31 @@ function AppDetails() {
         <br />
       </h1>
       <Container component="main" maxWidth="md">
-
-      <Grid container spacing={5} alignItems="flex-end">
+        <Grid container spacing={5} alignItems="flex-end">
           <Grid item xs={4}>
-          <RedButton
-          variant="contained"
-          color="primary"
-          onClick={() => state.idx-- & console.log(state.idx)}
-        >
-          <Typography component="h1" variant="h2">
-            Back
-          </Typography>
-        </RedButton>
+            <RedButton
+              variant="contained"
+              color="primary"
+              onClick={() => state.idx-- & console.log(state.idx)}
+            >
+              <Typography component="h1" variant="h2">
+                Back
+              </Typography>
+            </RedButton>
           </Grid>
 
           <Grid item xs={4}>
-          <GreenButton
-          variant="contained"
-          color="primary"
-          onClick={() => state.idx++ & console.log(state.idx)}
-        >
-          <Typography component="h1" variant="h2">
-            Complete Check-In
-          </Typography>
-        </GreenButton>
+            <GreenButton
+              variant="contained"
+              color="primary"
+              onClick={() => state.idx++ & console.log(state.idx)}
+            >
+              <Typography component="h1" variant="h2">
+                Complete
+              </Typography>
+            </GreenButton>
           </Grid>
         </Grid>
-
-
-
-
-
-       
-      
       </Container>
     </div>
   );
