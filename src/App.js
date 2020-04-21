@@ -67,8 +67,7 @@ function App() {
         }
       }
     ).catch((e) => 
-      { return { status: e.response.status, error: e.response.data.error }
-    })
+      { return { error: e }} )
     if (result.status === 200) {
       return { status: 200, data: result.data };
     } else {
@@ -85,8 +84,7 @@ function App() {
         }
       }
     ).catch((e) => 
-      { return { status: e.response.status, error: e.response.data.error }
-    })
+      { return { error: e } })
     if (result.status === 200) {
       return { status: 200, data: result.data };
     } else {

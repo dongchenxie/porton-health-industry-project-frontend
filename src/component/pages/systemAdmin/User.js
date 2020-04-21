@@ -31,11 +31,20 @@ export default function UserDetail() {
 
     const authContext = React.useContext(AuthContext)
     const [user, setUser] = React.useState(null);
+    const [error, setError] = React.useState(null);
 
     React.useEffect(() => {
       const start = async () => {
         let data = await authContext.API.getIndivUser(location.pathname.toString().split("/")[3])
-        setUser(data.data)
+        if (data === undefined){
+          console.log("error")
+          setError("Error grabbing data from the server.")
+        } else if (data.data === undefined){
+          console.log("error")
+          setError("Error grabbing data from the server.")
+        } else {
+          setUser(data.data)
+        }
       }
       start()
     }, [])
@@ -62,5 +71,8 @@ export default function UserDetail() {
        </Card></div>)
     }
 
-    return(<div>{user !== null ? renderUser(user) : ""}</div>)
+    return(<div>
+        {error !== null ? error : ""}
+        {user !== null && user !== undefined ? renderUser(user) : ""}
+       </div>)
 }

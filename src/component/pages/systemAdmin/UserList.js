@@ -33,16 +33,27 @@ export default function Users() {
 
     const authContext = React.useContext(AuthContext)
     const [users, setUsers] = React.useState(null);
+    const [error, setError] = React.useState(null);
 
     React.useEffect(() => {
       const start = async () => {
         let data = await authContext.API.getUsers()
-        setUsers(data.data)
+        if (data === undefined){
+          console.log("error")
+          setError("Error grabbing data from the server.")
+        } else if (data.data === undefined){
+          console.log("error")
+          setError("Error grabbing data from the server.")
+        } else {
+          setUsers(data.data)
+        }
       }
       start()
     }, [])
 
     const renderUsers = (usersArr) => {
+
+
         let userList =  usersArr.users.map((user, index) =>  ( 
             <Card className={classes.root} variant="outlined" key={index}>
             <CardContent>
@@ -68,7 +79,8 @@ export default function Users() {
         <div> 
              <h2>User accounts:</h2>      
         <div>
-            {users !== null ? renderUsers(users) : ""}
+            {error !== null ? error : ""}
+            {users !== null && users !== undefined ? renderUsers(users) : ""}
         </div>
        </div>
     ) 
