@@ -310,46 +310,48 @@ export default function AdminRouter(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  //local component:
+
+  //sidebar nav component:
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-      <Divider />
       <List>
-        <ListItem button>
-          <ListItemText primary="Create Account" />
-        </ListItem >
-        <ListItem button>
-          <ListItemText primary="Account List" />
-        </ListItem >
+      <Divider />
+          <ListItem button>
+            <ListItemText primary="Create Account" />
+          </ListItem >
+        
+        <Link to={`${url}/users`}>  
+          <ListItem button>
+            <ListItemText primary="Account List" />
+          </ListItem >
+        </Link> 
       </List>
       <Divider />
 
-      <List>
+     <List>
+      <Link to={`${url}/`}>   
         <ListItem button>
           <ListItemText primary="Home" />
         </ListItem >
+      </Link>
+
+      <Link to={`${url}/about`}>
         <ListItem button>
           <ListItemText primary="About" />
         </ListItem >
+      </Link>  
+      
         <ListItem button onClick={handleProfileClose}>
           <ListItemText primary="Profile" />
         </ListItem >
+
         <ListItem button onClick={handleSignOut}>
           <ListItemText primary="Sign Out" />
         </ListItem >
       </List>
-      <Divider />
     </div>
   );
-
-
-  //  <ListItem button>
-  //  <ListItemIcon>
-  //    <InboxIcon />
-  //  </ListItemIcon>
-  //  <ListItemText primary="Inbox" />
-
 
   return (
     <Router>
@@ -447,19 +449,6 @@ export default function AdminRouter(props) {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <div>
-            <nav>
-              <ul>
-                <li>
-                  <Link to={`${url}/`}>Home(not secure)</Link>
-                </li>
-                <li>
-                  <Link to={`${url}/about`}>About(secure)</Link>
-                </li>
-                <li>
-                  <Link to={`${url}/users`}>Users(secure)</Link>
-                </li>
-              </ul>
-            </nav>
             {/* <FormGroup>
         <FormControlLabel
           control={<SwitchComponent checked={authContext.authState.isAuthenticated} onChange={handleLoginChange} aria-label="login switch" />}
@@ -495,8 +484,7 @@ export default function AdminRouter(props) {
 }
 
 
-//child component, render results in:
-// <main className={classes.content}>
+//child component, render results in the above: <main className={classes.content}>
 
 function Home() {
   return <h2>Home (not secure data)</h2>;
