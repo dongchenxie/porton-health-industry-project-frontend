@@ -22,6 +22,8 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
+import CareCard1 from "../images/CareCback.png"; // Tell webpack this JS file uses this image
+import CareCard2 from "../images/oldCareC.jpg"; // Tell webpack this JS file uses this image
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -84,6 +86,7 @@ export default function CheckIn() {
       <Box mt={8}>
         <Copyright />
       </Box>
+      
     </div>
   );
 }
@@ -201,11 +204,11 @@ function SelectAppTime() {
           color: "white",
           height: "110px",
           margin: "auto",
-          padding:"0 0 0 100px",
+          padding: "0 0 0 100px",
         }}
       >
         <br />
-        <Typography component="h1" variant="h2" align="left"  gutterBottom>
+        <Typography component="h1" variant="h2" align="left" gutterBottom>
           Select Appointment Time
         </Typography>
       </div>
@@ -329,7 +332,7 @@ function AuthenticateUser() {
           color: "white",
           height: "110px",
           margin: "auto",
-          padding:"0 0 0 100px",
+          padding: "0 0 0 100px",
         }}
       >
         <br />
@@ -341,38 +344,47 @@ function AuthenticateUser() {
       <br />
       <br />
       <br />
-      <Typography
-        component="h1"
-        variant="h4"
-        align="center"
-        color="textPrimary"
-        gutterBottom
-      >
-        {/* Please enter your Care Card # below: */}
-      </Typography>
-      <br />
-      <br />
-      {/* Hero unit */}
-      <Container>
-        <Grid item xs={12}>
 
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="textPrimary"
-              gutterBottom
-            >
-              Example Images
-            </Typography>
-
+      <Container maxWidth="xl" component="main">
+        <Grid container spacing={5} alignItems="flex-end">
+          <Grid item xs={12} sm={6}>
+            <Card>
+              <CardContent>
+                <Typography
+                  component="h5"
+                  variant="h5"
+                  align="center"
+                  color="textPrimary"
+                  gutterBottom
+                >
+                  NEW* BC Service Card (Back)
+                </Typography>
+                <img src={CareCard1} alt="CareCard1" />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Card>
+              <CardContent>
+                <Typography
+                  component="h5"
+                  variant="h5"
+                  align="center"
+                  color="textPrimary"
+                  gutterBottom
+                >
+                  OLD* Care Card
+                </Typography>
+                <img src={CareCard2} alt="CareCard2" />;
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
       </Container>
-      {/* End hero unit */}
-      <br />
-      <br />
-      <br />
 
+      <br />
+      <br />
+      <br />
       <Container component="main" maxWidth="md">
         {/* <Grid container spacing={5} alignItems="flex-end">
           {tiers.map((tier) => (
@@ -398,20 +410,32 @@ function AuthenticateUser() {
           ))}
         </Grid> */}
 
-<Grid item xs={12} sm={12}>
-              <Card>
-              
-                <CardContent>
-                  <TextField
-                    required
-                    id= "careCardNumber"
-                    fullWidth
-                    placeholder= "Please Enter Care Card #"
-                  />
-                </CardContent>
-                <CardActions></CardActions>
-              </Card>
-            </Grid>
+        <Grid item xs={12} sm={12}>
+          <Card>
+            <CardContent>
+              <TextField
+                required
+                id="careCardNumber"
+                fullWidth
+                placeholder="Please Enter Care Card #"
+              />
+            </CardContent>
+            <CardActions></CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <Card>
+            <CardContent>
+              {/* <TextField
+                required
+                id="birthYear"
+                fullWidth
+                placeholder="Year of Birth"
+              /> */}
+            </CardContent>
+            <CardActions></CardActions>
+          </Card>
+        </Grid>
       </Container>
       <h1>
         <br />
@@ -419,18 +443,32 @@ function AuthenticateUser() {
         <br />
         <br />
       </h1>
-      <Container component="main" maxWidth="xs">
-        <RedButton
-          fullWidth
-          className={classes.margin}
-          variant="contained"
-          color="primary"
-          onClick={() => state.idx-- & console.log(state.idx)}
-        >
-          <Typography component="h1" variant="h2">
-            Back
-          </Typography>
-        </RedButton>
+      <Container component="main" maxWidth="md">
+        <Grid container spacing={5} alignItems="flex-end">
+          <Grid item xs={4}>
+            <RedButton
+              variant="contained"
+              color="primary"
+              onClick={() => state.idx-- & console.log(state.idx)}
+            >
+              <Typography component="h1" variant="h2">
+                Back
+              </Typography>
+            </RedButton>
+          </Grid>
+
+          <Grid item xs={4}>
+            <GreenButton
+              variant="contained"
+              color="primary"
+              onClick={() => state.idx++ & console.log(state.idx)}
+            >
+              <Typography component="h1" variant="h2">
+                Next
+              </Typography>
+            </GreenButton>
+          </Grid>
+        </Grid>
       </Container>
     </div>
   );
@@ -532,7 +570,7 @@ function AppDetails() {
           color: "white",
           height: "110px",
           margin: "auto",
-          padding:"0 0 0 100px",
+          padding: "0 0 0 100px",
         }}
       >
         <br />
