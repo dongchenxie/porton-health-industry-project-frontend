@@ -206,9 +206,13 @@ export default function SignUp() {
             </Grid>
 
             <Grid item xs={12}>
+            
             <FormControl className={classes.formControl}>
         <InputLabel htmlFor="age-native-simple">Role</InputLabel>
         <Select
+          variant="outlined"
+                 required
+                 fullWidth
           native
           value={state.role}
           onChange={handleChange}
@@ -218,11 +222,12 @@ export default function SignUp() {
           }}
         >
           <option aria-label="None" value="" />
-          <option >System Admin</option>
-          <option>ClientAdmin</option>
+          <option value >System Admin</option>
+          <option value >ClientAdmin</option>
           
         </Select>
       </FormControl>
+      
             </Grid>
             
           </Grid>
