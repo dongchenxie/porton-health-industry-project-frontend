@@ -151,6 +151,8 @@ export default function AdminRouter(props) {
 
 
   //sidebar nav component:
+  //TODO: conditionally render account creation/list for systemadmin ONLY
+
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -160,7 +162,7 @@ export default function AdminRouter(props) {
             <ListItemText primary="Create Account" />
           </ListItem >
         
-        <Link to={`${url}/users`}>  
+        <Link to={`${url}/users`} style={{textDecoration: 'none', color: 'inherit'}}>  
           <ListItem button>
             <ListItemText primary="Account List" />
           </ListItem >
@@ -169,13 +171,13 @@ export default function AdminRouter(props) {
       <Divider />
 
      <List>
-      <Link to={`${url}/`}>   
+      <Link to={`${url}`} style={{textDecoration: 'none', color: 'inherit'}}>   
         <ListItem button>
           <ListItemText primary="Home" />
         </ListItem >
       </Link>
 
-      <Link to={`${url}/about`}>
+      <Link to={`${url}/about`} style={{textDecoration: 'none', color: 'inherit'}}>
         <ListItem button>
           <ListItemText primary="About" />
         </ListItem >
