@@ -31,6 +31,7 @@ import Hidden from '@material-ui/core/Hidden';
 import PrivateRoute from '../component/middleware/PrivateRoute'
 import LoginPage from '../component/pages/Login'
 import NotFoundPage from '../component/pages/NotFoundPage'
+import Users from '../component/pages/systemAdmin/Users'
 import AuthAPI from "../data/AuthContext"
 // import LoginWidget from '../component/widgets/loginWidget'
 // import RegisterWidget from '../component/widgets/registerWidget'
@@ -322,16 +323,6 @@ function About() {
   return <h2>About (secure data)</h2>;
 }
 
-function Users() {
-  const authContext = React.useContext(AuthContext)
-  React.useEffect(() => {
-    const start = async () => {
-      console.log(await authContext.API.getUsers())
-    }
-    start()
-  }, [])
-  return <h2>Users (secure data)</h2>;
-}
 
 //dummy/test components for demonstration: 
 
