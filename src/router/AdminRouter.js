@@ -132,6 +132,7 @@ export default function AdminRouter(props) {
   //     return {...prev,isAuthenticated:event.target.checked}});
   // };
 
+
   const handleProfileMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -195,24 +196,13 @@ export default function AdminRouter(props) {
     </div>
   );
 
+
   return (
     <Router>
       <div className={classes.root}>
         <CssBaseline />
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
-            {/* <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-          Porton Heath Admin Panel
-          </Typography> */}
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="open drawer"
               onClick={handleDrawerToggle}
             >
@@ -338,7 +328,6 @@ function Home() {
 function About() {
   return <h2>About (secure data)</h2>;
 }
-
 
 function Users() {
   const authContext = React.useContext(AuthContext)
