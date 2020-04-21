@@ -152,15 +152,16 @@ export default function AdminRouter(props) {
 
   //sidebar nav component:
   //TODO: conditionally render account creation/list for systemadmin ONLY
-
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <List>
       <Divider />
+        <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}> 
           <ListItem button>
             <ListItemText primary="Create Account" />
           </ListItem >
+        </Link> 
         
         <Link to={`${url}/users`} style={{textDecoration: 'none', color: 'inherit'}}>  
           <ListItem button>
@@ -313,6 +314,9 @@ export default function AdminRouter(props) {
               <PrivateRoute path={`${path}/users`}>
                 <Users />
               </PrivateRoute>
+              <PrivateRoute path={`${path}/createAccount`}>
+                <CreateAccount />
+              </PrivateRoute>
               <Route path="*">
                 <NotFoundPage />
               </Route>
@@ -331,7 +335,6 @@ function Home() {
   return <h2>Home (not secure data)</h2>;
 }
 
-
 function About() {
   return <h2>About (secure data)</h2>;
 }
@@ -346,4 +349,26 @@ function Users() {
     start()
   }, [])
   return <h2>Users (secure data)</h2>;
+}
+
+
+//dummy/test components for demonstration: 
+
+function CreateAccount() {
+  return(
+    <div><h2>click here to create new client account</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
+      Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 
+      Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
+      Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. </p>
+    </div>
+  ) 
+}
+
+
+function profile() {
+  return(
+    <div><h2> your profile information:  </h2><p>lorem ipsem </p></div>
+  ) 
 }
