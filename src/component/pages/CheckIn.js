@@ -280,38 +280,38 @@ function SelectAppTime() {
 
 function AuthenticateUser() {
   const classes = useStyles();
-  const tiers = [
-    {
-      id: "vf1",
-      buttonText: "98473",
-      buttonVariant: "contained",
-    },
-    {
-      id: "vf2",
-      buttonText: "43894",
-      buttonVariant: "outlined",
-    },
-    {
-      id: "vf3",
-      buttonText: "83049",
-      buttonVariant: "contained",
-    },
-    {
-      id: "vf4",
-      buttonText: "29384",
-      buttonVariant: "outlined",
-    },
-    {
-      id: "vf5",
-      buttonText: "29384",
-      buttonVariant: "contained",
-    },
-    {
-      id: "vf6",
-      buttonText: "38492",
-      buttonVariant: "outlined",
-    },
-  ];
+  // const tiers = [
+  //   {
+  //     id: "vf1",
+  //     buttonText: "98473",
+  //     buttonVariant: "contained",
+  //   },
+  //   {
+  //     id: "vf2",
+  //     buttonText: "43894",
+  //     buttonVariant: "outlined",
+  //   },
+  //   {
+  //     id: "vf3",
+  //     buttonText: "83049",
+  //     buttonVariant: "contained",
+  //   },
+  //   {
+  //     id: "vf4",
+  //     buttonText: "29384",
+  //     buttonVariant: "outlined",
+  //   },
+  //   {
+  //     id: "vf5",
+  //     buttonText: "29384",
+  //     buttonVariant: "contained",
+  //   },
+  //   {
+  //     id: "vf6",
+  //     buttonText: "38492",
+  //     buttonVariant: "outlined",
+  //   },
+  // ];
   return (
     <div
       style={{
@@ -348,14 +348,14 @@ function AuthenticateUser() {
         color="textPrimary"
         gutterBottom
       >
-        Please verify your Care Card # below:
+        {/* Please enter your Care Card # below: */}
       </Typography>
       <br />
       <br />
       {/* Hero unit */}
       <Container>
         <Grid item xs={12}>
-          <Card>
+
             <Typography
               component="h1"
               variant="h2"
@@ -365,7 +365,7 @@ function AuthenticateUser() {
             >
               Example Images
             </Typography>
-          </Card>
+
         </Grid>
       </Container>
       {/* End hero unit */}
@@ -373,8 +373,8 @@ function AuthenticateUser() {
       <br />
       <br />
 
-      <Container maxWidth="md" component="main">
-        <Grid container spacing={5} alignItems="flex-end">
+      <Container component="main" maxWidth="md">
+        {/* <Grid container spacing={5} alignItems="flex-end">
           {tiers.map((tier) => (
             // Enterprise card is full width at sm breakpoint
             <Grid
@@ -396,7 +396,22 @@ function AuthenticateUser() {
               </Button>
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
+
+<Grid item xs={12} sm={12}>
+              <Card>
+              
+                <CardContent>
+                  <TextField
+                    required
+                    id= "careCardNumber"
+                    fullWidth
+                    placeholder= "Please Enter Care Card #"
+                  />
+                </CardContent>
+                <CardActions></CardActions>
+              </Card>
+            </Grid>
       </Container>
       <h1>
         <br />
