@@ -31,7 +31,7 @@ import Hidden from '@material-ui/core/Hidden';
 import PrivateRoute from '../component/middleware/PrivateRoute'
 import LoginPage from '../component/pages/Login'
 import NotFoundPage from '../component/pages/NotFoundPage'
-import Users from '../component/pages/systemAdmin/Users'
+import UserList from '../component/pages/systemAdmin/UserList'
 import AuthAPI from "../data/AuthContext"
 // import LoginWidget from '../component/widgets/loginWidget'
 // import RegisterWidget from '../component/widgets/registerWidget'
@@ -296,7 +296,7 @@ export default function AdminRouter(props) {
                 <LoginPage />
               </Route>
               <PrivateRoute path={`${path}/users`}>
-                <Users />
+                <UserList />
               </PrivateRoute>
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />
@@ -323,8 +323,8 @@ function About() {
   return <h2>About (secure data)</h2>;
 }
 
-
-//dummy/test components for demonstration: 
+// dummy/test components for demonstration: 
+// good idea to MOVE THESE TO THEIR OWN FILE, and import them as well.
 
 function CreateAccount() {
   return(
@@ -337,7 +337,6 @@ function CreateAccount() {
     </div>
   ) 
 }
-
 
 function profile() {
   return(

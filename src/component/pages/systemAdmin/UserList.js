@@ -1,5 +1,15 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+  useRouteMatch
+ } from "react-router-dom";
+// import User from './User'
+// import PrivateRoute from '../../middleware/PrivateRoute'
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -28,6 +38,8 @@ const useStyles = makeStyles({
 
 export default function Users() {
     const classes = useStyles();
+    let { path, url } = useRouteMatch();
+
     const authContext = React.useContext(AuthContext)
     const [users, setUsers] = React.useState(null);
 
@@ -47,7 +59,6 @@ export default function Users() {
      // _id: "5e9122c85ce2627044323a7d"
 
     const renderUsers = (usersArr) => {
-        console.log("it works", usersArr.users)
         let userList =  usersArr.users.map(user =>  ( 
             <Card className={classes.root} variant="outlined">
             <CardContent>
@@ -72,6 +83,13 @@ export default function Users() {
 
     return(
         <div> 
+           {/* <Switch>
+              <Route exact path={path}>
+              <PrivateRoute path={`${path}/users/:id`}>
+                <User />
+              </PrivateRoute>
+              </Route>
+            </Switch> */}
          <h2>User accounts:</h2>      
         <div>
             {users !== null ? renderUsers(users) : ""}
