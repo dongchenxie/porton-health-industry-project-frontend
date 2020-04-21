@@ -8,8 +8,8 @@ import {
   useParams,
   useRouteMatch
  } from "react-router-dom";
-// import User from './User'
-// import PrivateRoute from '../../middleware/PrivateRoute'
+import UserDetail from './User'
+import PrivateRoute from '../../middleware/PrivateRoute'
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -73,7 +73,9 @@ export default function Users() {
               </Typography>
             </CardContent>
             <CardActions>
+            <Link to={`${url}/user/1`} style={{textDecoration: 'none', color: 'inherit'}}> 
               <Button size="small">Learn More</Button>
+            </Link>
             </CardActions>
           </Card>
          ))
@@ -83,14 +85,7 @@ export default function Users() {
 
     return(
         <div> 
-           {/* <Switch>
-              <Route exact path={path}>
-              <PrivateRoute path={`${path}/users/:id`}>
-                <User />
-              </PrivateRoute>
-              </Route>
-            </Switch> */}
-         <h2>User accounts:</h2>      
+             <h2>User accounts:</h2>      
         <div>
             {users !== null ? renderUsers(users) : ""}
         </div>
