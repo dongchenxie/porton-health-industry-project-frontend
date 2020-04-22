@@ -17,27 +17,22 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import SwitchComponent from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import MenuItem from '@material-ui/core/MenuItem';
+
 import Menu from '@material-ui/core/Menu';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import MailIcon from '@material-ui/icons/Mail';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 
 //custom components:
-import PrivateRoute from '../component/middleware/PrivateRoute'
-import LoginPage from '../component/pages/Login'
-import NotFoundPage from '../component/pages/NotFoundPage'
+import PrivateRoute from '../component/middleware/PrivateRoute';
+import LoginPage from '../component/pages/Login';
+import NotFoundPage from '../component/pages/NotFoundPage';
+import UserList from '../component/pages/systemAdmin/UserList';
+import UserDetail from '../component/pages/systemAdmin/User';
 import AuthAPI from "../data/AuthContext"
 // import LoginWidget from '../component/widgets/loginWidget'
 // import RegisterWidget from '../component/widgets/registerWidget'
@@ -302,8 +297,11 @@ export default function AdminRouter(props) {
               <Route path={`${path}/login`}>
                 <LoginPage />
               </Route>
+              <PrivateRoute path={`${path}/users/:id`}>
+                <UserDetail />
+              </PrivateRoute>
               <PrivateRoute path={`${path}/users`}>
-                <Users />
+                <UserList />
               </PrivateRoute>
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />
@@ -330,19 +328,8 @@ function About() {
   return <h2>About (secure data)</h2>;
 }
 
-function Users() {
-  const authContext = React.useContext(AuthContext)
-  React.useEffect(() => {
-    const start = async () => {
-      console.log(await authContext.API.getSecureData())
-    }
-    start()
-  }, [])
-  return <h2>Users (secure data)</h2>;
-}
-
-
-//dummy/test components for demonstration: 
+// dummy/test components for demonstration: 
+// good idea to MOVE THESE TO THEIR OWN FILE, and import them as well.
 
 function CreateAccount() {
   return(
@@ -355,7 +342,6 @@ function CreateAccount() {
     </div>
   ) 
 }
-
 
 function profile() {
   return(

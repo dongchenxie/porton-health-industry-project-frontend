@@ -20,7 +20,7 @@ function App() {
         return { status: e.response.status, error: e.response.data.error }//Error example
       })
       console.log("after login request")
-      if (result.status == 200) {
+      if (result.status === 200) {
         console.log(result.data.token);
         setAuthState((prev) => {
           return { ...prev, isAuthenticated: true, token: result.data.token }
@@ -73,13 +73,49 @@ function App() {
       ).catch((e) => 
         { return { status: e.response.status, error: e.response.data.error }
       })
-      if (result.status == 200) {
+      if (result.status === 200) {
         return { status: 200, data: result.data };
       } else {
         return result
       }
+    },
+  getUsers: async function () {
+    let result = await axios(
+      {
+        method: "get",
+        url: `${baseURL}users`,
+        headers: {
+          "auth-token":localStorage.getItem("token")
+        }
+      }
+    ).catch((e) => 
+      { return { error: e }} )
+    if (result.status === 200) {
+      return { status: 200, data: result.data };
+    } else {
+      return result
     }
+  },
+  getIndivUser: async function (param) {
+    let result = await axios(
+      {
+        method: "get",
+        url: `${baseURL}user/${param}`,
+        headers: {
+          "auth-token":localStorage.getItem("token")
+        }
+      }
+    ).catch((e) => 
+      { return { error: e } })
+    if (result.status === 200) {
+      return { status: 200, data: result.data };
+    } else {
+      return result
+    }
+   }
   }
+
+
   //The state 
   const [authState, setAuthState] = React.useState({ isAuthenticated: false, token: null })
 
