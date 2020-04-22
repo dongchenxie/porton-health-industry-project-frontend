@@ -125,6 +125,7 @@ export default function AdminRouter(props) {
         token: "123123"
       })
     }
+    
     console.log(authContext.authState.token)
     console.log(authContext.authState.isAuthenticated)
   }, []);
