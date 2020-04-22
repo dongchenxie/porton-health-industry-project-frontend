@@ -1,6 +1,9 @@
-import React, {useState} from 'react';
+/* eslint-disable no-undef */
+import React from 'react';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -90,17 +93,59 @@ export default function SignUp() {
   };
 
     const [state, setState] = React.useState({
-      SystemAdmin: '',
-      ClientAdmin: '',
+      System_Admin: '',
+      Client_Admin: '',
     });
   
-    const handleChange = (event) => {
-      const name = event.target.name;
-      setState({
-        ...state,
-        [name]: event.target.value,
-      });
-    };
+    // const handleChange = (event) => {
+    //   const name = event.target.name;
+    //   let errors = this.state.errors
+    //   setState({
+    //     ...state,
+    //     [name]: event.target.value,
+    //   });
+    // };
+
+    handleChange = (event) => {
+      event.preventDefault();
+      const { name, value } = event.target;
+      let errors = this.state.errors;
+    
+      switch (name) {
+        case 'firstName': 
+          errors.firstName = value.length = "" &&
+            value.length < 1 && value.length > 255 && value.required !== true
+              ? 'Invalid Entry!'
+              : '';
+          break;
+
+          case 'lastName': 
+          errors.lastName = value.length = "" &&
+            value.length < 1 && value.length > 255 && value.required !== true
+              ? 'Invalid Entry!'
+              : '';
+              break
+
+        case 'email': 
+          errors.email = 
+            validEmailRegex.test(value)
+              ? ''
+              : 'Email is not valid!';
+          break;
+        case 'password': 
+          errors.password = value.length = "" &&
+            value.length < 6 && value.required !== true
+              ? 'Password must be 6 characters long!'
+              : '';
+          break;
+        default:
+          break;
+      }
+    
+      this.setState({errors, [name]: value}, ()=> {
+          console.log(errors)
+      })}
+    
 
 
 
@@ -127,10 +172,11 @@ export default function SignUp() {
               console.log (result)
               
               }
+              
           } 
          
           
-      };
+    
   
   
   
@@ -206,7 +252,9 @@ export default function SignUp() {
                  required
                  fullWidth
           native
+          // eslint-disable-next-line no-undef
           value={state.role}
+          // eslint-disable-next-line no-undef
           onChange={handleChange}
           inputProps={{
             name: 'role',
@@ -224,11 +272,13 @@ export default function SignUp() {
             
           </Grid>
           <Button
-          onClick={register}
+           // eslint-disable-next-line no-undef
+           onClick={register}
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
+            // eslint-disable-next-line no-undef
             className={classes.submit}
           >
             Create a New Account
@@ -260,3 +310,4 @@ function Copyright() {
     </Typography>
   );
   }
+}
