@@ -126,9 +126,10 @@ export default function SignUp() {
           }else{
               console.log (result)
           } 
+          let error
           if(result.status === 404){
-           
-            return ("Signing up failed")
+            error = new error ("Cannot create new account")
+            return (error)
           } 
       };
   
