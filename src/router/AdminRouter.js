@@ -249,31 +249,6 @@ export default function AdminRouter(props) {
                 <div className={classes.flex}>
                   {/* <LoginWidget className={classes.btn} auth={authContext.authState.isAuthenticated}/>
                 <RegisterWidget className={classes.btn}/> */}
-<<<<<<< HEAD
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
-     
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to={`${url}/`}>Home(not secure)</Link>
-            </li>
-            <li>
-              <Link to={`${url}/register`}>Register(secure)</Link>
-            </li>
-            
-            <li>
-              <Link to={`${url}/about`}>About(secure)</Link>
-            </li>
-            <li>
-              <Link to={`${url}/users`}>Users(secure)</Link>
-            </li>
-          </ul>
-=======
                 </div>
               )}
           </Toolbar>
@@ -308,7 +283,6 @@ export default function AdminRouter(props) {
               {drawer}
             </Drawer>
           </Hidden>
->>>>>>> master
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
@@ -322,29 +296,6 @@ export default function AdminRouter(props) {
 
             {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-<<<<<<< HEAD
-        
-        <Switch>
-          <Route exact path={path}>
-            <Home />
-          </Route>
-          <PrivateRoute path={`${path}/about`}>
-            <About />
-          </PrivateRoute>
-          <Route path={`${path}/register`}>
-            <Register />
-          </Route>
-          <Route path={`${path}/login`}>
-            <LoginPage />
-          </Route>
-          <PrivateRoute path={`${path}/users`}>
-            <Users />
-          </PrivateRoute>
-          <Route path="*">
-            <NotFoundPage />
-          </Route>
-        </Switch>
-=======
 
             <Switch>
               <Route exact path={path}>
@@ -368,7 +319,6 @@ export default function AdminRouter(props) {
             </Switch>
           </div>
         </main>
->>>>>>> master
       </div>
     </Router>
   );
