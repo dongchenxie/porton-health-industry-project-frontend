@@ -138,7 +138,6 @@ export default function CheckIn() {
             >
               Sign In
             </Button>
-            {/* <button onClick={login}>test Log in with preset account</button> */}
             <Grid container>
               <Grid item>
                 <Link href="#" variant="body2">
