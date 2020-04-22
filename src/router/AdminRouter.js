@@ -23,10 +23,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
-<<<<<<< HEAD
- import LoginWidget from '../component/widgets/loginWidget'
- import RegisterWidget from '../component/widgets/registerWidget'
-=======
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -39,7 +35,6 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 
 //custom components:
->>>>>>> master
 import PrivateRoute from '../component/middleware/PrivateRoute'
 import Register from '../component/pages/Register'
 import LoginPage from '../component/pages/Login'

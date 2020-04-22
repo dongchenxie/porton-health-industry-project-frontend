@@ -125,12 +125,11 @@ export default function SignUp() {
               history.replace(from);
           }else{
               console.log (result)
+              
+              }
           } 
-          let error
-          if(result.status === 404){
-            error = new error ("Cannot create new account")
-            return (error)
-          } 
+         
+          
       };
   
   
@@ -248,7 +247,7 @@ export default function SignUp() {
       </Box>
     </Container>
   );
-}
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
