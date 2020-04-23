@@ -57,9 +57,10 @@ export default function CheckIn() {
   let history = useHistory();
   let location = useLocation();
   const authContext = React.useContext(AuthContext);
-  let [username, setUsername] = React.useState("");
-  const handleTextChange = (e) => {
+  const [username, setUsername] = React.useState("");
+  const [error, setError] = React.useState(null);
 
+  const handleTextChange = (e) => {
     setUsername(e.target.value);
   };
   let [password, setPassword] = React.useState("");
@@ -68,7 +69,8 @@ export default function CheckIn() {
     setPassword(e.target.value);
   };
   let { from } = location.state || { from: { pathname: "/" } };
-  let login = async () => {
+
+  const login = async () => {
     let result = await authContext.API.login(`${username}`, `${password}`);
     //testing purpose "results var"
     // let result = await authContext.API.login("xxx@x.com", "password");
@@ -87,7 +89,9 @@ export default function CheckIn() {
         // alert("Issue with you Username or Password");
         //Error alerts located in App.js
         console.log(result & "Issue with username or password");
-      }else{
+        setError("Incorrect user name or password. Please try again.")
+      } else {
+        setError("Incorrect user name or password. Please try again.")
         console.log(result);
       }
       
@@ -151,6 +155,7 @@ export default function CheckIn() {
               </Grid>
             </Grid>
           </form>
+          {error ? error : ""}
         </div>
         <Box mt={8}>
           <Copyright />
