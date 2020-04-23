@@ -22,7 +22,7 @@ function App() {
       })
       console.log("after login request")
       if (result.status === 200) {
-        console.log(result.data.token);
+        console.log("login worked!", result.data.token);
         setAuthState((prev) => {
           return { ...prev, isAuthenticated: true, token: result.data.token }
         })
@@ -53,10 +53,11 @@ function App() {
         console.log("login ok")
         localStorage.setItem("user", JSON.stringify(result.data))
        
-        setAuthState.currentSetAuthState((prev) => {
-          return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
-        })
-        return { status: 200}
+        // setAuthState.currentSetAuthState((prev) => {
+        //   return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
+        // })
+        // return { status: 200}
+        return result.data
       }else{
         return this.signOut()
       }
