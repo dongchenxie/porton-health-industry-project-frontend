@@ -10,11 +10,11 @@ const dataAccessService = {
             "email": username,
             "password": password,
         })
-        if (result.status == 200 ) {
+        if (result.status === 200 ) {
             console.log(result.data.token);
             return { status: 200, token: result.data.token};
         } else {
-            return { status: 400 }
+            return { status: 400}
         }
     },
     signOut:function(){
