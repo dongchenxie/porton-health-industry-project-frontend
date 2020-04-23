@@ -99,6 +99,8 @@ export default function AdminRouter(props) {
   //state indicate if the user is authenticated
   const [auth, setAuth] = React.useState(true);
   const authContext = React.useContext(AuthContext)
+  const [role, setRoll] = React.useState(null);
+
 
   //state indicate if the profile meun is opened
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -112,9 +114,9 @@ export default function AdminRouter(props) {
         isAuthenticated: true,
         token: localStorage.getItem('token')
       })
-      console.log( "TEST", authContext.API.readToken(authContext.authState).then(function(result){
-         console.log(result)
-      }))
+      authContext.API.readToken(authContext.authState).then(function(result){
+         setRoll(result.role)
+      })
     } else {
       console.log("here")
       authContext.setAuthState({
@@ -123,8 +125,8 @@ export default function AdminRouter(props) {
       })
     }
     
-    console.log(authContext.authState.token)
-    console.log(authContext.authState.isAuthenticated)
+    console.log("context token", authContext.authState.token)
+    console.log("authState:", authContext.authState.isAuthenticated)
   }, []);
   // const handleLoginChange = (event) => {
   //   authContext.setAuthState((prev)=>{
@@ -197,7 +199,7 @@ export default function AdminRouter(props) {
 
   return (
     <Router>
-      {console.log("HEY", localStorage.getItem("user"))}
+      {console.log(role)}
       <div className={classes.root}>
         <CssBaseline />
         <AppBar position="fixed" className={classes.appBar}>

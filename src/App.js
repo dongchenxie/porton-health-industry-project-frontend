@@ -22,7 +22,6 @@ function App() {
       })
       console.log("after login request")
       if (result.status === 200) {
-        console.log("login worked!", result.data.token);
         setAuthState((prev) => {
           return { ...prev, isAuthenticated: true, token: result.data.token }
         })
@@ -41,10 +40,9 @@ function App() {
       })
     },
     readToken: async function(currentSetAuthState){
-      console.log( "hey again", `${baseURL}user/readToken/${localStorage.getItem('token')}`)
+      console.log( `${baseURL}user/readToken/${localStorage.getItem('token')}`)
       let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
-      console.log("NEXT")
-      console.log("it worked", result)
+     
       // .catch((e) => {
       //   console.log( "error reading token: ", 
       //   return { error: e }//Error example
