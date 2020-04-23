@@ -41,13 +41,13 @@ function App() {
     },
     readToken: async function(currentSetAuthState){
       console.log( `${baseURL}user/readToken/${localStorage.getItem('token')}`)
-      let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
-     
+      let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)     
       // .catch((e) => {
       //   console.log( "error reading token: ", 
       //   return { error: e }//Error example
       // })
       if(result.status === 200){
+
         console.log("login ok")
         localStorage.setItem("user", JSON.stringify(result.data))
        
