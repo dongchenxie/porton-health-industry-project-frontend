@@ -112,8 +112,8 @@ export default function AdminRouter(props) {
         isAuthenticated: true,
         token: localStorage.getItem('token')
       })
-      console.log( "TEST", authContext.API.readToken(authContext).then(function(result){
-        return result
+      console.log( "TEST", authContext.API.readToken(authContext.authState).then(function(result){
+         console.log(result)
       }))
     } else {
       console.log("here")
@@ -195,9 +195,9 @@ export default function AdminRouter(props) {
     </div>
   );
 
-
   return (
     <Router>
+      {console.log("HEY", localStorage.getItem("user"))}
       <div className={classes.root}>
         <CssBaseline />
         <AppBar position="fixed" className={classes.appBar}>
@@ -286,9 +286,6 @@ export default function AdminRouter(props) {
           label={authContext.authState.isAuthenticated ? 'Logout' : 'Login'}
         />
       </FormGroup> */}
-
-            {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
 
             <Switch>
               <Route exact path={path}>

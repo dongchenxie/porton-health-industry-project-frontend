@@ -4,6 +4,7 @@ import './App.css';
 import AuthContext from "./data/AuthContext"
 import axios from 'axios'
 const baseURL = "http://localhost:3333/api/"
+const corsProxy = "http://localhost:8010/proxy/"
 function App() {
   /*
     return upon request success {status:200,...data}
@@ -39,22 +40,22 @@ function App() {
         return { ...prev, isAuthenticated: false, token: null }
       })
     },
-    readToken:async function(currentSetAuthState){
-      console.log("hello world")
-      console.log(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
+    readToken: async function(currentSetAuthState){
+      console.log( "hey again", `${baseURL}user/readToken/${localStorage.getItem('token')}`)
       let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
-      .catch((e) => {
-        console.log( e.response)
-        return { error: e }//Error example
-      })
-      if(result.status==200){
+      console.log("NEXT")
+      console.log("it worked", result)
+      // .catch((e) => {
+      //   console.log( "error reading token: ", 
+      //   return { error: e }//Error example
+      // })
+      if(result.status === 200){
         console.log("login ok")
         localStorage.setItem("user", JSON.stringify(result.data))
        
-        currentSetAuthState((prev) => {
+        setAuthState.currentSetAuthState((prev) => {
           return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
         })
-        console.log("test:", authState)
         return { status: 200}
       }else{
         return this.signOut()
@@ -117,7 +118,6 @@ function App() {
     }
    }
   }
-
 
   //The state 
   const [authState, setAuthState] = React.useState({ isAuthenticated: false, token: null })
