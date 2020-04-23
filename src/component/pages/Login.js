@@ -1,5 +1,16 @@
 import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 
+import AuthContext from "../../data/AuthContext";
+import AuthAPI from "../../data/DataAccessService";
+
+//material-ui components: 
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -10,15 +21,7 @@ import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
-import AuthContext from "../../data/AuthContext";
-import AuthAPI from "../../data/DataAccessService";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
@@ -47,8 +50,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-export default function CheckIn() {
 
+
+export default function CheckIn() {
   const classes = useStyles();
   let history = useHistory();
   let location = useLocation();
@@ -88,17 +92,8 @@ export default function CheckIn() {
       }
       
     }
-
-
-
-
-
-
-
   };
 
-
-  
   return (
     <div>
       <Container component="main" maxWidth="xs">
@@ -164,6 +159,7 @@ export default function CheckIn() {
     </div>
   );
 }
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">

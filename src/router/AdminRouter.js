@@ -4,6 +4,7 @@ import {
   Switch,
   Route,
   Link,
+  useHistory,
   useParams,
   useRouteMatch
 } from "react-router-dom";
@@ -97,6 +98,8 @@ const useStyles = makeStyles((theme) => ({
 export default function AdminRouter(props) {
   //get router path and url
   let { path, url } = useRouteMatch();
+  let history = useHistory()
+
 
   const { container } = props;
   const theme = useTheme();
@@ -151,6 +154,7 @@ export default function AdminRouter(props) {
   const handleSignOut = () => {
     authContext.API.signOut()
     handleProfileClose()
+    history.push("/login")
   }
 
   const handleDrawerToggle = () => {
