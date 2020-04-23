@@ -54,12 +54,12 @@ export default function CheckIn() {
   const authContext = React.useContext(AuthContext);
   let [username, setUsername] = React.useState("");
   const handleTextChange = (e) => {
-    console.log(e.target.value);
+
     setUsername(e.target.value);
   };
   let [password, setPassword] = React.useState("");
   const handlePasswordChange = (e) => {
-    console.log(e.target.value);
+
     setPassword(e.target.value);
   };
   let { from } = location.state || { from: { pathname: "/" } };
@@ -67,7 +67,7 @@ export default function CheckIn() {
     let result = await authContext.API.login(`${username}`, `${password}`);
     //testing purpose "results var"
     // let result = await authContext.API.login("xxx@x.com", "password");
-    console.log(result);
+    
     if (result.status === 200) {
       localStorage.setItem("token", result.token);
       authContext.setAuthState((prev) => {
@@ -78,9 +78,26 @@ export default function CheckIn() {
       });
       history.replace(from);
     } else {
-      console.log(result);
+      if (result.status === 400) {
+        // alert("Issue with you Username or Password");
+        //Error alerts located in App.js
+        console.log(result & "Issue with username or password");
+      }else{
+        console.log(result);
+      }
+      
     }
+
+
+
+
+
+
+
   };
+
+
+  
   return (
     <div>
       <Container component="main" maxWidth="xs">
@@ -132,9 +149,9 @@ export default function CheckIn() {
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="#" variant="body2">
+                {/* <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
-                </Link>
+                </Link> */}
               </Grid>
             </Grid>
           </form>

@@ -17,6 +17,7 @@ function App() {
         "password": password,
       }).catch((e) => {
         console.log(e.response)
+        alert(e.response.data);
         return { status: e.response.status, error: e.response.data.error }//Error example
       })
       console.log("after login request")
@@ -46,7 +47,7 @@ function App() {
         console.log(e.response)
         return { status: e.response.status, error: e.response.data.error }//Error example
       })
-      if(result.status==200){
+      if(result.status===200){
         console.log("login ok")
         localStorage.setItem("user", JSON.stringify(result.data))
        
