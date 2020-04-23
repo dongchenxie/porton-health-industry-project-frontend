@@ -17,7 +17,7 @@ function App() {
         "password": password,
       }).catch((e) => {
         console.log(e.response)
-        return { status: e.response.status, error: e.response.data.error }//Error example
+        return { error: e }//Error example
       })
       console.log("after login request")
       if (result.status === 200) {
@@ -40,21 +40,21 @@ function App() {
       })
     },
     readToken:async function(currentSetAuthState){
+      console.log("hello world")
       console.log(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
       let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
       .catch((e) => {
-        console.log(e.response)
-        return { status: e.response.status, error: e.response.data.error }//Error example
+        console.log( e.response)
+        return { error: e }//Error example
       })
       if(result.status==200){
         console.log("login ok")
         localStorage.setItem("user", JSON.stringify(result.data))
        
-       
         currentSetAuthState((prev) => {
           return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
         })
-        console.log(authState)
+        console.log("test:", authState)
         return { status: 200}
       }else{
         return this.signOut()
@@ -67,11 +67,12 @@ function App() {
           method: "get",
           url: `${baseURL}posts`,
           headers: {
-            "auth-token":localStorage.getItem("token")
+            "auth-token":localStorage.getItem("token"),
+            'Access-Control-Allow-Origin': '*'
           }
         }
       ).catch((e) => 
-        { return { status: e.response.status, error: e.response.data.error }
+        { return {error: e}
       })
       if (result.status === 200) {
         return { status: 200, data: result.data };
@@ -85,7 +86,8 @@ function App() {
         method: "get",
         url: `${baseURL}users`,
         headers: {
-          "auth-token":localStorage.getItem("token")
+          "auth-token":localStorage.getItem("token"),
+          'Access-Control-Allow-Origin': '*'
         }
       }
     ).catch((e) => 
@@ -102,7 +104,8 @@ function App() {
         method: "get",
         url: `${baseURL}user/${param}`,
         headers: {
-          "auth-token":localStorage.getItem("token")
+          "auth-token":localStorage.getItem("token"),
+          'Access-Control-Allow-Origin': '*'
         }
       }
     ).catch((e) => 

@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 
 //material-ui components: 
-import AuthContext from "../data/AuthContext"
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,7 +16,6 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-
 import Menu from '@material-ui/core/Menu';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
@@ -28,12 +26,14 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 
 //custom components:
+import AuthContext from "../data/AuthContext"
 import PrivateRoute from '../component/middleware/PrivateRoute';
 import LoginPage from '../component/pages/Login';
 import NotFoundPage from '../component/pages/NotFoundPage';
 import UserList from '../component/pages/systemAdmin/UserList';
 import UserDetail from '../component/pages/systemAdmin/User';
 import AuthAPI from "../data/AuthContext"
+import dataAccessService from '../App'
 // import LoginWidget from '../component/widgets/loginWidget'
 // import RegisterWidget from '../component/widgets/registerWidget'
 
@@ -104,14 +104,17 @@ export default function AdminRouter(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  
   const open = Boolean(anchorEl);
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
       authContext.setAuthState({
         isAuthenticated: true,
         token: localStorage.getItem('token')
-
       })
+      console.log( "TEST", authContext.API.readToken(authContext).then(function(result){
+        return result
+      }))
     } else {
       console.log("here")
       authContext.setAuthState({
