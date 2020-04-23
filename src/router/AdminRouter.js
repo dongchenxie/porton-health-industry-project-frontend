@@ -127,7 +127,7 @@ export default function AdminRouter(props) {
          setRoll(result.role)
       })
     } else {
-      console.log("here")
+      setRoll(false)
       authContext.setAuthState({
         isAuthenticated: false,
         token: "123123"
@@ -231,7 +231,13 @@ export default function AdminRouter(props) {
 
   return (
     <Router>
-      {console.log(role)}
+      { role === false ?
+        <div> <span>Error: you do not have permission to view this feature. Please log in.</span>
+        <Link to={`/login`} style={{textDecoration: 'none', color: 'inherit'}} onClick={handleSignOut}>
+        Return.
+        </Link>  
+      </div> 
+      : 
       <div className={classes.root}>
         <CssBaseline />
         <AppBar position="fixed" className={classes.appBar}>
@@ -356,6 +362,7 @@ export default function AdminRouter(props) {
           </div>
         </main>
       </div>
+      }
     </Router>
   );
 }
