@@ -81,7 +81,7 @@ export default function CheckIn() {
           isAuthenticated: true,
         };
       });
-      history.replace(from);
+      history.push("/admin");
     } else {
       if (result.status === 400) {
         // alert("Issue with you Username or Password");
