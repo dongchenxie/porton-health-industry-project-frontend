@@ -38,11 +38,16 @@ import dataAccessService from '../App'
 //sys. admin components:
 import UserList from '../component/pages/systemAdmin/UserList';
 import UserDetail from '../component/pages/systemAdmin/User';
+import CreateAccount from '../component/pages/systemAdmin/CreateAccount'
 
 //client admin components:
 import ManageCheckin from '../component/pages/clientAdmin/ManageCheckin'
 import ModifyAppointment from '../component/pages/clientAdmin/ModifyAppointment'
 import SearchAppointment from '../component/pages/clientAdmin/SearchAppointment'
+
+//shared:
+import About from '../component/pages/shared/About'
+import Profile from '../component/pages/shared/Profile'
 
 //App styles:
 const drawerWidth = 240;
@@ -90,7 +95,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 export default function AdminRouter(props) {
   //get router path and url
   let { path, url } = useRouteMatch();
@@ -106,11 +110,9 @@ export default function AdminRouter(props) {
   const authContext = React.useContext(AuthContext)
   const [role, setRoll] = React.useState(null);
 
-
   //state indicate if the profile meun is opened
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
   
   const open = Boolean(anchorEl);
   React.useEffect(() => {
@@ -157,9 +159,7 @@ export default function AdminRouter(props) {
   };
 
 
-
   //sidebar nav component:
-  //TODO: conditionally render account creation/list for systemadmin ONLY
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -211,9 +211,13 @@ export default function AdminRouter(props) {
         </ListItem >
       </Link>  
       
+      <Link to={`${url}/profile`} style={{textDecoration: 'none', color: 'inherit'}}>
+        
+        {/* WHAT IS PURPOSE OF THIS FUNCTION? */}
         <ListItem button onClick={handleProfileClose}>
           <ListItemText primary="Profile" />
         </ListItem >
+      </Link>  
 
         <ListItem button onClick={handleSignOut}>
           <ListItemText primary="Sign Out" />
@@ -321,6 +325,9 @@ export default function AdminRouter(props) {
               <PrivateRoute path={`${path}/about`}>
                 <About />
               </PrivateRoute>
+              <Route path={`${path}/profile`}>
+                <Profile />
+              </Route>
               <Route path={`${path}/login`}>
                 <LoginPage />
               </Route>
@@ -354,33 +361,6 @@ export default function AdminRouter(props) {
 }
 
 
-//child components, renders results in the above <main className={classes.content}> tag
-
 function Home() {
   return <h2>Home (not secure data)</h2>;
-}
-
-function About() {
-  return <h2>About (secure data)</h2>;
-}
-
-// dummy/test components for demonstration: 
-// good idea to MOVE THESE TO THEIR OWN FILE, and import them as well.
-
-function CreateAccount() {
-  return(
-    <div><h2>click here to create new client account</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-      Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
-      Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 
-      Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-      Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. </p>
-    </div>
-  ) 
-}
-
-function profile() {
-  return(
-    <div><h2> your profile information:  </h2><p>lorem ipsem </p></div>
-  ) 
 }
