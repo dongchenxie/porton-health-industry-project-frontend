@@ -152,27 +152,42 @@ export default function AdminRouter(props) {
   };
 
 
+
   //sidebar nav component:
   //TODO: conditionally render account creation/list for systemadmin ONLY
   const drawer = (
     <div>
       <div className={classes.toolbar} />
+      { role === "CLIENT_ADMIN" ? 
       <List>
-      <Divider />
-        <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}> 
-          <ListItem button>
-            <ListItemText primary="Create Account" />
-          </ListItem >
-        </Link> 
-        
+        <Divider />
+          <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}> 
+            <ListItem button>
+              <ListItemText primary="client Create Account" />
+            </ListItem >
+          </Link> 
         <Link to={`${url}/users`} style={{textDecoration: 'none', color: 'inherit'}}>  
           <ListItem button>
-            <ListItemText primary="Account List" />
+            <ListItemText primary="client Account List" />
           </ListItem >
         </Link> 
       </List>
+    : 
+    <List>
       <Divider />
-
+      <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}> 
+        <ListItem button>
+          <ListItemText primary="Create Account" />
+        </ListItem >
+      </Link> 
+     <Link to={`${url}/users`} style={{textDecoration: 'none', color: 'inherit'}}>  
+      <ListItem button>
+        <ListItemText primary="Account List" />
+      </ListItem >
+    </Link> 
+    </List> 
+    } 
+      <Divider />
      <List>
       <Link to={`${url}`} style={{textDecoration: 'none', color: 'inherit'}}>   
         <ListItem button>
