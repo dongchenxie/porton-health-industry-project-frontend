@@ -28,7 +28,6 @@ import Hidden from '@material-ui/core/Hidden';
 //custom components:
 import AuthContext from "../data/AuthContext"
 import PrivateRoute from '../component/middleware/PrivateRoute';
-import LoginPage from '../component/pages/Login';
 import NotFoundPage from '../component/pages/NotFoundPage';
 import AuthAPI from "../data/AuthContext"
 import dataAccessService from '../App'
@@ -327,9 +326,6 @@ export default function AdminRouter(props) {
               </PrivateRoute>
               <Route path={`${path}/profile`}>
                 <Profile />
-              </Route>
-              <Route path={`${path}/login`}>
-                <LoginPage />
               </Route>
               <PrivateRoute path={`${path}/users/:id`}>
                 <UserDetail />
