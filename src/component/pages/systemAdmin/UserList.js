@@ -58,7 +58,6 @@ export default function Users() {
     }, [])
 
     const renderUsers = (usersArr) => {
-
         let userList =  usersArr.users.map((user, index) =>  ( 
             <Card className={classes.root} variant="outlined" key={index}>
             <CardContent>
@@ -76,7 +75,6 @@ export default function Users() {
             </CardActions>
           </Card>
          ))
-
          return(<div>{userList}</div>)
     }
 
