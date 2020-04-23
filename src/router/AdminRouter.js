@@ -30,16 +30,21 @@ import AuthContext from "../data/AuthContext"
 import PrivateRoute from '../component/middleware/PrivateRoute';
 import LoginPage from '../component/pages/Login';
 import NotFoundPage from '../component/pages/NotFoundPage';
-import UserList from '../component/pages/systemAdmin/UserList';
-import UserDetail from '../component/pages/systemAdmin/User';
 import AuthAPI from "../data/AuthContext"
 import dataAccessService from '../App'
 // import LoginWidget from '../component/widgets/loginWidget'
 // import RegisterWidget from '../component/widgets/registerWidget'
 
+//sys. admin components:
+import UserList from '../component/pages/systemAdmin/UserList';
+import UserDetail from '../component/pages/systemAdmin/User';
+
+//client admin components:
+import ManageCheckin from '../component/pages/clientAdmin/ManageCheckin'
+import ModifyAppointment from '../component/pages/clientAdmin/ModifyAppointment'
+import SearchAppointment from '../component/pages/clientAdmin/SearchAppointment'
 
 //App styles:
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -377,41 +382,5 @@ function CreateAccount() {
 function profile() {
   return(
     <div><h2> your profile information:  </h2><p>lorem ipsem </p></div>
-  ) 
-}
-
-function ManageCheckin() {
-  return(
-    <div><h2>click here to manage checkin</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-      Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
-      Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 
-      Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-      Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. </p>
-    </div>
-  ) 
-}
-
-function ModifyAppointment() {
-  return(
-    <div><h2>click here to modify account</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-      Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
-      Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 
-      Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-      Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. </p>
-    </div>
-  ) 
-}
-
-function SearchAppointment() {
-  return(
-    <div><h2>click here to search accounts</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-      Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
-      Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 
-      Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-      Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. </p>
-    </div>
   ) 
 }
