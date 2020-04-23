@@ -161,16 +161,21 @@ export default function AdminRouter(props) {
       { role === "CLIENT_ADMIN" ? 
       <List>
         <Divider />
-          <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}> 
+          <Link to={`${url}/modAppointment`} style={{textDecoration: 'none', color: 'inherit'}}> 
             <ListItem button>
-              <ListItemText primary="client Create Account" />
+              <ListItemText primary="Modify Appointment" />
             </ListItem >
           </Link> 
-        <Link to={`${url}/users`} style={{textDecoration: 'none', color: 'inherit'}}>  
+        <Link to={`${url}/manageCheckin`} style={{textDecoration: 'none', color: 'inherit'}}>  
           <ListItem button>
-            <ListItemText primary="client Account List" />
+            <ListItemText primary="Manage Online Check In" />
           </ListItem >
-        </Link> 
+       </Link> 
+       <Link to={`${url}/searchAppointments`} style={{textDecoration: 'none', color: 'inherit'}}>  
+          <ListItem button>
+            <ListItemText primary="Search Appointments" />
+          </ListItem >
+       </Link> 
       </List>
     : 
     <List>
@@ -323,6 +328,15 @@ export default function AdminRouter(props) {
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />
               </PrivateRoute>
+              <PrivateRoute path={`${path}/searchAppointments`}>
+                <SearchAppointment />
+              </PrivateRoute>
+              <PrivateRoute path={`${path}/manageCheckin`}>
+                <ManageCheckin />
+              </PrivateRoute>
+              <PrivateRoute path={`${path}/modAppointment`}>
+                <ModifyAppointment />
+              </PrivateRoute>
               <Route path="*">
                 <NotFoundPage />
               </Route>
@@ -363,5 +377,41 @@ function CreateAccount() {
 function profile() {
   return(
     <div><h2> your profile information:  </h2><p>lorem ipsem </p></div>
+  ) 
+}
+
+function ManageCheckin() {
+  return(
+    <div><h2>click here to manage checkin</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
+      Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 
+      Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
+      Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. </p>
+    </div>
+  ) 
+}
+
+function ModifyAppointment() {
+  return(
+    <div><h2>click here to modify account</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
+      Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 
+      Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
+      Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. </p>
+    </div>
+  ) 
+}
+
+function SearchAppointment() {
+  return(
+    <div><h2>click here to search accounts</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
+      Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 
+      Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
+      Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. </p>
+    </div>
   ) 
 }
