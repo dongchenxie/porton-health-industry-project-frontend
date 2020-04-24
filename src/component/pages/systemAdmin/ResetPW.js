@@ -61,13 +61,7 @@ export default function ResetPW() {
 
   let [password, setPassword] = React.useState("");
   const handlePasswordChange = (e) => {
-    if(password2 == password) {
         setPassword(e.target.value);
-        alert("Password change Success");
-    }else{
-        console.log("Password change failure");
-        alert("Password change Failure");
-    }
   };
 
   let { from } = location.state || { from: { pathname: "/" } };
@@ -91,6 +85,13 @@ export default function ResetPW() {
     //     console.log(result);
     //   }
     // }
+
+    if(password2 == password) {
+        alert("Password change Success");
+    }else{
+        alert("Password change Failure");
+    }
+
   };
 
   return (
@@ -142,11 +143,9 @@ export default function ResetPW() {
 
             <Button
               onClick={login}
-              //   type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              // className={classes.submit}
             >
               Reset Password
             </Button>
