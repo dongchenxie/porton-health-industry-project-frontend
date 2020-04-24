@@ -97,6 +97,23 @@ function App() {
       return result
     }
   },
+    putPasswordReset: async function (param) {
+    let result = await axios(
+      {
+        method: "post",
+        url: `${baseURL}user/passwordreset/${param}`,
+        headers: {
+          "auth-token":localStorage.getItem("token")
+        }
+      }
+    ).catch((e) => 
+      { return { error: e } })
+    if (result.status === 200) {
+      return { status: 200, data: result.data };
+    } else {
+      return result
+    }
+  },
   getIndivUser: async function (param) {
     let result = await axios(
       {
@@ -113,7 +130,7 @@ function App() {
     } else {
       return result
     }
-   }
+   },
   }
 
 

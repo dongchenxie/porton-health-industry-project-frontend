@@ -7,7 +7,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -58,30 +57,23 @@ export default function ResetPW() {
 
   let { from } = location.state || { from: { pathname: "/" } };
   let login = async () => {
-    // let result = await authContext.API.login(`${username}`, `${password}`);
-
-
-    // if (result.status === 200) {
-    //   localStorage.setItem("token", result.token);
-    //   authContext.setAuthState((prev) => {
-    //     return {
-    //       ...prev,
-    //       isAuthenticated: true,
-    //     };
-    //   });
-    //   history.replace(from);
-    // } else {
-    //   if (result.status === 400) {
-    //     console.log(result & "Issue with username or password");
-    //   } else {
-    //     console.log(result);
-    //   }
-    // }
+      //not sure of following line of code
+    let result = await authContext.API.putPasswordReset(`${username}`, `${password}`);
 
     if(password2 == password) {
-        alert("Password change Success");
+        if (data === undefined){
+          console.log("error")
+          setError("Error grabbing data from the server.")
+        } else if (data.data === undefined){
+          console.log("error")
+          setError("Error grabbing data from the server.")
+        } else {
+          setUser(data.data)
+          alert("Password change Success");
+        }
+        
     }else{
-        alert("Password change Failure please check form inputs");
+        alert("Password Failed please check inputs");
     }
 
   };
