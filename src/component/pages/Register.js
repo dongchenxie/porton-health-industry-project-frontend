@@ -1,5 +1,8 @@
 /* eslint-disable no-undef */
 import React from 'react';
+import {Formik} from 'formik';
+import * as Yup from 'yup'
+import Error from '../middleware/Error'
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -64,6 +67,30 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+//validations via yup, formik
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string()
+  .min(2, "Must be bigger than 1")
+  .max(255, "Must be shorter than 255")
+  .required("Must enter first name"),
+
+  lastName: Yup.string()
+  .min(2, "Must be bigger than 1")
+  .max(255, "Must be shorter than 255")
+  .required("Must enter last name"),
+
+  email: Yup.string()
+  .email("Must be a valid email address")
+  .min(5, "Must be more  than 5")
+  .max(255, "Must be shorter than 255")
+  .required("Must enter email address"),
+
+  password: Yup.string()
+ 
+  .min(6, "You must have atleast 6 characters for the password")
+  .required("Password needed")
+})
+
 export default function SignUp() {
   const classes = useStyles();
 
@@ -97,60 +124,7 @@ export default function SignUp() {
       Client_Admin: '',
     });
   
-    // const handleChange = (event) => {
-    //   const name = event.target.name;
-    //   let errors = this.state.errors
-    //   setState({
-    //     ...state,
-    //     [name]: event.target.value,
-    //   });
-    // };
-
-    handleChange = (event) => {
-      event.preventDefault();
-      const { name, value } = event.target;
-      let errors = this.state.errors;
-    
-      switch (name) {
-        case 'firstName': 
-          errors.firstName = value.length = "" &&
-            value.length < 1 && value.length > 255 && value.required !== true
-              ? 'Invalid Entry!'
-              : '';
-          break;
-
-          case 'lastName': 
-          errors.lastName = value.length = "" &&
-            value.length < 1 && value.length > 255 && value.required !== true
-              ? 'Invalid Entry!'
-              : '';
-              break
-
-        case 'email': 
-          errors.email = 
-            validEmailRegex.test(value)
-              ? ''
-              : 'Email is not valid!';
-          break;
-        case 'password': 
-          errors.password = value.length = "" &&
-            value.length < 6 && value.required !== true
-              ? 'Password must be 6 characters long!'
-              : '';
-          break;
-        default:
-          break;
-      }
-    
-      this.setState({errors, [name]: value}, ()=> {
-          console.log(errors)
-      })}
-    
-
-
-
-
-
+   
 
 
 
@@ -181,133 +155,188 @@ export default function SignUp() {
   
   
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-         Create A New Account
-        </Typography>
-        <form className={classes.form} noValidate>
-     
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                // value={email}
-                //  onChange={e => onChange(e)}
-              />
-            </Grid>
-            <Grid item xs={12} >
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </Grid>
-
-            <Grid item xs= {12} >
+          return (
+            <Container component="main" maxWidth="xs">
+              <CssBaseline />
+              <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+             
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                 Create A New Account
+                </Typography>
+                <Formik initialValues={{ 
+                  firstName : '',
+                   lastName : '',
+                    email: '',
+                     role: ''}}
+                  validationSchema={validationSchema}
+                  onSubmit={(values, {setSubmitting, resetForm}) => {
+                    setSubmitting(true)
+        
+                    setTimeout(() => {
+                      resetForm()
+                      setSubmitting(false)
+                    }, 500)
+                  }}>
+        
+                  
+                  {({
+                    values, 
+                  errors,
+                   touched,
+                    handleChange, 
+                    handleBlur, 
+                    handleSubmit,
+                     isSubmitting }) => (
+        
             
-            {/* <FormControl className={classes.formControl}> */}
-        <InputLabel htmlFor="role-native-simple">Role</InputLabel>
-        <Select
-          variant="outlined"
-                 required
-                 fullWidth
-          native
-          // eslint-disable-next-line no-undef
-          value={state.role}
-          // eslint-disable-next-line no-undef
-          onChange={handleChange}
-          inputProps={{
-            name: 'role',
-            id: 'role-native-simple',
-          }}
-        >
-          <option aria-label="None" value="{state.role}" />
-          <option value = "SYSTEM_ADMIN" >System Admin</option>
-          <option value = "CLIENT_ADMIN">Client Admin</option>
-          
-        </Select>
-      {/* </FormControl> */}
-      
-            </Grid>
-            
-          </Grid>
-          <Button
-           // eslint-disable-next-line no-undef
-           onClick={register}
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            // eslint-disable-next-line no-undef
-            className={classes.submit}
-          >
-            Create a New Account
-          </Button>
-          <Grid container justify="flex-end">
-            {/* <Grid item>
-              <Link href="#" variant="body2">
-                {"Already have an account? Sign in"}
-              </Link>
-            </Grid> */}
-          </Grid>
-        </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
-  );
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Porton Health Check-In Kiosk
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-  }
-}
+                <form className={classes.form} onSubmit={handleSubmit} noValidate>
+             
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        autoComplete="fname"
+                        name="firstName"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        type="text"
+                        id="firstName"
+                        
+                        label="First Name"
+                        autoFocus
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.firstName}
+                        className={touched.firstName && errors.firstName ? "has-error" : null}/>
+                        <Error touched={touched.firstName} message={errors.firstName}/>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="lastName"
+                        
+                        label="Last Name"
+                        name="lastName"
+                       
+                        autoComplete="lname"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.lastName}
+                        className={touched.lastName && errors.lastName ? "has-error" : null}
+                      />
+                       <Error touched={touched.firstName} message={errors.lastName}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        required 
+                        fullWidth
+                      
+                        id="email"
+                        
+                        label="Email Address"
+                        name="email"
+                        type = "email"
+                        //autoComplete="email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.email}
+                        className={touched.email && errors.email ? "has-error" : null}
+                       
+                        //  onChange={e => onChange(e)}
+                      />
+                       <Error touched={touched.firstName} message={errors.email}/>
+                    </Grid>
+                    <Grid item xs={12} >
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                      
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.password}
+                        className={touched.password && errors.password ? "has-error" : null}
+                      />
+                       <Error touched={touched.password} message={errors.password}/>
+                    </Grid>
+        
+                    <Grid item xs= {12} >
+                    
+                    {/* <FormControl className={classes.formControl}> */}
+                <InputLabel htmlFor="role-native-simple">Role</InputLabel>
+                <Select
+                  variant="outlined"
+                         required
+                         fullWidth
+                  native
+                  // eslint-disable-next-line no-undef
+                  value={state.role}
+                  // eslint-disable-next-line no-undef
+                  //onChange={handleChange}
+                  inputProps={{
+                    name: 'role',
+                    id: 'role-native-simple',
+                  }}
+                >
+                  <option aria-label="None" value="{state.role}" />
+                  <option value = "SYSTEM_ADMIN" >System Admin</option>
+                  <option value = "CLIENT_ADMIN">Client Admin</option>
+                  onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.role}
+                  
+                </Select>
+              {/* </FormControl> */}
+              
+                    </Grid>
+                    
+                  </Grid>
+                  <Button
+                   // eslint-disable-next-line no-undef
+                   //onClick={register}
+                    type="submit"
+                    disabled={isSubmitting}
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    // eslint-disable-next-line no-undef
+                    className={classes.submit}
+                  >
+                    Create a New Account
+                  </Button>
+                  <Grid container justify="flex-end">
+                   
+                  </Grid>
+                </form>
+                )}
+                </Formik>
+              </div>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+            </Container>
+          );
+        
+        function Copyright() {
+          return (
+            <Typography variant="body2" color="textSecondary" align="center">
+              {'Copyright © '}
+              <Link color="inherit" href="https://material-ui.com/">
+                Porton Health Check-In Kiosk
+              </Link>{' '}
+              {new Date().getFullYear()}
+              {'.'}
+            </Typography>
+          );
+          }
+        }
