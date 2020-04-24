@@ -88,7 +88,9 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
  
   .min(6, "You must have atleast 6 characters for the password")
-  .required("Password needed")
+  .required("Password needed"),
+
+  role: Yup.string().required("Choose the Role")
 })
 
 export default function SignUp() {
@@ -299,7 +301,7 @@ export default function SignUp() {
               {/* </FormControl> */}
               
                     </Grid>
-                    
+                    <Error touched={touched.role} message={errors.role}/>
                   </Grid>
                   <Button
                    // eslint-disable-next-line no-undef
