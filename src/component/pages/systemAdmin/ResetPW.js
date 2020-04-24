@@ -81,7 +81,7 @@ export default function ResetPW() {
     if(password2 == password) {
         alert("Password change Success");
     }else{
-        alert("Password change Failure");
+        alert("Password change Failure please check form inputs");
     }
 
   };
