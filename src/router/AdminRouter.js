@@ -28,18 +28,11 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 
 //custom components:
-<<<<<<< HEAD
-import PrivateRoute from '../component/middleware/PrivateRoute'
-import Register from '../component/pages/Register'
-import LoginPage from '../component/pages/Login'
-import NotFoundPage from '../component/pages/NotFoundPage'
-=======
 import PrivateRoute from '../component/middleware/PrivateRoute';
 import LoginPage from '../component/pages/Login';
 import NotFoundPage from '../component/pages/NotFoundPage';
 import UserList from '../component/pages/systemAdmin/UserList';
 import UserDetail from '../component/pages/systemAdmin/User';
->>>>>>> master
 import AuthAPI from "../data/AuthContext"
 // import LoginWidget from '../component/widgets/loginWidget'
 // import RegisterWidget from '../component/widgets/registerWidget'
@@ -335,28 +328,8 @@ function About() {
   return <h2>About (secure data)</h2>;
 }
 
-<<<<<<< HEAD
-  // function Register() {
-  //   return <h2>Register (secure data)</h2>;
-  // }
-
-function Users() {
-  const authContext = React.useContext(AuthContext)
-  React.useEffect(() => {
-    const start = async () => {
-      console.log(await authContext.API.getSecureData())
-    }
-    start()
-  }, [])
-  return <h2>Users (secure data)</h2>;
-}
-
-
-//dummy/test components for demonstration: 
-=======
 // dummy/test components for demonstration: 
 // good idea to MOVE THESE TO THEIR OWN FILE, and import them as well.
->>>>>>> master
 
 function CreateAccount() {
   return(

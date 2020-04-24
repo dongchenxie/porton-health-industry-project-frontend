@@ -23,11 +23,7 @@ function App() {
         alert(e.response.data);
         return { status: e.response.status, error: e.response.data.error }//Error example
       })
-<<<<<<< HEAD
-      console.log("after register request")
-=======
       console.log("after login request")
->>>>>>> master
       if (result.status === 200) {
         console.log(result.data.token);
         setAuthState((prev) => {
