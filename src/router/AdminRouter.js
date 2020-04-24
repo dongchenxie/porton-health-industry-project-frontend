@@ -33,7 +33,8 @@ import LoginPage from '../component/pages/Login';
 import NotFoundPage from '../component/pages/NotFoundPage';
 import UserList from '../component/pages/systemAdmin/UserList';
 import UserDetail from '../component/pages/systemAdmin/User';
-import AuthAPI from "../data/AuthContext"
+import AuthAPI from "../data/AuthContext";
+import ResetPW from "../component/pages/systemAdmin/ResetPW";
 // import LoginWidget from '../component/widgets/loginWidget'
 // import RegisterWidget from '../component/widgets/registerWidget'
 
@@ -305,6 +306,9 @@ export default function AdminRouter(props) {
               </PrivateRoute>
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />
+              </PrivateRoute>
+              <PrivateRoute path={`${path}/ResetPW`}>
+                <ResetPW />
               </PrivateRoute>
               <Route path="*">
                 <NotFoundPage />
