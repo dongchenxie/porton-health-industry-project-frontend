@@ -20,9 +20,14 @@ function App() {
         "role" : role
       }).catch((e) => {
         console.log(e.response)
+        alert(e.response.data);
         return { status: e.response.status, error: e.response.data.error }//Error example
       })
+<<<<<<< HEAD
       console.log("after register request")
+=======
+      console.log("after login request")
+>>>>>>> master
       if (result.status === 200) {
         console.log(result.data.token);
         setAuthState((prev) => {
@@ -49,7 +54,7 @@ function App() {
         console.log(e.response)
         return { status: e.response.status, error: e.response.data.error }//Error example
       })
-      if(result.status==200){
+      if(result.status===200){
         console.log("login ok")
         localStorage.setItem("user", JSON.stringify(result.data))
        
@@ -76,13 +81,49 @@ function App() {
       ).catch((e) => 
         { return { status: e.response.status, error: e.response.data.error }
       })
-      if (result.status == 200) {
+      if (result.status === 200) {
         return { status: 200, data: result.data };
       } else {
         return result
       }
+    },
+  getUsers: async function () {
+    let result = await axios(
+      {
+        method: "get",
+        url: `${baseURL}users`,
+        headers: {
+          "auth-token":localStorage.getItem("token")
+        }
+      }
+    ).catch((e) => 
+      { return { error: e }} )
+    if (result.status === 200) {
+      return { status: 200, data: result.data };
+    } else {
+      return result
     }
+  },
+  getIndivUser: async function (param) {
+    let result = await axios(
+      {
+        method: "get",
+        url: `${baseURL}user/${param}`,
+        headers: {
+          "auth-token":localStorage.getItem("token")
+        }
+      }
+    ).catch((e) => 
+      { return { error: e } })
+    if (result.status === 200) {
+      return { status: 200, data: result.data };
+    } else {
+      return result
+    }
+   }
   }
+
+
   //The state 
   const [authState, setAuthState] = React.useState({ isAuthenticated: false, token: null })
 
