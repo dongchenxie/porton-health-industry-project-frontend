@@ -33,8 +33,8 @@ import LoginPage from '../component/pages/Login';
 import NotFoundPage from '../component/pages/NotFoundPage';
 import UserList from '../component/pages/systemAdmin/UserList';
 import UserDetail from '../component/pages/systemAdmin/User';
-import AuthAPI from "../data/AuthContext";
-import ResetPW from "../component/pages/systemAdmin/ResetPW";
+import AuthAPI from '../data/AuthContext';
+import ResetPW from '../component/pages/systemAdmin/ResetPW';
 // import LoginWidget from '../component/widgets/loginWidget'
 // import RegisterWidget from '../component/widgets/registerWidget'
 
@@ -166,6 +166,12 @@ export default function AdminRouter(props) {
             <ListItemText primary="Account List" />
           </ListItem >
         </Link> 
+
+                <Link to={`${url}/resetPW`} style={{textDecoration: 'none', color: 'inherit'}}>  
+          <ListItem button>
+            <ListItemText primary="Reset Password" />
+          </ListItem >
+        </Link> 
       </List>
       <Divider />
 
@@ -189,6 +195,7 @@ export default function AdminRouter(props) {
         <ListItem button onClick={handleSignOut}>
           <ListItemText primary="Sign Out" />
         </ListItem >
+
       </List>
     </div>
   );
@@ -307,7 +314,7 @@ export default function AdminRouter(props) {
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />
               </PrivateRoute>
-              <PrivateRoute path={`${path}/ResetPW`}>
+              <PrivateRoute path={`${path}/resetPW`}>
                 <ResetPW />
               </PrivateRoute>
               <Route path="*">

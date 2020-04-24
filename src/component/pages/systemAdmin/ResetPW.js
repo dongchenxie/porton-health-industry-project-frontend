@@ -1,4 +1,7 @@
 import React from "react";
+import AuthContext from "../../../data/AuthContext"
+import {  BrowserRouter as Router,  Route,  Link,  useHistory,  useLocation,} from "react-router-dom";
+
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -9,15 +12,8 @@ import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
-import AuthContext from "../../data/AuthContext";
-import AuthAPI from "../../data/DataAccessService";
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
@@ -67,34 +63,34 @@ export default function ResetPW() {
   const handlePasswordChange = (e) => {
     if(password2 == password) {
         setPassword(e.target.value);
+        alert("Password change Success");
     }else{
-        console.log("Password change failed");
-        alert("Password change failed");
+        console.log("Password change failure");
+        alert("Password change Failure");
     }
   };
 
   let { from } = location.state || { from: { pathname: "/" } };
   let login = async () => {
-    let result = await authContext.API.login(`${username}`, `${password}`);
-    //testing purpose "results var"
-    // let result = await authContext.API.login("xxx@x.com", "password");
+    // let result = await authContext.API.login(`${username}`, `${password}`);
 
-    if (result.status === 200) {
-      localStorage.setItem("token", result.token);
-      authContext.setAuthState((prev) => {
-        return {
-          ...prev,
-          isAuthenticated: true,
-        };
-      });
-      history.replace(from);
-    } else {
-      if (result.status === 400) {
-        console.log(result & "Issue with username or password");
-      } else {
-        console.log(result);
-      }
-    }
+
+    // if (result.status === 200) {
+    //   localStorage.setItem("token", result.token);
+    //   authContext.setAuthState((prev) => {
+    //     return {
+    //       ...prev,
+    //       isAuthenticated: true,
+    //     };
+    //   });
+    //   history.replace(from);
+    // } else {
+    //   if (result.status === 400) {
+    //     console.log(result & "Issue with username or password");
+    //   } else {
+    //     console.log(result);
+    //   }
+    // }
   };
 
   return (
@@ -152,7 +148,7 @@ export default function ResetPW() {
               color="primary"
               // className={classes.submit}
             >
-              Sign In
+              Reset Password
             </Button>
           </form>
         </div>
@@ -175,3 +171,5 @@ function Copyright() {
     </Typography>
   );
 }
+
+
