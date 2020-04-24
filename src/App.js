@@ -15,17 +15,18 @@ function App() {
       console.log("login")
       let result = await axios.post(`${baseURL}user/login`, {
         "email": username,
-        "password": password,
+        "password": password
       }).catch((e) => {
         console.log(e.response)
         return { error: e }//Error example
       })
       console.log("after login request")
       if (result.status === 200) {
+        localStorage.setItem("token", result.token)
         setAuthState((prev) => {
           return { ...prev, isAuthenticated: true, token: result.data.token }
         })
-        localStorage.setItem("token", result.token)
+        console.log("success with calling login API")
         return { status: 200, token: result.data.token };//Success example
       } else {
         return result
@@ -47,10 +48,8 @@ function App() {
       //   return { error: e }//Error example
       // })
       if(result.status === 200){
-
         console.log("login ok")
         localStorage.setItem("user", JSON.stringify(result.data))
-       
         // setAuthState.currentSetAuthState((prev) => {
         //   return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
         // })

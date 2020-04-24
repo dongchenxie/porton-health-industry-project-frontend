@@ -74,15 +74,14 @@ export default function CheckIn() {
     let result = await authContext.API.login(`${username}`, `${password}`);
     //testing purpose "results var"
     // let result = await authContext.API.login("xxx@x.com", "password");
-    
     if (result.status === 200) {
-      localStorage.setItem("token", result.token);
-      authContext.setAuthState((prev) => {
-        return {
-          ...prev,
-          isAuthenticated: true,
-        };
-      });
+       localStorage.setItem("token", result.token);
+       authContext.setAuthState((prev) => {
+         return {
+           ...prev,
+           isAuthenticated: true,
+         };
+       })
       history.push("/admin");
     } else {
       if (result.status === 400) {
@@ -94,7 +93,6 @@ export default function CheckIn() {
         setError("Incorrect user name or password. Please try again.")
         console.log(result);
       }
-      
     }
   };
 
