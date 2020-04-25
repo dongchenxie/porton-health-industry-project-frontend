@@ -10,6 +10,11 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+import Popover from '@material-ui/core/Popover';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import Box from '@material-ui/core/Box';
+import PasswordResetPage from './resetPW';
+
 const useStyles = makeStyles({
     root: {
       minWidth: 275,
@@ -65,9 +70,34 @@ export default function Users() {
               </Typography>
             </CardContent>
             <CardActions>
+              <PopupState variant="popover" popupId="demo-popup-popover">
+      {(popupState) => (
+        <div>
+          <Button variant="contained" color="primary" {...bindTrigger(popupState)}>
+            Reset Password
+          </Button>
+          <Popover
+            {...bindPopover(popupState)}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+          >
+            <Box p={2}>
+<PasswordResetPage />
+            </Box>
+          </Popover>
+        </div>
+      )}
+    </PopupState>
             <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit'}}> 
               <Button size="small">Learn More</Button>
             </Link>
+            
             </CardActions>
           </Card>
          ))
