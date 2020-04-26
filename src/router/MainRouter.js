@@ -1,6 +1,8 @@
 import React from 'react';
 import AdminRouter from './AdminRouter'
 import CheckInPage from "../component/pages/CheckIn"
+import LoginPage from '../component/pages/Login';
+
 import {
     BrowserRouter as Router,
     Switch,
@@ -18,6 +20,9 @@ function MainRouter() {
                     <Route exact path="/">
                         <CheckInPage />
                     </Route>
+                    <Route path={`/login`}>
+                        <LoginPage />
+                   </Route>
                     <Route path="/admin">
                         <AdminRouter />
                     </Route>

@@ -45,15 +45,19 @@ export default function Users() {
           console.log("error")
           setError("Error grabbing data from the server.")
         } else {
-          setUsers(data.data)
+          authContext.API.readToken(authContext.authState).then(function(result){
+            if (result.role !== 'SYSTEM_ADMIN'){
+             return setError("404. Please try again.")
+            } else {
+              setUsers(data.data)
+            }
+          })
         }
       }
       start()
     }, [])
 
     const renderUsers = (usersArr) => {
-
-
         let userList =  usersArr.users.map((user, index) =>  ( 
             <Card className={classes.root} variant="outlined" key={index}>
             <CardContent>
@@ -71,7 +75,6 @@ export default function Users() {
             </CardActions>
           </Card>
          ))
-
          return(<div>{userList}</div>)
     }
 

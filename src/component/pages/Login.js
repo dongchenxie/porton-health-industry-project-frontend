@@ -1,5 +1,16 @@
 import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 
+import AuthContext from "../../data/AuthContext";
+import AuthAPI from "../../data/DataAccessService";
+
+//material-ui components: 
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -10,15 +21,7 @@ import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
-import AuthContext from "../../data/AuthContext";
-import AuthAPI from "../../data/DataAccessService";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
@@ -47,14 +50,17 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
+
+
 export default function CheckIn() {
   const classes = useStyles();
   let history = useHistory();
   let location = useLocation();
   const authContext = React.useContext(AuthContext);
-  let [username, setUsername] = React.useState("");
-  const handleTextChange = (e) => {
+  const [username, setUsername] = React.useState("");
+  const [error, setError] = React.useState(null);
 
+  const handleTextChange = (e) => {
     setUsername(e.target.value);
   };
   let [password, setPassword] = React.useState("");
@@ -63,41 +69,33 @@ export default function CheckIn() {
     setPassword(e.target.value);
   };
   let { from } = location.state || { from: { pathname: "/" } };
-  let login = async () => {
+
+  const login = async () => {
     let result = await authContext.API.login(`${username}`, `${password}`);
     //testing purpose "results var"
     // let result = await authContext.API.login("xxx@x.com", "password");
-    
     if (result.status === 200) {
-      localStorage.setItem("token", result.token);
-      authContext.setAuthState((prev) => {
-        return {
-          ...prev,
-          isAuthenticated: true,
-        };
-      });
-      history.replace(from);
+       localStorage.setItem("token", result.token);
+       authContext.setAuthState((prev) => {
+         return {
+           ...prev,
+           isAuthenticated: true,
+         };
+       })
+      history.push("/admin");
     } else {
       if (result.status === 400) {
         // alert("Issue with you Username or Password");
         //Error alerts located in App.js
         console.log(result & "Issue with username or password");
-      }else{
+        setError("Incorrect user name or password. Please try again.")
+      } else {
+        setError("Incorrect user name or password. Please try again.")
         console.log(result);
       }
-      
     }
-
-
-
-
-
-
-
   };
 
-
-  
   return (
     <div>
       <Container component="main" maxWidth="xs">
@@ -155,6 +153,7 @@ export default function CheckIn() {
               </Grid>
             </Grid>
           </form>
+          {error ? error : ""}
         </div>
         <Box mt={8}>
           <Copyright />
@@ -163,6 +162,7 @@ export default function CheckIn() {
     </div>
   );
 }
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
