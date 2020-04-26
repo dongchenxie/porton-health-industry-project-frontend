@@ -52,17 +52,20 @@ export default function PasswordReset(userId) {
 
   let { from } = location.state || { from: { pathname: "/" } };
   let updatePass = async () => {
-    if (password === password2) {
+    if (password === password2 && password.length >= 6) {
       let result = await authContext.API.resetUserPassword(userId.user, password);
-      if (result === undefined){
-        console.log("error with password server endpoint")
-        alert("Error grabbing data from the server.")
-      } else {
+       if (result.status === 200){
+        console.log(result)
         alert("Password change Success");
-      }
-    } else {
-      alert("Passwords do not match. Please try again.")
-    }
+       } else if(result.status === 400) {
+        console.log(result)
+        alert("Server error")
+       }
+     } else if (password.length < 6) {
+      alert("Password must be at least 6 charecters long. Please try again.")
+     } else if (password !== password2) {
+       alert("Passwords do not match, please try again.")
+     }
   };
 
   return (

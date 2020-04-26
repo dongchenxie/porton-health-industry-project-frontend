@@ -65,8 +65,8 @@ export default function Users() {
                 Account created: {user.date}
               </Typography>
             </CardContent>
-            <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit'}}> 
-              <Button size="small">Learn More</Button>
+            <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit', backgroundColor: 'rgb(104, 251, 234)', borderRadius: '4%'}}> 
+              <Button size="small">Client Information and Settings</Button>
             </Link>
             </Card>
          ))
