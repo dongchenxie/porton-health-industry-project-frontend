@@ -4,9 +4,17 @@ import { useLocation } from 'react-router';
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+
 import Typography from '@material-ui/core/Typography';
+import CardActions from '@material-ui/core/CardActions';
+import Popover from '@material-ui/core/Popover';
+
+import Box from '@material-ui/core/Box';
+import PasswordResetPage from './resetPW';
 
 const useStyles = makeStyles({
     root: {
@@ -53,7 +61,11 @@ export default function UserDetail() {
          return(<div><Card className={classes.root} variant="outlined">
          <CardContent>
            <Typography variant="h5" component="h2">
-               {user.name}
+               {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.name}`}
+           </Typography>
+           <br />
+           <Typography variant="h5" component="h2">
+             {user.role ? `${user.role} Account` : "" }
            </Typography>
            <br />
            <Typography variant="h5" component="h2">
@@ -66,8 +78,34 @@ export default function UserDetail() {
            <Typography variant="body2" component="p">
                 {user.isEnabled ? "Clinic status currently open.": "Clinic status currently closed." }
            </Typography>
-         </CardContent>
+           </CardContent>
 
+           <CardActions>
+              <PopupState variant="popover" popupId="demo-popup-popover">
+      {(popupState) => (
+        <div>
+          <Button variant="contained" color="primary" {...bindTrigger(popupState)}>
+            Reset Password
+          </Button>
+          <Popover
+            {...bindPopover(popupState)}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+           >
+            <Box p={2}>
+            <PasswordResetPage />
+            </Box>
+          </Popover>
+        </div>
+      )}
+    </PopupState>
+         </CardActions>
        </Card></div>)
     }
 
