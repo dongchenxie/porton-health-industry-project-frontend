@@ -96,7 +96,6 @@ export default function PasswordReset(userId) {
               id="password2"
               onChange={handlePasswordChange2}
             />
-
             <Button
               onClick={updatePass}
               fullWidth

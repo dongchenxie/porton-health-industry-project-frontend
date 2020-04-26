@@ -59,7 +59,7 @@ export default function Users() {
                   {user.email}
               </Typography>
               <Typography variant="h5" component="h2">
-                  {user.role}
+                  {user.role !== "none" ? user.role : ""}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
                 Account created: {user.date}
