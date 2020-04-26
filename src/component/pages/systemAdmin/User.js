@@ -57,8 +57,9 @@ export default function UserDetail() {
       start()
     }, [])
 
-    const renderUser = (user) => {
-         return(<div><Card className={classes.root} variant="outlined">
+    const renderUser = () => {
+         return( 
+         <div> <Card className={classes.root} variant="outlined">
          <CardContent>
            <Typography variant="h5" component="h2">
                {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.name}`}
@@ -79,9 +80,8 @@ export default function UserDetail() {
                 {user.isEnabled ? "Clinic status currently open.": "Clinic status currently closed." }
            </Typography>
            </CardContent>
-
            <CardActions>
-              <PopupState variant="popover" popupId="demo-popup-popover">
+      <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <div>
           <Button variant="contained" color="primary" {...bindTrigger(popupState)}>
@@ -99,7 +99,7 @@ export default function UserDetail() {
             }}
            >
             <Box p={2}>
-            <PasswordResetPage />
+            <PasswordResetPage user={user["_id"]} />
             </Box>
           </Popover>
         </div>

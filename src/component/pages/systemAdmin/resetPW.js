@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-export default function PasswordReset() {
+export default function PasswordReset(userId) {
   const classes = useStyles();
   let history = useHistory();
   let location = useLocation();
