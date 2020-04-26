@@ -32,33 +32,36 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
+
 export default function PasswordReset(userId) {
   const classes = useStyles();
   let history = useHistory();
   let location = useLocation();
   const authContext = React.useContext(AuthContext);
 
+  let [password, setPassword] = React.useState("");
   let [password2, setPassword2] = React.useState("");
+
   const handlePasswordChange2 = (e) => {
     setPassword2(e.target.value);
   };
-
-  let [password, setPassword] = React.useState("");
+  
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
   let { from } = location.state || { from: { pathname: "/" } };
-  let login = async () => {
-    //not sure of following line of code
-    let result = await authContext.API.putPasswordReset(
-      `${password}`
-    );
-
-    if (password == password2) {
-      alert("Password change Success");
+  let updatePass = async () => {
+    if (password === password2) {
+      let result = await authContext.API.resetUserPassword(userId.user, password);
+      if (result === undefined){
+        console.log("error with password server endpoint")
+        alert("Error grabbing data from the server.")
+      } else {
+        alert("Password change Success");
+      }
     } else {
-      alert("Password Failed please check inputs");
+      alert("Passwords do not match. Please try again.")
     }
   };
 
@@ -92,7 +95,7 @@ export default function PasswordReset(userId) {
             />
 
             <Button
-              onClick={login}
+              onClick={updatePass}
               fullWidth
               variant="contained"
               color="primary"

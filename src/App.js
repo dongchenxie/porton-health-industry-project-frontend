@@ -113,6 +113,26 @@ function App() {
     } else {
       return result
     }
+   },
+   resetUserPassword: async function (id, password) {
+    let result = await axios(
+      {
+        method: "put",
+        url: `${baseURL}user/passwordReset/${id}`,
+        headers: {
+          "auth-token":localStorage.getItem("token")
+        }, 
+        body: {
+          password: password
+        }
+      }
+    ).catch((e) => 
+      { return { error: e } })
+    if (result.status === 200) {
+      return { status: 200, data: result.data };
+    } else {
+      return result
+    }
    }
   }
 
