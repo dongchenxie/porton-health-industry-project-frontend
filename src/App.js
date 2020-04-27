@@ -5,31 +5,29 @@ import './App.css';
 import AuthContext from "./data/AuthContext"
 import axios from 'axios'
 const baseURL = "http://localhost:3333/api/"
+const corsProxy = "http://localhost:8010/proxy/"
 function App() {
   /*
     return upon request success {status:200,...data}
     return upon request failure {status:???,error:[ERROR MESSAGE]}
   */
   const dataAccessService = {
-    register: async function ( name ,email, password, role) {// API call without the token
-      console.log("register")
-      let result = await axios.post(`${baseURL}user/register`, {
-        "name" : name,
-        "email": email,
-        "password": password,
-        "role" : role
+    login: async function (username, password) {// API call without the token
+      console.log("login")
+      let result = await axios.post(`${baseURL}user/login`, {
+        "email": username,
+        "password": password
       }).catch((e) => {
         console.log(e.response)
-        alert(e.response.data);
-        return { status: e.response.status, error: e.response.data.error }//Error example
+        return { error: e }//Error example
       })
       console.log("after login request")
       if (result.status === 200) {
-        console.log(result.data.token);
+        localStorage.setItem("token", result.token)
         setAuthState((prev) => {
           return { ...prev, isAuthenticated: true, token: result.data.token }
         })
-        localStorage.setItem("token", result.token)
+        console.log("success with calling login API")
         return { status: 200, token: result.data.token };//Success example
       } else {
         return result
@@ -43,23 +41,21 @@ function App() {
         return { ...prev, isAuthenticated: false, token: null }
       })
     },
-    readToken:async function(currentSetAuthState){
-      console.log(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
-      let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
-      .catch((e) => {
-        console.log(e.response)
-        return { status: e.response.status, error: e.response.data.error }//Error example
-      })
-      if(result.status===200){
+    readToken: async function(currentSetAuthState){
+      console.log( `${baseURL}user/readToken/${localStorage.getItem('token')}`)
+      let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)     
+      // .catch((e) => {
+      //   console.log( "error reading token: ", 
+      //   return { error: e }//Error example
+      // })
+      if(result.status === 200){
         console.log("login ok")
         localStorage.setItem("user", JSON.stringify(result.data))
-       
-       
-        currentSetAuthState((prev) => {
-          return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
-        })
-        console.log(authState)
-        return { status: 200}
+        // setAuthState.currentSetAuthState((prev) => {
+        //   return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
+        // })
+        // return { status: 200}
+        return result.data
       }else{
         return this.signOut()
       }
@@ -71,11 +67,12 @@ function App() {
           method: "get",
           url: `${baseURL}posts`,
           headers: {
-            "auth-token":localStorage.getItem("token")
+            "auth-token":localStorage.getItem("token"),
+            'Access-Control-Allow-Origin': '*'
           }
         }
       ).catch((e) => 
-        { return { status: e.response.status, error: e.response.data.error }
+        { return {error: e}
       })
       if (result.status === 200) {
         return { status: 200, data: result.data };
@@ -89,7 +86,8 @@ function App() {
         method: "get",
         url: `${baseURL}users`,
         headers: {
-          "auth-token":localStorage.getItem("token")
+          "auth-token":localStorage.getItem("token"),
+          'Access-Control-Allow-Origin': '*'
         }
       }
     ).catch((e) => 
@@ -106,7 +104,8 @@ function App() {
         method: "get",
         url: `${baseURL}user/${param}`,
         headers: {
-          "auth-token":localStorage.getItem("token")
+          "auth-token":localStorage.getItem("token"),
+          'Access-Control-Allow-Origin': '*'
         }
       }
     ).catch((e) => 
@@ -118,7 +117,6 @@ function App() {
     }
    }
   }
-
 
   //The state 
   const [authState, setAuthState] = React.useState({ isAuthenticated: false, token: null })

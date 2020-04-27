@@ -4,12 +4,12 @@ import {
   Switch,
   Route,
   Link,
+  useHistory,
   useParams,
   useRouteMatch
 } from "react-router-dom";
 
 //material-ui components: 
-import AuthContext from "../data/AuthContext"
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,7 +17,6 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-
 import Menu from '@material-ui/core/Menu';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
@@ -28,18 +27,29 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 
 //custom components:
+import AuthContext from "../data/AuthContext"
 import PrivateRoute from '../component/middleware/PrivateRoute';
-import LoginPage from '../component/pages/Login';
 import NotFoundPage from '../component/pages/NotFoundPage';
-import UserList from '../component/pages/systemAdmin/UserList';
-import UserDetail from '../component/pages/systemAdmin/User';
 import AuthAPI from "../data/AuthContext"
+import dataAccessService from '../App'
 // import LoginWidget from '../component/widgets/loginWidget'
 // import RegisterWidget from '../component/widgets/registerWidget'
 
+//sys. admin components:
+import UserList from '../component/pages/systemAdmin/UserList';
+import UserDetail from '../component/pages/systemAdmin/User';
+import CreateAccount from '../component/pages/systemAdmin/CreateAccount'
+
+//client admin components:
+import ManageCheckin from '../component/pages/clientAdmin/ManageCheckin'
+import ModifyAppointment from '../component/pages/clientAdmin/ModifyAppointment'
+import SearchAppointment from '../component/pages/clientAdmin/SearchAppointment'
+
+//shared:
+import About from '../component/pages/shared/About'
+import Profile from '../component/pages/shared/Profile'
 
 //App styles:
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -85,10 +95,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 export default function AdminRouter(props) {
   //get router path and url
   let { path, url } = useRouteMatch();
+  let history = useHistory()
+
 
   const { container } = props;
   const theme = useTheme();
@@ -99,29 +110,32 @@ export default function AdminRouter(props) {
   //state indicate if the user is authenticated
   const [auth, setAuth] = React.useState(true);
   const authContext = React.useContext(AuthContext)
+  const [role, setRoll] = React.useState(null);
 
   //state indicate if the profile meun is opened
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  
   const open = Boolean(anchorEl);
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
       authContext.setAuthState({
         isAuthenticated: true,
         token: localStorage.getItem('token')
-
+      })
+      authContext.API.readToken(authContext.authState).then(function(result){
+         setRoll(result.role)
       })
     } else {
-      console.log("here")
+      setRoll(false)
       authContext.setAuthState({
         isAuthenticated: false,
         token: "123123"
       })
     }
     
-    console.log(authContext.authState.token)
-    console.log(authContext.authState.isAuthenticated)
+    console.log("context token", authContext.authState.token)
+    console.log("authState:", authContext.authState.isAuthenticated)
   }, []);
   // const handleLoginChange = (event) => {
   //   authContext.setAuthState((prev)=>{
@@ -140,6 +154,7 @@ export default function AdminRouter(props) {
   const handleSignOut = () => {
     authContext.API.signOut()
     handleProfileClose()
+    history.push("/login")
   }
 
   const handleDrawerToggle = () => {
@@ -148,26 +163,44 @@ export default function AdminRouter(props) {
 
 
   //sidebar nav component:
-  //TODO: conditionally render account creation/list for systemadmin ONLY
   const drawer = (
     <div>
       <div className={classes.toolbar} />
+      { role === "CLIENT_ADMIN" ? 
       <List>
-      <Divider />
-        <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}> 
+        <Divider />
+          <Link to={`${url}/modAppointment`} style={{textDecoration: 'none', color: 'inherit'}}> 
+            <ListItem button>
+              <ListItemText primary="Modify Appointment" />
+            </ListItem >
+          </Link> 
+        <Link to={`${url}/manageCheckin`} style={{textDecoration: 'none', color: 'inherit'}}>  
           <ListItem button>
-            <ListItemText primary="Create Account" />
+            <ListItemText primary="Manage Online Check In" />
           </ListItem >
-        </Link> 
-        
-        <Link to={`${url}/users`} style={{textDecoration: 'none', color: 'inherit'}}>  
+       </Link> 
+       <Link to={`${url}/searchAppointments`} style={{textDecoration: 'none', color: 'inherit'}}>  
           <ListItem button>
-            <ListItemText primary="Account List" />
+            <ListItemText primary="Search Appointments" />
           </ListItem >
-        </Link> 
+       </Link> 
       </List>
+    : 
+    <List>
       <Divider />
-
+      <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}> 
+        <ListItem button>
+          <ListItemText primary="Create Account" />
+        </ListItem >
+      </Link> 
+     <Link to={`${url}/users`} style={{textDecoration: 'none', color: 'inherit'}}>  
+      <ListItem button>
+        <ListItemText primary="Account List" />
+      </ListItem >
+    </Link> 
+    </List> 
+    } 
+      <Divider />
      <List>
       <Link to={`${url}`} style={{textDecoration: 'none', color: 'inherit'}}>   
         <ListItem button>
@@ -181,9 +214,13 @@ export default function AdminRouter(props) {
         </ListItem >
       </Link>  
       
+      <Link to={`${url}/profile`} style={{textDecoration: 'none', color: 'inherit'}}>
+        
+        {/* WHAT IS PURPOSE OF THIS FUNCTION? */}
         <ListItem button onClick={handleProfileClose}>
           <ListItemText primary="Profile" />
         </ListItem >
+      </Link>  
 
         <ListItem button onClick={handleSignOut}>
           <ListItemText primary="Sign Out" />
@@ -192,9 +229,15 @@ export default function AdminRouter(props) {
     </div>
   );
 
-
   return (
     <Router>
+      { role === false ?
+        <div> <span>Error: you do not have permission to view this feature. Please log in.</span>
+        <Link to={`/login`} style={{textDecoration: 'none', color: 'inherit'}} onClick={handleSignOut}>
+        Return.
+        </Link>  
+      </div> 
+      : 
       <div className={classes.root}>
         <CssBaseline />
         <AppBar position="fixed" className={classes.appBar}>
@@ -284,9 +327,6 @@ export default function AdminRouter(props) {
         />
       </FormGroup> */}
 
-            {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-
             <Switch>
               <Route exact path={path}>
                 <Home />
@@ -294,8 +334,8 @@ export default function AdminRouter(props) {
               <PrivateRoute path={`${path}/about`}>
                 <About />
               </PrivateRoute>
-              <Route path={`${path}/login`}>
-                <LoginPage />
+              <Route path={`${path}/profile`}>
+                <Profile />
               </Route>
               <PrivateRoute path={`${path}/users/:id`}>
                 <UserDetail />
@@ -306,6 +346,15 @@ export default function AdminRouter(props) {
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />
               </PrivateRoute>
+              <PrivateRoute path={`${path}/searchAppointments`}>
+                <SearchAppointment />
+              </PrivateRoute>
+              <PrivateRoute path={`${path}/manageCheckin`}>
+                <ManageCheckin />
+              </PrivateRoute>
+              <PrivateRoute path={`${path}/modAppointment`}>
+                <ModifyAppointment />
+              </PrivateRoute>
               <Route path="*">
                 <NotFoundPage />
               </Route>
@@ -313,38 +362,12 @@ export default function AdminRouter(props) {
           </div>
         </main>
       </div>
+      }
     </Router>
   );
 }
 
 
-//child components, renders results in the above <main className={classes.content}> tag
-
 function Home() {
   return <h2>Home (not secure data)</h2>;
-}
-
-function About() {
-  return <h2>About (secure data)</h2>;
-}
-
-// dummy/test components for demonstration: 
-// good idea to MOVE THESE TO THEIR OWN FILE, and import them as well.
-
-function CreateAccount() {
-  return(
-    <div><h2>click here to create new client account</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-      Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
-      Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 
-      Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-      Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. </p>
-    </div>
-  ) 
-}
-
-function profile() {
-  return(
-    <div><h2> your profile information:  </h2><p>lorem ipsem </p></div>
-  ) 
 }

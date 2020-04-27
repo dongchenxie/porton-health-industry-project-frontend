@@ -43,7 +43,13 @@ export default function UserDetail() {
           console.log("error")
           setError("Error grabbing data from the server.")
         } else {
-          setUser(data.data)
+          authContext.API.readToken(authContext.authState).then(function(result){
+            if (result.role !== 'SYSTEM_ADMIN'){
+             return setError("404. Please try again.")
+            } else {
+              setUser(data.data)
+            }
+          })
         }
       }
       start()

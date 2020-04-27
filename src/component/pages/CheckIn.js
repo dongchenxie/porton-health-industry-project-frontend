@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useRouteMatch } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -49,6 +50,8 @@ export default function HorizontalLinearStepper() {
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
     const steps = getSteps();
+    let { url } = useRouteMatch();
+
 
     const isStepOptional = (step) => {
         return false;
@@ -164,6 +167,7 @@ export default function HorizontalLinearStepper() {
                     </Paper>
                     </Grid>
                     </Grid>
+                    <Link to={`${url}login`} style={{textDecoration: 'none', color: 'inherit'}}> Admins click here to log in. </Link> 
             </div>
 
         </Container>
