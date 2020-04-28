@@ -13,11 +13,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-text-mask": "^5.4.3",
-<<<<<<< HEAD
-    "yup": "^0.28.4"
-=======
     "material-ui-popup-state": "latest"
->>>>>>> master
   },
   "scripts": {
     "start": "react-scripts start",
