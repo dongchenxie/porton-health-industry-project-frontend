@@ -129,6 +129,8 @@ export default function Users() {
         return { name, role, email, action, id };
       }
 
+
+    //can call API and pass in page query here..
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
@@ -142,6 +144,10 @@ export default function Users() {
   //       <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit', backgroundColor: 'rgb(104, 251, 234)', borderRadius: '4%'}}> 
   //         <Button size="small">Client Information and Settings</Button>
   // }
+
+  const renderAction = (user) => {
+    return(<Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Client Information and Settings</Button></Link>)
+  }
 
     return(
         <div> 
@@ -166,14 +172,15 @@ export default function Users() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+            {users.users.map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                   {columns.map((column) => {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
+                        {column.id === 'action' ? renderAction(row) : value}
+                        {column.format ? column.format(value) : value}
                       </TableCell>
                     );
                   })}
@@ -184,13 +191,11 @@ export default function Users() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
         component="div"
+        rowsPerPageOptions={[]}
         count={users.length}
-        rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
       />
     </Paper>
         </div>
