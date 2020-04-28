@@ -76,7 +76,7 @@ export default function Users() {
     const [error, setError] = React.useState(null);
 
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(7);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     React.useEffect(() => {
       const start = async () => {
@@ -94,7 +94,7 @@ export default function Users() {
             } else {
               console.log("from home", data.data.users)
               setUsers(data.data)
-              parseUserNames(data.data.users)
+              // parseUserNames(data.data.users)
             }
           })
         }
@@ -119,7 +119,8 @@ export default function Users() {
     }
 
     const columns = [
-      { id: 'fullName', label: 'General Info', minWidth: 120 },
+      { id: 'firstName', label: 'First Name', minWidth: 120 },
+      { id: 'lastName', label: 'Last Name', minWidth: 120 },
       { id: 'role', label: 'Role', minWidth: 120 },
       { id: 'email', label: 'Email', minWidth: 140 },
       { id: 'action', label: 'Action', minWidth: 150 }]
@@ -147,7 +148,7 @@ export default function Users() {
             {console.log(users)}
             {console.log(userList)}
             {error !== null ? error : ""}
-            {users !== null && users !== undefined && userList !== null && userList !== undefined ? 
+            {users !== null && users !== undefined ? 
         <div>
         <Paper className={classes.root}>
       <TableContainer className={classes.container}>
@@ -165,7 +166,7 @@ export default function Users() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+            {users.users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                   {columns.map((column) => {
