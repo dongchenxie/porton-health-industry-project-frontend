@@ -18,8 +18,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 275,
       width: '100%',
@@ -36,35 +37,10 @@ const useStyles = makeStyles({
       marginBottom: 12,
     },
     container: {
-      maxHeight: 440,
+      marginTop: '2%',
+      maxHeight: '100%',
     },
-  });
-
-
-  //   {
-  //     id: 'population',
-  //     label: 'Population',
-  //     minWidth: 170,
-  //     align: 'right',
-  //     format: (value) => value.toLocaleString('en-US'),
-  //   },
-  //   {
-  //     id: 'size',
-  //     label: 'Size\u00a0(km\u00b2)',
-  //     minWidth: 170,
-  //     align: 'right',
-  //     format: (value) => value.toLocaleString('en-US'),
-  //   },
-  //   {
-  //     id: 'density',
-  //     label: 'Density',
-  //     minWidth: 170,
-  //     align: 'right',
-  //     format: (value) => value.toFixed(2),
-  //   },
-
-
-
+  }));
 
 export default function Users() {
     const classes = useStyles();
@@ -72,7 +48,6 @@ export default function Users() {
 
     const authContext = React.useContext(AuthContext)
     const [users, setUsers] = React.useState(null);
-    const [userList, setUserList] = React.useState(null);
     const [error, setError] = React.useState(null);
 
     const [page, setPage] = React.useState(0);
@@ -92,9 +67,7 @@ export default function Users() {
             if (result.role !== 'SYSTEM_ADMIN'){
              return setError("404. Please try again.")
             } else {
-              console.log("from home", data.data.users)
               setUsers(data.data)
-              // parseUserNames(data.data.users)
             }
           })
         }
@@ -129,43 +102,31 @@ export default function Users() {
         return { name, role, email, action, id };
       }
 
-
     //can call API and pass in page query here..
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
-  
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
-    };
-
-  //             {user.role !== "none" ? user.role : ""}
-  //       <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit', backgroundColor: 'rgb(104, 251, 234)', borderRadius: '4%'}}> 
-  //         <Button size="small">Client Information and Settings</Button>
-  // }
 
   const renderAction = (user) => {
     return(<Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Client Information and Settings</Button></Link>)
   }
 
+
     return(
-        <div> 
-            {console.log(users)}
-            {console.log(userList)}
+    <div> 
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
-        <div>
+      <div>
         <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead>
+          <TableHead className>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
+                <TableCell 
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }} >
+                  style={{ minWidth: column.minWidth, backgroundColor: 'black', color: 'white' }} >
                   {column.label}
                 </TableCell>
               ))}
@@ -180,7 +141,6 @@ export default function Users() {
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.id === 'action' ? renderAction(row) : value}
-                        {column.format ? column.format(value) : value}
                       </TableCell>
                     );
                   })}
@@ -197,9 +157,9 @@ export default function Users() {
         page={page}
         onChangePage={handleChangePage}
       />
-    </Paper>
-        </div>
-     : ""}
-       </div>
+      </Paper>
+    </div>
+           : ""}
+  </div>
     ) 
   }
