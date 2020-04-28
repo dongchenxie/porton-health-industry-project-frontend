@@ -9,8 +9,11 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+//new
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 275,
     },
@@ -25,7 +28,13 @@ const useStyles = makeStyles({
     pos: {
       marginBottom: 12,
     },
-  });
+    paper: {
+      padding: theme.spacing(1),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+  }));
+
 
 export default function Users() {
     const classes = useStyles();
@@ -57,35 +66,70 @@ export default function Users() {
       start()
     }, [])
 
-    const renderUsers = (usersArr) => {
-        let userList =  usersArr.users.map((user, index) =>  ( 
-            <Card className={classes.root} variant="outlined" key={index}>
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                  {user.email}
-              </Typography>
-              <Typography variant="h5" component="h2">
-                  {user.role !== "none" ? user.role : ""}
-              </Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                Account created: {user.date}
-              </Typography>
-            </CardContent>
-            <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit', backgroundColor: 'rgb(104, 251, 234)', borderRadius: '4%'}}> 
-              <Button size="small">Client Information and Settings</Button>
-            </Link>
-            </Card>
-         ))
-         return(<div>{userList}</div>)
-    }
+    // const renderUsers = (usersArr) => {
+    //     let userList =  usersArr.users.map((user, index) =>  ( 
+           
+    //      ))
+    //      return(<div>{userList}</div>)
+    // }
+
+  //   const renderUsers = (usersArr) => {
+  //     let userList =  usersArr.users.map((user, index) =>  ( 
+  //       <Card className={classes.root} variant="outlined" key={index}>
+  //       <CardContent>
+  //         <Typography variant="h5" component="h2">
+  //             {user.email}
+  //         </Typography>
+  //         <Typography variant="h5" component="h2">
+  //             {user.role !== "none" ? user.role : ""}
+  //         </Typography>
+  //         <Typography className={classes.pos} color="textSecondary">
+  //           Account created: {user.date}
+  //         </Typography>
+  //       </CardContent>
+  //       <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit', backgroundColor: 'rgb(104, 251, 234)', borderRadius: '4%'}}> 
+  //         <Button size="small">Client Information and Settings</Button>
+  //       </Link>
+  //       </Card>
+  //      ))
+  //      return(<div>{userList}</div>)
+  // }
+
+  function FormRow() {
+    return (
+      <React.Fragment>
+        <Grid item xs={4}>
+          <Paper className={classes.paper}>item</Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper}>item</Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper}>item</Paper>
+        </Grid>
+        
+      </React.Fragment>
+    );
+  }
 
     return(
         <div> 
-             <h2>User accounts:</h2>      
-        <div>
             {error !== null ? error : ""}
-            {users !== null && users !== undefined ? renderUsers(users) : ""}
-        </div>
+            {/* {users !== null && users !== undefined ? renderUsers(users) : ""} */}
+            <Grid container spacing={1}>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow />
+        </Grid>
+      </Grid>
        </div>
     ) 
   }
