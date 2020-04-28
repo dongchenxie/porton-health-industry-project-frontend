@@ -50,8 +50,8 @@ export default function Users() {
     const [users, setUsers] = React.useState(null);
     const [error, setError] = React.useState(null);
 
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    let [page, setPage] = React.useState(null);
+    const pageIndex = 1
 
     React.useEffect(() => {
       const start = async () => {
@@ -68,28 +68,13 @@ export default function Users() {
              return setError("404. Please try again.")
             } else {
               setUsers(data.data)
+              setPage(data.data.totalPages)
             }
           })
         }
       }
       start()
     }, [])
-
-    const parseUserNames = (users) => {
-      let localArr = []
-      let userParse = users.forEach(element => { 
-        console.log(element)
-        if (element.firstName && element.lastName){
-          element.fullName = element.firstName + element.lastName
-          localArr.push(element)
-        //can be taken away when old seedinfo removed
-        } else {
-          element.fullName = element.name
-          localArr.push(element)
-        }
-      });
-      setUserList(localArr)
-    }
 
     const columns = [
       { id: 'firstName', label: 'First Name', minWidth: 120 },
@@ -104,7 +89,11 @@ export default function Users() {
 
     //can call API and pass in page query here..
     const handleChangePage = (event, newPage) => {
-      setPage(newPage);
+      if (newPage >= page){
+        console.log(page)
+      } else {
+        setPage(page += 1);
+      }
     };
 
   const renderAction = (user) => {
@@ -114,6 +103,7 @@ export default function Users() {
 
     return(
     <div> 
+      {console.log("from state", users)}
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
       <div>
@@ -153,8 +143,8 @@ export default function Users() {
       <TablePagination
         component="div"
         rowsPerPageOptions={[]}
-        count={users.length}
-        page={page}
+        count={users.totalPages}
+        page={pageIndex}
         onChangePage={handleChangePage}
       />
       </Paper>
