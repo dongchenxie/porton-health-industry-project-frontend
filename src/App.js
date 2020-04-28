@@ -114,7 +114,21 @@ function App() {
     } else {
       return result
     }
-   }
+   },
+   resetUserPassword: async function (id, password) {
+    let result = await axios.put(`${baseURL}user/passwordReset/${id}`, {
+      password: password
+  })
+      .then(function (response) {
+        console.log(response)
+          return response
+      })
+      .catch(function (error) {
+        console.log(error)
+          return {error, status: 400 }
+      })
+      return result
+    }
   }
 
   //The state 

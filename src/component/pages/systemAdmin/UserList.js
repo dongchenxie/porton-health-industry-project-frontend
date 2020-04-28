@@ -5,10 +5,10 @@ import { BrowserRouter, Link, useRouteMatch } from "react-router-dom";
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
 
 const useStyles = makeStyles({
     root: {
@@ -64,16 +64,17 @@ export default function Users() {
               <Typography variant="h5" component="h2">
                   {user.email}
               </Typography>
+              <Typography variant="h5" component="h2">
+                  {user.role !== "none" ? user.role : ""}
+              </Typography>
               <Typography className={classes.pos} color="textSecondary">
                 Account created: {user.date}
               </Typography>
             </CardContent>
-            <CardActions>
-            <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit'}}> 
-              <Button size="small">Learn More</Button>
+            <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit', backgroundColor: 'rgb(104, 251, 234)', borderRadius: '4%'}}> 
+              <Button size="small">Client Information and Settings</Button>
             </Link>
-            </CardActions>
-          </Card>
+            </Card>
          ))
          return(<div>{userList}</div>)
     }
