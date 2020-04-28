@@ -111,6 +111,8 @@ export default function AdminRouter(props) {
   const [auth, setAuth] = React.useState(true);
   const authContext = React.useContext(AuthContext)
   const [role, setRoll] = React.useState(null);
+  const [username, setUserName] = React.useState(null);
+
 
   //state indicate if the profile meun is opened
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -125,6 +127,7 @@ export default function AdminRouter(props) {
       })
       authContext.API.readToken(authContext.authState).then(function(result){
          setRoll(result.role)
+        setUserName(`${result.firstName} ${result.lastName}`)
       })
     } else {
       setRoll(false)
@@ -249,6 +252,9 @@ export default function AdminRouter(props) {
             </IconButton>
             <Typography variant="h6" noWrap className={classes.title}>
               Porton Heath Admin Panel
+          </Typography>
+          <Typography variant="h6" noWrap className={classes.title}>
+              Hello {username}
           </Typography>
             {authContext.authState.isAuthenticated ? (
               <div>
