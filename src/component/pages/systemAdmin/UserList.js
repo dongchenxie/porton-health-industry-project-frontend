@@ -72,10 +72,11 @@ export default function Users() {
 
     const authContext = React.useContext(AuthContext)
     const [users, setUsers] = React.useState(null);
+    const [userList, setUserList] = React.useState(null);
     const [error, setError] = React.useState(null);
 
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(7);
 
     React.useEffect(() => {
       const start = async () => {
@@ -91,7 +92,9 @@ export default function Users() {
             if (result.role !== 'SYSTEM_ADMIN'){
              return setError("404. Please try again.")
             } else {
+              console.log("from home", data.data.users)
               setUsers(data.data)
+              parseUserNames(data.data.users)
             }
           })
         }
@@ -99,27 +102,31 @@ export default function Users() {
       start()
     }, [])
 
-    const columns = [
-      { id: 'name', label: 'General Info', minWidth: 170 },
-      { id: 'role', label: 'Role', minWidth: 170 },
-      { id: 'email', label: 'Email', minWidth: 120 },
-      { id: 'action', label: 'Action', minWidth: 150 }]
+    const parseUserNames = (users) => {
+      let localArr = []
+      let userParse = users.forEach(element => { 
+        console.log(element)
+        if (element.firstName && element.lastName){
+          element.fullName = element.firstName + element.lastName
+          localArr.push(element)
+        //can be taken away when old seedinfo removed
+        } else {
+          element.fullName = element.name
+          localArr.push(element)
+        }
+      });
+      setUserList(localArr)
+    }
 
+    const columns = [
+      { id: 'fullName', label: 'General Info', minWidth: 120 },
+      { id: 'role', label: 'Role', minWidth: 120 },
+      { id: 'email', label: 'Email', minWidth: 140 },
+      { id: 'action', label: 'Action', minWidth: 150 }]
 
       function createData(name, role, email, action, id ){
         return { name, role, email, action, id };
       }
-
-      // const roles = users.map(user => {
-      //   createData()
-      // })
-
-    // const renderUsers = (usersArr) => {
-    //     let userList =  usersArr.users.map((user, index) =>  ( 
-           
-    //      ))
-    //      return(<div>{userList}</div>)
-    // }
 
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
@@ -130,33 +137,17 @@ export default function Users() {
       setPage(0);
     };
 
-    const renderUsers = (usersArr) => {
-      let userList =  usersArr.users.map((user, index) =>  ( 
-        <Card className={classes.root} variant="outlined" key={index}>
-        <CardContent>
-          <Typography variant="h5" component="h2">
-              {user.email}
-          </Typography>
-          <Typography variant="h5" component="h2">
-              {user.role !== "none" ? user.role : ""}
-          </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            Account created: {user.date}
-          </Typography>
-        </CardContent>
-        <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit', backgroundColor: 'rgb(104, 251, 234)', borderRadius: '4%'}}> 
-          <Button size="small">Client Information and Settings</Button>
-        </Link>
-        </Card>
-       ))
-       return(<div>{userList}</div>)
-  }
+  //             {user.role !== "none" ? user.role : ""}
+  //       <Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit', backgroundColor: 'rgb(104, 251, 234)', borderRadius: '4%'}}> 
+  //         <Button size="small">Client Information and Settings</Button>
+  // }
 
     return(
         <div> 
-            {console.log(typeof users, users)}
+            {console.log(users)}
+            {console.log(userList)}
             {error !== null ? error : ""}
-            {users !== null && users !== undefined ? 
+            {users !== null && users !== undefined && userList !== null && userList !== undefined ? 
         <div>
         <Paper className={classes.root}>
       <TableContainer className={classes.container}>
@@ -167,15 +158,14 @@ export default function Users() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
+                  style={{ minWidth: column.minWidth }} >
                   {column.label}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+            {userList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                   {columns.map((column) => {
@@ -203,7 +193,7 @@ export default function Users() {
       />
     </Paper>
         </div>
-         : ""}
+     : ""}
        </div>
     ) 
   }
