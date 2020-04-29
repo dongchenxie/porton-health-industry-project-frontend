@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+
 export default function Users() {
     const classes = useStyles();
     let { url } = useRouteMatch();
@@ -52,8 +53,8 @@ export default function Users() {
     const [error, setError] = React.useState(null);
     const [direction, setDirection] = React.useState("asc")
 
-    let [page, setPage] = React.useState(null);
-    const pageIndex = 1
+    let [page, setPage] = React.useState(0);
+    let pageIndex = 1
 
     React.useEffect(() => {
       const start = async () => {
@@ -127,7 +128,7 @@ export default function Users() {
 
     return(
     <div> 
-      {console.log("from state", users, apiResult)}
+      {console.log(apiResult, "test")}
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
       <div>
@@ -148,7 +149,6 @@ export default function Users() {
             </TableRow>
           </TableHead>
           <TableBody>
-            
             {users.map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
@@ -163,19 +163,21 @@ export default function Users() {
                 </TableRow>
               );
             })}
+            
           </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
+          <TablePagination
         component="div"
         rowsPerPageOptions={[]}
-        count={users.totalPages}
-        page={pageIndex}
+        count={apiResult.totalPages}
+        page={parseInt(apiResult.currentPage - 1, 10)}
+        rowsPerPage={10}
         onChangePage={handleChangePage}
       />
+        </Table>
+      </TableContainer>
       </Paper>
     </div>
-           : ""}
+        : "" }
   </div>
     ) 
   }

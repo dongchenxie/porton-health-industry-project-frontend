@@ -97,7 +97,7 @@ export default function UserDetail() {
           </Grid></div>)
        })
 
-      return(<div style={{width: '40%'}}>
+      return(<div style={{width: '80%'}}>
     <ExpansionPanel>
         <ExpansionPanelSummary
           aria-controls="panel1a-content"
