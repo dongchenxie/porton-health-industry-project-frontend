@@ -204,7 +204,7 @@ export default function UserDetail() {
       Enable/Disable Account: 
 
        <Switch
-        checked={enabled}
+        checked={user.isEnabled}
         onChange={updateAPI}
         color="primary"
         name="enabled"
