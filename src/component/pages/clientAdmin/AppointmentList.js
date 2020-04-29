@@ -16,7 +16,6 @@ import MuiTableSortLabel  from '@material-ui/core/TableSortLabel';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import TextField from '@material-ui/core/TextField';
-
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -61,7 +60,7 @@ export default function AppointmentList() {
   const [direction, setDirection] = React.useState("asc")
   let [page, setPage] = React.useState(1);
   
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
 
   React.useEffect(() => {
@@ -163,7 +162,7 @@ return(
           format="MM/dd/yyyy"
           margin="normal"
           id="date-picker-inline"
-          label="Date picker inline"
+          label="From"
           value={selectedDate}
           onChange={handleDateChange}
           KeyboardButtonProps={{
@@ -173,7 +172,7 @@ return(
         <KeyboardDatePicker
           margin="normal"
           id="date-picker-dialog"
-          label="Date picker dialog"
+          label="To"
           format="MM/dd/yyyy"
           value={selectedDate}
           onChange={handleDateChange}
