@@ -81,7 +81,7 @@ export default function UserDetail() {
 
     const formRow = (label, data) => {
       return (
-        <React.Fragment component="div">
+        <React.Fragment>
           <Grid item xs={4}>
           {label}
           </Grid>
@@ -92,6 +92,7 @@ export default function UserDetail() {
       );
     }
 
+    //dropdown menu for clinics
     const renderClinicDropdown = (clinics) => {
        let clinicList = clinics.map(clinic => {
          let clinicStatus = clinic.isCheckInEnabled ? "Open" : "Closed"
@@ -122,7 +123,7 @@ export default function UserDetail() {
       </div>)
     }
 
-
+    //toggle enable/diable
     let updateAPI = async () => {
       let result = await authContext.API.updateUserEnabled(user['_id'], enabled);
        if (result.status === 200){
@@ -145,6 +146,7 @@ export default function UserDetail() {
        }
       };
 
+      //render grid info
     const renderUser = () => {
          return( 
          <div> <Card className={classes.root} variant="outlined">
@@ -219,7 +221,7 @@ export default function UserDetail() {
 
          </CardActions>
        </Card>
-       <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" color="black" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
+       <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
        </div>)
     }
 

@@ -1,20 +1,16 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
-import { BrowserRouter, Link, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-
-//new: 
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import MuiTableSortLabel  from '@material-ui/core/TableSortLabel';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
@@ -87,9 +83,10 @@ export default function Users() {
       { id: 'lastName', label: 'Last Name', minWidth: 120 },
       { id: 'role', label: 'Role', minWidth: 120 },
       { id: 'email', label: 'Email', minWidth: 140 },
-      { id: 'action', label: 'Action', minWidth: 150 }]
+      { id: 'action', label: 'Action', minWidth: 150 } ] 
 
-      function createData(name, role, email, action, id ){
+      //create top header 
+      const createData = (name, role, email, action, id ) => {
         return { name, role, email, action, id };
       }
 
@@ -127,6 +124,7 @@ export default function Users() {
     return(<Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Client Information and Settings</Button></Link>)
   }
 
+  //email disabled for now...
   const sortTable = (col) => {
     if (col === 'email'){
     //bugfix here....
@@ -153,7 +151,6 @@ export default function Users() {
 
     return(
     <div> 
-        {console.log(apiResult)}
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
       <div>
@@ -191,10 +188,12 @@ export default function Users() {
             })}
           </TableBody>
 
-          <TableBody> 
-           {page} of {apiResult.totalPages}
+          <TableBody > 
+          <div  style={{display: 'flex', justifyContent: 'center'}}> 
+          Page {page} of {apiResult.totalPages}
           <ArrowLeftIcon onClick={() => handleChangePage("l")}/>
           <ArrowRightIcon onClick={() => handleChangePage("r")}/>
+          </div>
           </TableBody> 
 
         </Table>
