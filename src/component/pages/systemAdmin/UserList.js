@@ -93,12 +93,27 @@ export default function Users() {
       }
 
   
-      
-    const handleChangePage =   async (event, newPage) => {
-      console.log("here....")
-      let data =  await authContext.API.getUsers(2)
-      console.log(data)
 
+    const handleChangePage =   async (event, newPage) => {
+      let data =  await authContext.API.getUsers(2)
+      if (data === undefined){
+        console.log("error")
+        setError("Error grabbing data from the server.")
+      } else if (data.data === undefined){
+        console.log("error")
+        setError("Error grabbing data from the server.")
+      } else {
+        authContext.API.readToken(authContext.authState).then(function(result){
+          if (result.role !== 'SYSTEM_ADMIN'){
+           return setError("404. Please try again.")
+          } else {
+            // setapiResult(data.data)
+            setUsers(data.data.users)
+            // setInitialSort(data.data.users)
+            // setPage(data.data.totalPages)
+          }
+        })
+      }
 
       // if (newPage >= page){
       //   console.log(page)
