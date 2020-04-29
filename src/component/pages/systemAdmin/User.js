@@ -68,6 +68,7 @@ export default function UserDetail() {
 
               //this can be removed when endpoint is implemented for clinic.
               data.data.clinic = [{isCheckInEnabled: true, name: "West Vancouver Clinic"}]
+              grabClinics()
               setUser(data.data)
               setEnable(data.data.isEnabled)
               setCheckedVal(data.data.isEnabled)
@@ -78,6 +79,19 @@ export default function UserDetail() {
       }
       start()
     }, [])
+
+    const grabClinics = async () => {
+      //user id 5e990ebba93b163294ef066d
+      let result = await authContext.API.getClinics();
+       if (result.status === 200){
+          console.log(result)
+          return result
+        }  else if(result.status === 400) {
+        console.log(result, error)
+        setError("Problem with server.")
+        return result
+       }
+    }
 
     const formRow = (label, data) => {
       return (
@@ -94,15 +108,17 @@ export default function UserDetail() {
 
     //dropdown menu for clinics
     const renderClinicDropdown = (clinics) => {
-       let clinicList = clinics.map(clinic => {
-         let clinicStatus = clinic.isCheckInEnabled ? "Open" : "Closed"
-         return(<div><Grid container item xs={12} spacing={3}>
-          {formRow("Clinic Name:", clinic.name)}
-          </Grid>
-          <Grid container item xs={12} spacing={3}>
-          {formRow("Clinic Status:", clinicStatus )}
-          </Grid></div>)
-       })
+       let clinicList = (
+       <div>test</div>
+      //  clinics.map(clinic => {
+      //    let clinicStatus = clinic.isCheckInEnabled ? "Open" : "Closed"
+      //    return(<div><Grid container item xs={12} spacing={3}>
+      //     {formRow("Clinic Name:", clinic.name)}
+      //     </Grid>
+      //     <Grid container item xs={12} spacing={3}>
+      //     {formRow("Clinic Status:", clinicStatus )}
+      //     </Grid></div>)
+       )
 
       return(<div style={{width: '80%'}}>
     <ExpansionPanel>
@@ -174,7 +190,7 @@ export default function UserDetail() {
         </Grid> : <br /> }
         {user.role === 'CLIENT_ADMIN' ?  
         <Grid container item xs={12} spacing={3}>
-        {formRow("Clinics:", renderClinicDropdown(user.clinic))}
+        {formRow("Clinics:", renderClinicDropdown())}
         </Grid> : <br /> }
       </Grid>
       </CardContent>

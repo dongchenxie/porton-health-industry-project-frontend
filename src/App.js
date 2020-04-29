@@ -156,7 +156,25 @@ function App() {
             return {error, status: 400 }
         })
         return result
+      },
+      getClinics: async function () {
+      let result = await axios(
+        {
+          method: "get",
+          url:  `${baseURL}clinics`,
+          headers: {
+            "auth-token":localStorage.getItem("token"),
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+      ).catch((e) => 
+        { return { error: e }} )
+      if (result.status === 200) {
+        return { status: 200, data: result.data };
+      } else {
+        return result
       }
+    }
   }
 
   //The state 

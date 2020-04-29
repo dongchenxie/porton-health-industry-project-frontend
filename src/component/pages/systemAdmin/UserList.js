@@ -182,7 +182,6 @@ const clearSearch = () => {
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
     <div>
-      {              console.log(users)}
       {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
       <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
       <Paper className={classes.root}>
