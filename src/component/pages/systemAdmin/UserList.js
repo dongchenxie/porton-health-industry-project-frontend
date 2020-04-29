@@ -106,11 +106,13 @@ export default function Users() {
   }
 
   const sortTable = (col) => {
-    setUsers(initialSort)
+    if (col === 'email'){
+    //bugfix here....
+    } else {
     if(direction === "asc"){
       let sorted = users.sort(function(a, b){
         if(a[col] > b[col]) { return 1; }
-        if(a[col] < b[col]) { return -1; }
+        if(a[col] < b[col]) { return -1; }  
         return 0;
     })  
     setUsers(sorted)
@@ -124,11 +126,11 @@ export default function Users() {
      setUsers(sorted)
      setDirection("asc")
     }
+  }
 }
 
     return(
     <div> 
-      {console.log(apiResult, "test")}
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
       <div>
@@ -143,7 +145,7 @@ export default function Users() {
                   align={column.align}
                   style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                   {column.label}
-                  {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id)} direction={direction}> </MuiTableSortLabel> : ""}
+                  {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
                 </TableCell>
               ))}
             </TableRow>
@@ -169,7 +171,7 @@ export default function Users() {
         component="div"
         rowsPerPageOptions={[]}
         count={apiResult.totalPages}
-        page={parseInt(apiResult.currentPage - 1, 10)}
+        page={apiResult.currentPage}
         rowsPerPage={10}
         onChangePage={handleChangePage}
       />

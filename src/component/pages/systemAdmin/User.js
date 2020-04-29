@@ -12,13 +12,14 @@ import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
-
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
+import Switch from '@material-ui/core/Switch';
 
 import PasswordResetPage from './resetPW';
+
 
 
 const useStyles = makeStyles({
@@ -47,6 +48,9 @@ export default function UserDetail() {
     const authContext = React.useContext(AuthContext)
     const [user, setUser] = React.useState(null);
     const [error, setError] = React.useState(null);
+    const [enabled, setEnable] = React.useState(null);
+    const [enableMessage, setEnableMessage] = React.useState(null);
+
 
     React.useEffect(() => {
       const start = async () => {
@@ -66,6 +70,8 @@ export default function UserDetail() {
               //this can be removed when endpoint is implemented for clinic.
               data.data.clinic = [{isCheckInEnabled: true, name: "West Vancouver Clinic"}]
               setUser(data.data)
+              setEnable(data.data.isEnabled)
+              data.data.isEnabled ? setEnableMessage("Enabled") : setEnableMessage("Not Enabled.")
             }
           })
         }
@@ -116,6 +122,38 @@ export default function UserDetail() {
       </div>)
     }
 
+
+    let updateAPI = async () => {
+      let result = await authContext.API.updateUserEnabled(user['_id'], enabled);
+       if (result.status === 200){
+        console.log(result)
+        setEnable(enabled);
+        return result
+       } else if(result.status === 400) {
+        console.log(result, error)
+        setError("Problem with server.")
+        return result
+       }
+      };
+
+  //   const handleSwitch = (event) => {
+  //     //updateUserEnabled
+  //     //    isEnabled: req.body.isEnabled
+  //     console.log(user)
+  //  let updateAPI = async () => {
+  //   let result = await authContext.API.updateUserEnabled(user['_id'], enabled);
+  //    if (result.status === 200){
+  //     console.log(result)
+  //     return result
+  //     // setEnable(!enabled);
+  //    } else if(result.status === 400) {
+  //     console.log(result, error)
+  //     return result
+  //    }
+  //  };
+  //  return updatePass
+  //   }
+
     const renderUser = () => {
          return( 
          <div> <Card className={classes.root} variant="outlined">
@@ -139,16 +177,20 @@ export default function UserDetail() {
         <br />
         {user.role === 'CLIENT_ADMIN' ?  
         <Grid container item xs={12} spacing={3}>
+        {formRow("Status:", enableMessage)}
+        </Grid> : <br /> }
+        {user.role === 'CLIENT_ADMIN' ?  
+        <Grid container item xs={12} spacing={3}>
         {formRow("Clinics:", renderClinicDropdown(user.clinic))}
         </Grid> : <br /> }
       </Grid>
       </CardContent>
 
-      <CardActions>
+      <CardActions style={{display: 'inline'}}>
       <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <div>
-          <Button variant="contained" color="primary" {...bindTrigger(popupState)}>
+          <Button variant="contained" color="primary" style={{marginLeft: '2%'}} {...bindTrigger(popupState)}>
             Reset Password
           </Button>
           <Popover
@@ -172,9 +214,17 @@ export default function UserDetail() {
 
      {/* to implement: */}
      {/*///////////////*/}
-    <Button variant="contained" color="primary" style={{ marginLeft: '8%'}} >
-          Enable/Disable Account
-    </Button>
+     <Typography style={{marginLeft: '2%', marginTop: '2%'}}> 
+      Enable/Disable Account: 
+
+       <Switch
+        checked={enabled}
+        onChange={updateAPI}
+        color="primary"
+        name="enabled"
+        inputProps={{ 'aria-label': 'primary checkbox' }}
+      />
+      </Typography>
 
          </CardActions>
        </Card>

@@ -128,7 +128,22 @@ function App() {
           return {error, status: 400 }
       })
       return result
-    }
+    },
+    updateUserEnabled: async function (id, status) {
+      console.log("inside function")
+      let result = await axios.put(`${baseURL}user/permission/${id}`, {
+        isEnabled: status
+    })
+        .then(function (response) {
+          console.log(response)
+            return response
+        })
+        .catch(function (error) {
+          console.log(error)
+            return {error, status: 400 }
+        })
+        return result
+      }
   }
 
   //The state 
