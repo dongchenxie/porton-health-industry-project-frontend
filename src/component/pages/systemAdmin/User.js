@@ -64,7 +64,7 @@ export default function UserDetail() {
             } else {
 
               //this can be removed when endpoint is implemented for clinic.
-              data.data.clinic = [{isCheckInEnabled: true, name: "West Vancouver Clinic"}, {isCheckInEnabled: true, name: "East Van Walk-In Clinic"}]
+              data.data.clinic = [{isCheckInEnabled: true, name: "West Vancouver Clinic"}]
               setUser(data.data)
             }
           })
@@ -87,7 +87,6 @@ export default function UserDetail() {
     }
 
     const renderClinicDropdown = (clinics) => {
-
        let clinicList = clinics.map(clinic => {
          let clinicStatus = clinic.isCheckInEnabled ? "Open" : "Closed"
          return(<div><Grid container item xs={12} spacing={3}>
@@ -98,7 +97,7 @@ export default function UserDetail() {
           </Grid></div>)
        })
 
-      return(<div>
+      return(<div style={{width: '40%'}}>
     <ExpansionPanel>
         <ExpansionPanelSummary
           aria-controls="panel1a-content"
