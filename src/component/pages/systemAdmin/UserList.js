@@ -92,13 +92,19 @@ export default function Users() {
         return { name, role, email, action, id };
       }
 
-    //can call API and pass in page query here..
-    const handleChangePage = (event, newPage) => {
-      if (newPage >= page){
-        console.log(page)
-      } else {
-        setPage(page += 1);
-      }
+  
+      
+    const handleChangePage =   async (event, newPage) => {
+      console.log("here....")
+      let data =  await authContext.API.getUsers(2)
+      console.log(data)
+
+
+      // if (newPage >= page){
+      //   console.log(page)
+      // } else {
+      //   setPage(page += 1);
+      // }
     };
 
   const renderAction = (user) => {
@@ -131,6 +137,7 @@ export default function Users() {
 
     return(
     <div> 
+        {console.log(apiResult)}
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
       <div>
@@ -154,10 +161,10 @@ export default function Users() {
             {users.map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
+                  {columns.map((column, id) => {
                     const value = row[column.id];
                     return (
-                      <TableCell key={column.id} align={column.align}>
+                      <TableCell key={column.id} key={id} align={column.align}>
                         {column.id === 'action' ? renderAction(row) : value}
                       </TableCell>
                     );
@@ -167,8 +174,8 @@ export default function Users() {
             })}
             
           </TableBody>
-          <TablePagination
-        component="div"
+          <TablePagination 
+        component={"tbody"}
         rowsPerPageOptions={[]}
         count={apiResult.totalPages}
         page={apiResult.currentPage}

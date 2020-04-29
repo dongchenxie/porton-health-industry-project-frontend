@@ -79,11 +79,11 @@ function App() {
         return result
       }
     },
-  getUsers: async function () {
+  getUsers: async function (pageQuery) {
     let result = await axios(
       {
         method: "get",
-        url: `${baseURL}users`,
+        url:  pageQuery ? `${baseURL}users?page=${pageQuery}`: `${baseURL}users`,
         headers: {
           "auth-token":localStorage.getItem("token"),
           'Access-Control-Allow-Origin': '*'

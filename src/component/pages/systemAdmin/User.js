@@ -50,7 +50,7 @@ export default function UserDetail() {
     const [enableMessage, setEnableMessage] = React.useState(null);
     const [checkedVal, setCheckedVal] = React.useState(null);
 
-    
+
     React.useEffect(() => {
       const start = async () => {
         let data = await authContext.API.getIndivUser(location.pathname.toString().split("/")[3])
@@ -81,7 +81,7 @@ export default function UserDetail() {
 
     const formRow = (label, data) => {
       return (
-        <React.Fragment>
+        <React.Fragment component="div">
           <Grid item xs={4}>
           {label}
           </Grid>
