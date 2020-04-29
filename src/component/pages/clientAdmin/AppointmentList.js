@@ -205,7 +205,7 @@ return(
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                 {columns.map((column, id) => {
-                  const value = row[column.id];
+                  let value = row[column.id];
                   return (
                     <TableCell key={column.id} key={id} align={column.align}>
                       {column.id === 'action' ? renderAction(row) : value}
