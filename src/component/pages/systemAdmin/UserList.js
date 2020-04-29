@@ -47,6 +47,8 @@ export default function Users() {
     const authContext = React.useContext(AuthContext)
     const [apiResult, setapiResult] = React.useState(null);
     const [users, setUsers]  = React.useState(null);
+    const [initialSort, setInitialSort]  = React.useState(null);
+
     const [error, setError] = React.useState(null);
     const [direction, setDirection] = React.useState("asc")
 
@@ -69,6 +71,7 @@ export default function Users() {
             } else {
               setapiResult(data.data)
               setUsers(data.data.users)
+              setInitialSort(data.data.users)
               setPage(data.data.totalPages)
             }
           })
@@ -102,6 +105,7 @@ export default function Users() {
   }
 
   const sortTable = (col) => {
+    setUsers(initialSort)
     if(direction === "asc"){
       let sorted = users.sort(function(a, b){
         if(a[col] > b[col]) { return 1; }
