@@ -83,21 +83,23 @@ export default function UserDetail() {
          return( 
          <div> <Card className={classes.root} variant="outlined">
          <CardContent>
-           <Typography variant="h5" component="h2">
-               {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.name}`}
-           </Typography>
-           <br />
-           <Typography variant="h5" component="h2">
-             {user.role ? `${user.role} Account` : "" }
-           </Typography>
-           <br />
-           <Typography variant="h5" component="h2">
-               {user.email}
-           </Typography>
-           <br />
-           <Typography className={classes.pos} color="textSecondary">
-             Account created: {user.date}
-           </Typography>
+         <Grid container spacing={1}>
+        <Grid container item xs={12} spacing={3}>
+        {formRow("First Name:", user.firstName)}
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+        {formRow("Last Name:", user.lastName)}
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+        {formRow("Email:", user.email)}
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+        {formRow("Creation Date:", user.date.split('T')[0])}
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+        {formRow("Role:", user.role)}
+        </Grid>
+      </Grid>
            <Typography variant="body2" component="p">
                 {user.isEnabled ? "Clinic status currently open.": "Clinic status currently closed." }
            </Typography>
@@ -129,24 +131,6 @@ export default function UserDetail() {
     </PopupState>
          </CardActions>
        </Card>
-       {console.log(user)}
-       <Grid container spacing={1}>
-        <Grid container item xs={12} spacing={3}>
-        {formRow("First Name:", user.firstName)}
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-        {formRow("Last Name:", user.lastName)}
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-        {formRow("Email:", user.email)}
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-        {formRow("Creation Date:", user.date.split('T')[0])}
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-        {formRow("Role:", user.role)}
-        </Grid>
-      </Grid>
        </div>)
     }
 
