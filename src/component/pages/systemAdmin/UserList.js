@@ -4,8 +4,6 @@ import { BrowserRouter, Link, useRouteMatch } from "react-router-dom";
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
@@ -18,7 +16,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
+import MuiTableSortLabel  from '@material-ui/core/TableSortLabel';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,8 +45,10 @@ export default function Users() {
     let { url } = useRouteMatch();
 
     const authContext = React.useContext(AuthContext)
-    const [users, setUsers] = React.useState(null);
+    const [apiResult, setapiResult] = React.useState(null);
+    const [users, setUsers]  = React.useState(null);
     const [error, setError] = React.useState(null);
+    const [direction, setDirection] = React.useState("asc")
 
     let [page, setPage] = React.useState(null);
     const pageIndex = 1
@@ -67,7 +67,8 @@ export default function Users() {
             if (result.role !== 'SYSTEM_ADMIN'){
              return setError("404. Please try again.")
             } else {
-              setUsers(data.data)
+              setapiResult(data.data)
+              setUsers(data.data.users)
               setPage(data.data.totalPages)
             }
           })
@@ -100,10 +101,20 @@ export default function Users() {
     return(<Link to={`${url}/${user._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Client Information and Settings</Button></Link>)
   }
 
+  const sortTable = (col) => {
+   direction === "asc" ?  setDirection("desc") : setDirection("asc")
+     let sorted = users.sort(function(a, b){
+       if(a.firstName > b.firstName) { return 1; }
+       if(a.firstName < b.firstName) { return -1; }
+       return 0;
+   })  
+   setUsers(sorted)
+  // console.log(users.users)
+}
 
     return(
     <div> 
-      {console.log("from state", users)}
+      {console.log("from state", users, apiResult)}
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
       <div>
@@ -116,14 +127,18 @@ export default function Users() {
                 <TableCell 
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth, backgroundColor: 'black', color: 'white' }} >
+                  // , backgroundColor: 'black', color: 'white' 
+                  style={{ minWidth: column.minWidth}} >
                   {column.label}
+                  {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id)} direction={direction}> </MuiTableSortLabel> : ""}
                 </TableCell>
               ))}
+
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.users.map((row) => {
+            
+            {users.map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                   {columns.map((column) => {
