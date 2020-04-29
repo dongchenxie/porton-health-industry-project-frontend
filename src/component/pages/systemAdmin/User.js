@@ -1,6 +1,6 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
-import { useLocation } from 'react-router';
+import { useLocation, useRouteMatch, Link } from 'react-router-dom';
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -33,11 +33,12 @@ const useStyles = makeStyles({
     },
     pos: {
       marginBottom: 12,
-    },
+    }
   });
 
 export default function UserDetail() {
     const classes = useStyles();
+    let { path } = useRouteMatch();
     let location = useLocation();
 
     const authContext = React.useContext(AuthContext)
@@ -100,10 +101,11 @@ export default function UserDetail() {
         {formRow("Role:", user.role)}
         </Grid>
       </Grid>
-           <Typography variant="body2" component="p">
+        <Typography variant="body2" component="p" style={{marginTop: '2%'}}>
                 {user.isEnabled ? "Clinic status currently open.": "Clinic status currently closed." }
-           </Typography>
+       </Typography>
            </CardContent>
+
            <CardActions>
       <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
@@ -129,8 +131,14 @@ export default function UserDetail() {
         </div>
       )}
     </PopupState>
+
+    <Button variant="contained" color="primary" style={{ marginLeft: '8%'}} >
+          Enable/Disable Account
+    </Button>
+
          </CardActions>
        </Card>
+       <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" color="black" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
        </div>)
     }
 
