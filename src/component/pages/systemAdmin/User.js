@@ -8,6 +8,8 @@ import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+
 
 import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
@@ -15,6 +17,7 @@ import Popover from '@material-ui/core/Popover';
 
 import Box from '@material-ui/core/Box';
 import PasswordResetPage from './resetPW';
+
 
 const useStyles = makeStyles({
     root: {
@@ -62,6 +65,19 @@ export default function UserDetail() {
       }
       start()
     }, [])
+
+    function formRow(label, data) {
+      return (
+        <React.Fragment>
+          <Grid item xs={4}>
+          {label}
+          </Grid>
+          <Grid item xs={4}>
+          {data}
+          </Grid>
+          </React.Fragment>
+      );
+    }
 
     const renderUser = () => {
          return( 
@@ -112,7 +128,26 @@ export default function UserDetail() {
       )}
     </PopupState>
          </CardActions>
-       </Card></div>)
+       </Card>
+       {console.log(user)}
+       <Grid container spacing={1}>
+        <Grid container item xs={12} spacing={3}>
+        {formRow("First Name:", user.firstName)}
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+        {formRow("Last Name:", user.lastName)}
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+        {formRow("Email:", user.email)}
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+        {formRow("Creation Date:", user.date.split('T')[0])}
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+        {formRow("Role:", user.role)}
+        </Grid>
+      </Grid>
+       </div>)
     }
 
     return(<div>
