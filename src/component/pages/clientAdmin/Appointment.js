@@ -11,13 +11,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
-import Popover from '@material-ui/core/Popover';
-import Box from '@material-ui/core/Box';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
-import Switch from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
 
 
 const useStyles = makeStyles({
@@ -84,7 +78,6 @@ export default function Appointment() {
     );
   }
 
-
   const renderAppointment = () => {
     return( 
     <div> <Card className={classes.root} variant="outlined">
@@ -94,7 +87,7 @@ export default function Appointment() {
    {formRow("Patient Name:", appoitnment.patient)}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Appointment Time:", appoitnment.appointmentTime)}
+   {formRow("Appointment Time:", appoitnment.appointmentTime.split('T')[0])}
    </Grid>
    <Grid container item xs={12} spacing={3}>
    {formRow("Doctor:", appoitnment.doctorName)}
@@ -108,8 +101,16 @@ export default function Appointment() {
   </Grid>
  </CardContent>
 
- <CardActions style={{display: 'inline'}}>
+ <CardActions style={{display: 'block'}}>
    {/* to implment.... */}
+   
+        <TextField
+          label="None"
+          id="outlined-margin-none"
+          className={classes.textField}
+          label="Comments"
+          variant="outlined"
+        />
 
   </CardActions>
   </Card>
