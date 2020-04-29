@@ -102,14 +102,23 @@ export default function Users() {
   }
 
   const sortTable = (col) => {
-   direction === "asc" ?  setDirection("desc") : setDirection("asc")
-     let sorted = users.sort(function(a, b){
-       if(a.firstName > b.firstName) { return 1; }
-       if(a.firstName < b.firstName) { return -1; }
-       return 0;
-   })  
-   setUsers(sorted)
-  // console.log(users.users)
+    if(direction === "asc"){
+      let sorted = users.sort(function(a, b){
+        if(a[col] > b[col]) { return 1; }
+        if(a[col] < b[col]) { return -1; }
+        return 0;
+    })  
+    setUsers(sorted)
+    setDirection("desc")
+    } else {
+      let sorted = users.sort(function(a, b){
+        if(a[col] < b[col]) { return 1; }
+        if(a[col] > b[col]) { return -1; }
+        return 0;
+    })  
+     setUsers(sorted)
+     setDirection("asc")
+    }
 }
 
     return(
@@ -127,13 +136,11 @@ export default function Users() {
                 <TableCell 
                   key={column.id}
                   align={column.align}
-                  // , backgroundColor: 'black', color: 'white' 
-                  style={{ minWidth: column.minWidth}} >
+                  style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                   {column.label}
                   {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id)} direction={direction}> </MuiTableSortLabel> : ""}
                 </TableCell>
               ))}
-
             </TableRow>
           </TableHead>
           <TableBody>
