@@ -162,21 +162,17 @@ const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
     callAPI(undefined, search)
     setSearchToggle(true)
+    event.target.value = ""
   }
 }
 
 //clear search fields, render base API  result again.
 const clearSearch = () => {
-  console.log('hello world')
   setSearch("")
   setSearchToggle(false)
   callAPI(1)
 }
 
-//button to clear search
-const renderClearOption = () => {
-  return(<Button size="small" variant="contained" color="primary" onClick={() => clearSearch}>Clear Search</Button>)
-}
 
     return(
     <div> 
@@ -196,7 +192,7 @@ const renderClearOption = () => {
                   align={column.align}
                   style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                   {column.label}
-                  {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
+                  {column.id !== 'action' && column.id !== 'email' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
                 </TableCell>
               ))}
             </TableRow>
