@@ -53,6 +53,7 @@ export default function Users() {
     const [error, setError] = React.useState(null);
     const [direction, setDirection] = React.useState("asc")
     const [searchToggle, setSearchToggle] = React.useState(false);
+    const [pageTotal, setPageTotal] = React.useState(null);
 
     let [page, setPage] = React.useState(1);
 
@@ -73,6 +74,7 @@ export default function Users() {
               setapiResult(data.data)
               setUsers(data.data.users)
               setInitialSort(data.data.users)
+              setPageTotal(data.data.totalPages)
             }
           })
         }
@@ -110,13 +112,14 @@ export default function Users() {
            return setError("404. Please try again.")
           } else {
             setUsers(data.data.users)
+            setPageTotal(data.data.totalPages)
           }
         })
       }
     }
 
     const handleChangePage = async (pageDir) => {
-      if (pageDir == 'r' && page + 1 <= apiResult.totalPages){
+      if (pageDir == 'r' && page + 1 <= pageTotal){
         callAPI(page + 1)
         setPage(page += 1)
       } else if (pageDir == 'l' && page - 1 >= 1){
@@ -179,6 +182,7 @@ const clearSearch = () => {
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
     <div>
+      {              console.log(users)}
       {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
       <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
       <Paper className={classes.root}>
@@ -217,7 +221,7 @@ const clearSearch = () => {
 
           <TableBody > 
           <div  style={{display: 'flex', justifyContent: 'center'}}> 
-          Page {page} of {apiResult.totalPages}
+          Page {page} of {pageTotal}
           <ArrowLeftIcon onClick={() => handleChangePage("l")}/>
           <ArrowRightIcon onClick={() => handleChangePage("r")}/>
           </div>
