@@ -9,14 +9,13 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-
-
 import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import Popover from '@material-ui/core/Popover';
-
 import Box from '@material-ui/core/Box';
+
 import PasswordResetPage from './resetPW';
+import { render } from "react-dom";
 
 
 const useStyles = makeStyles({
@@ -35,6 +34,7 @@ const useStyles = makeStyles({
       marginBottom: 12,
     }
   });
+
 
 export default function UserDetail() {
     const classes = useStyles();
@@ -59,6 +59,7 @@ export default function UserDetail() {
             if (result.role !== 'SYSTEM_ADMIN'){
              return setError("404. Please try again.")
             } else {
+              data.data.clinic = "testing"
               setUser(data.data)
             }
           })
@@ -67,7 +68,7 @@ export default function UserDetail() {
       start()
     }, [])
 
-    function formRow(label, data) {
+    const formRow = (label, data) => {
       return (
         <React.Fragment>
           <Grid item xs={4}>
@@ -78,6 +79,10 @@ export default function UserDetail() {
           </Grid>
           </React.Fragment>
       );
+    }
+
+    const renderClinicDropdown = (clinics) => {
+      return(<div>test</div>)
     }
 
     const renderUser = () => {
@@ -100,13 +105,17 @@ export default function UserDetail() {
         <Grid container item xs={12} spacing={3}>
         {formRow("Role:", user.role)}
         </Grid>
+        <br />
+      {/* to implement: */}
+      {/*///////////////*/}
+        {user.role === 'CLIENT_ADMIN' ?  
+        <Grid container item xs={12} spacing={3}>
+        {formRow("Clinics:", renderClinicDropdown(user.clinic))}
+        </Grid> : <br /> }
       </Grid>
-        <Typography variant="body2" component="p" style={{marginTop: '2%'}}>
-                {user.isEnabled ? "Clinic status currently open.": "Clinic status currently closed." }
-       </Typography>
-           </CardContent>
+      </CardContent>
 
-           <CardActions>
+      <CardActions>
       <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <div>
@@ -132,6 +141,8 @@ export default function UserDetail() {
       )}
     </PopupState>
 
+     {/* to implement: */}
+     {/*///////////////*/}
     <Button variant="contained" color="primary" style={{ marginLeft: '8%'}} >
           Enable/Disable Account
     </Button>
