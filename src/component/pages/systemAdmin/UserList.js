@@ -15,7 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 import MuiTableSortLabel  from '@material-ui/core/TableSortLabel';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,6 +45,7 @@ export default function Users() {
     let { url } = useRouteMatch();
 
     const authContext = React.useContext(AuthContext)
+    const [search, setSearch] = React.useState("");
     const [apiResult, setapiResult] = React.useState(null);
     const [users, setUsers]  = React.useState(null);
     const [initialSort, setInitialSort]  = React.useState(null);
@@ -149,12 +150,23 @@ export default function Users() {
   }
 }
 
+const handleSearchChange = (e) => {
+  setSearch(e.target.value);
+};
+
+const submitSearch = (event) => {
+  if (event.key === "Enter" && search !== "") {
+    console.log(search)
+  }
+}
+
     return(
     <div> 
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
-      <div>
-        <Paper className={classes.root}>
+    <div>
+      <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+      <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead className>
@@ -198,8 +210,8 @@ export default function Users() {
 
         </Table>
       </TableContainer>
-      </Paper>
-    </div>
+    </Paper>
+  </div>
         : "" }
   </div>
     ) 
