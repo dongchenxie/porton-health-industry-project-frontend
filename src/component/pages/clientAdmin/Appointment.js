@@ -1,7 +1,7 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
 
-export default function SearchAppointment() {
+export default function Appointment() {
   const authContext = React.useContext(AuthContext)
   const [error, setError] = React.useState(null);
 
@@ -20,7 +20,7 @@ export default function SearchAppointment() {
       <div>
         {error !== null ? error : 
         <div>
-          <h2>click here to search accounts</h2>
+          <h2>this is the appoitnment</h2>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
           Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
           Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 

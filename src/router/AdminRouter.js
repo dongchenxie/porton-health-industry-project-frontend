@@ -42,8 +42,8 @@ import CreateAccount from '../component/pages/systemAdmin/CreateAccount'
 
 //client admin components:
 import ManageCheckin from '../component/pages/clientAdmin/ManageCheckin'
-import ModifyAppointment from '../component/pages/clientAdmin/ModifyAppointment'
-import SearchAppointment from '../component/pages/clientAdmin/SearchAppointment'
+import AppointmentList from '../component/pages/clientAdmin/AppointmentList'
+import Appointment from '../component/pages/clientAdmin/Appointment'
 
 //shared:
 import About from '../component/pages/shared/About'
@@ -169,19 +169,19 @@ export default function AdminRouter(props) {
       { role === "CLIENT_ADMIN" ? 
       <List>
         <Divider />
-          <Link to={`${url}/modAppointment`} style={{textDecoration: 'none', color: 'inherit'}}> 
+          {/* <Link to={`${url}/modAppointment`} style={{textDecoration: 'none', color: 'inherit'}}> 
             <ListItem button>
               <ListItemText primary="Modify Appointment" />
             </ListItem >
-          </Link> 
+          </Link>  */}
         <Link to={`${url}/manageCheckin`} style={{textDecoration: 'none', color: 'inherit'}}>  
           <ListItem button>
             <ListItemText primary="Manage Online Check In" />
           </ListItem >
        </Link> 
-       <Link to={`${url}/searchAppointments`} style={{textDecoration: 'none', color: 'inherit'}}>  
+       <Link to={`${url}/appointments`} style={{textDecoration: 'none', color: 'inherit'}}>  
           <ListItem button>
-            <ListItemText primary="Search Appointments" />
+            <ListItemText primary="Appointments" />
           </ListItem >
        </Link> 
       </List>
@@ -346,14 +346,14 @@ export default function AdminRouter(props) {
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />
               </PrivateRoute>
-              <PrivateRoute path={`${path}/searchAppointments`}>
-                <SearchAppointment />
-              </PrivateRoute>
               <PrivateRoute path={`${path}/manageCheckin`}>
                 <ManageCheckin />
               </PrivateRoute>
-              <PrivateRoute path={`${path}/modAppointment`}>
-                <ModifyAppointment />
+              <PrivateRoute path={`${path}/appointments/:id`}>
+                <Appointment />
+              </PrivateRoute>
+              <PrivateRoute path={`${path}/appointments`}>
+                <AppointmentList />
               </PrivateRoute>
               <Route path="*">
                 <NotFoundPage />
