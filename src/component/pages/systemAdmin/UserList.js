@@ -17,6 +17,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import MuiTableSortLabel  from '@material-ui/core/TableSortLabel';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,8 +56,7 @@ export default function Users() {
     const [error, setError] = React.useState(null);
     const [direction, setDirection] = React.useState("asc")
 
-    let [page, setPage] = React.useState(0);
-    let pageIndex = 1
+    let [page, setPage] = React.useState(1);
 
     React.useEffect(() => {
       const start = async () => {
@@ -73,7 +75,6 @@ export default function Users() {
               setapiResult(data.data)
               setUsers(data.data.users)
               setInitialSort(data.data.users)
-              setPage(data.data.totalPages)
             }
           })
         }
@@ -92,10 +93,9 @@ export default function Users() {
         return { name, role, email, action, id };
       }
 
-  
-
-    const handleChangePage =   async (event, newPage) => {
-      let data =  await authContext.API.getUsers(2)
+      //call users API passing in the page, set results to view.
+      const callAPI = async (page) => {
+      let data =  await authContext.API.getUsers(page)
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
@@ -107,19 +107,20 @@ export default function Users() {
           if (result.role !== 'SYSTEM_ADMIN'){
            return setError("404. Please try again.")
           } else {
-            // setapiResult(data.data)
             setUsers(data.data.users)
-            // setInitialSort(data.data.users)
-            // setPage(data.data.totalPages)
           }
         })
       }
+    }
 
-      // if (newPage >= page){
-      //   console.log(page)
-      // } else {
-      //   setPage(page += 1);
-      // }
+    const handleChangePage = async (pageDir) => {
+      if (pageDir == 'r' && page + 1 <= apiResult.totalPages){
+        callAPI(page + 1)
+        setPage(page += 1)
+      } else if (pageDir == 'l' && page - 1 >= 1){
+        callAPI(page - 1)
+        setPage(page -= 1)
+      }
     };
 
   const renderAction = (user) => {
@@ -184,19 +185,18 @@ export default function Users() {
                       </TableCell>
                     );
                   })}
+                    
                 </TableRow>
               );
             })}
-            
           </TableBody>
-          <TablePagination 
-        component={"tbody"}
-        rowsPerPageOptions={[]}
-        count={apiResult.totalPages}
-        page={apiResult.currentPage}
-        rowsPerPage={10}
-        onChangePage={handleChangePage}
-      />
+
+          <TableBody> 
+           {page} of {apiResult.totalPages}
+          <ArrowLeftIcon onClick={() => handleChangePage("l")}/>
+          <ArrowRightIcon onClick={() => handleChangePage("r")}/>
+          </TableBody> 
+
         </Table>
       </TableContainer>
       </Paper>
