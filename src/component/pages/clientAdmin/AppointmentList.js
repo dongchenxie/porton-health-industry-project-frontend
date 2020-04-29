@@ -17,6 +17,14 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import TextField from '@material-ui/core/TextField';
 
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 275,
@@ -52,10 +60,15 @@ export default function AppointmentList() {
   const [search, setSearch] = React.useState("");
   const [direction, setDirection] = React.useState("asc")
   let [page, setPage] = React.useState(1);
+  
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+
 
   React.useEffect(() => {
     const start = async () => {
-      // let data = await authContext.API.getUsers()
+
+      //to implement once API finished....
+      // let data = await authContext.API.getAppointments()
       let data = [{patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}, {patient: "ralph wiggum", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'comfiremd', comments: '', reason: 'injury', _id: 2}, {patient: "henry jones", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor B', status: 'cancled', comments: '', reason: 'covid-19', _id: 3}, {patient: "sam doe", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor C', status: 'pending', comments: '', reason: 'check-up', _id: 4}]
       if (data === undefined){
         console.log("error")
@@ -91,7 +104,7 @@ export default function AppointmentList() {
       }
 
       const renderAction = (appointment) => {
-        return(<Link to={`${url}/${appointment._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Client Information and Settings</Button></Link>)
+        return(<Link to={`${url}/${appointment._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Appointment Information and Actions</Button></Link>)
       }
       
       const sortTable = (col) => {        
@@ -114,6 +127,7 @@ export default function AppointmentList() {
          }
     }
 
+//to implement once API finished....
 const handleSearchChange = (e) => {
   setSearch(e.target.value);
 };
@@ -124,18 +138,54 @@ const submitSearch = (event) => {
   }
 }
 
+//to implement once API finished....
 const handleChangePage = () => {
 console.log("next")
 }
     
+const handleDateChange = (date) => {
+  setSelectedDate(date);
+};
 
 return(
   <div> 
           {error !== null ? error : ""}
           {appointments !== null && appointments !== undefined ? 
   <div>
-    <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
     <Paper className={classes.root}>
+    <Button size="small" variant="contained" color="primary">Show Today</Button>
+
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <Grid container justify="space-around">
+        <KeyboardDatePicker
+          disableToolbar
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+          id="date-picker-inline"
+          label="Date picker inline"
+          value={selectedDate}
+          onChange={handleDateChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />
+        <KeyboardDatePicker
+          margin="normal"
+          id="date-picker-dialog"
+          label="Date picker dialog"
+          format="MM/dd/yyyy"
+          value={selectedDate}
+          onChange={handleDateChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />      
+        </Grid>
+      </MuiPickersUtilsProvider>
+
+    <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
         <TableHead className>
