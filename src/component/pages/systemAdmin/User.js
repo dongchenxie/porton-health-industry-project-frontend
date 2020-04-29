@@ -48,8 +48,9 @@ export default function UserDetail() {
     const [error, setError] = React.useState(null);
     const [enabled, setEnable] = React.useState(null);
     const [enableMessage, setEnableMessage] = React.useState(null);
+    const [checkedVal, setCheckedVal] = React.useState(null);
 
-
+    
     React.useEffect(() => {
       const start = async () => {
         let data = await authContext.API.getIndivUser(location.pathname.toString().split("/")[3])
@@ -69,6 +70,7 @@ export default function UserDetail() {
               data.data.clinic = [{isCheckInEnabled: true, name: "West Vancouver Clinic"}]
               setUser(data.data)
               setEnable(data.data.isEnabled)
+              setCheckedVal(data.data.isEnabled)
               data.data.isEnabled ? setEnableMessage("Enabled") : setEnableMessage("Not Enabled.")
             }
           })
@@ -124,15 +126,18 @@ export default function UserDetail() {
     let updateAPI = async () => {
       let result = await authContext.API.updateUserEnabled(user['_id'], enabled);
        if (result.status === 200){
-        console.log(result)
+        console.log(enabled)
         if (enabled){ 
           setEnable(!enabled)
+          setCheckedVal(!checkedVal)
           setEnableMessage("Enabled")
+          return result
         } else {
           setEnable(!enabled)
+          setCheckedVal(!checkedVal)
           setEnableMessage("Not Enabled.")
+          return result
         }
-        return result
        } else if(result.status === 400) {
         console.log(result, error)
         setError("Problem with server.")
@@ -204,7 +209,7 @@ export default function UserDetail() {
       Enable/Disable Account: 
 
        <Switch
-        checked={user.isEnabled}
+        checked={checkedVal}
         onChange={updateAPI}
         color="primary"
         name="enabled"
