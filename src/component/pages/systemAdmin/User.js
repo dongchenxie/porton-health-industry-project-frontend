@@ -9,13 +9,16 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
 
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Typography from '@material-ui/core/Typography';
+
 import PasswordResetPage from './resetPW';
-import { render } from "react-dom";
 
 
 const useStyles = makeStyles({
@@ -59,7 +62,9 @@ export default function UserDetail() {
             if (result.role !== 'SYSTEM_ADMIN'){
              return setError("404. Please try again.")
             } else {
-              data.data.clinic = "testing"
+
+              //this can be removed when endpoint is implemented for clinic.
+              data.data.clinic = [{isCheckInEnabled: true, name: "West Vancouver Clinic"}, {isCheckInEnabled: true, name: "East Van Walk-In Clinic"}]
               setUser(data.data)
             }
           })
@@ -82,7 +87,34 @@ export default function UserDetail() {
     }
 
     const renderClinicDropdown = (clinics) => {
-      return(<div>test</div>)
+
+       let clinicList = clinics.map(clinic => {
+         let clinicStatus = clinic.isCheckInEnabled ? "Open" : "Closed"
+         return(<div><Grid container item xs={12} spacing={3}>
+          {formRow("Clinic Name:", clinic.name)}
+          </Grid>
+          <Grid container item xs={12} spacing={3}>
+          {formRow("Clinic Status:", clinicStatus )}
+          </Grid></div>)
+       })
+
+      return(<div>
+    <ExpansionPanel>
+        <ExpansionPanelSummary
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography className={classes.heading}>User Clinics:</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Typography>
+          <Grid container spacing={1}>
+          {clinicList}
+          </Grid>  
+        </Typography>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      </div>)
     }
 
     const renderUser = () => {
@@ -106,8 +138,6 @@ export default function UserDetail() {
         {formRow("Role:", user.role)}
         </Grid>
         <br />
-      {/* to implement: */}
-      {/*///////////////*/}
         {user.role === 'CLIENT_ADMIN' ?  
         <Grid container item xs={12} spacing={3}>
         {formRow("Clinics:", renderClinicDropdown(user.clinic))}
