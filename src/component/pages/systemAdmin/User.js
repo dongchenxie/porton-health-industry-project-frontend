@@ -124,10 +124,16 @@ export default function UserDetail() {
 
 
     let updateAPI = async () => {
-      let result = await authContext.API.updateUserEnabled(user['_id'], enabled);
+      let result = await authContext.API.updateUserEnabled(user['_id'], user.isEnabled);
        if (result.status === 200){
         console.log(result)
-        setEnable(enabled);
+        if (enabled){ 
+          setEnable(!enabled)
+          setEnableMessage("Enabled")
+        } else {
+          setEnable(!enabled)
+          setEnableMessage("Not Enabled.")
+        }
         return result
        } else if(result.status === 400) {
         console.log(result, error)
@@ -135,24 +141,6 @@ export default function UserDetail() {
         return result
        }
       };
-
-  //   const handleSwitch = (event) => {
-  //     //updateUserEnabled
-  //     //    isEnabled: req.body.isEnabled
-  //     console.log(user)
-  //  let updateAPI = async () => {
-  //   let result = await authContext.API.updateUserEnabled(user['_id'], enabled);
-  //    if (result.status === 200){
-  //     console.log(result)
-  //     return result
-  //     // setEnable(!enabled);
-  //    } else if(result.status === 400) {
-  //     console.log(result, error)
-  //     return result
-  //    }
-  //  };
-  //  return updatePass
-  //   }
 
     const renderUser = () => {
          return( 
@@ -218,7 +206,7 @@ export default function UserDetail() {
       Enable/Disable Account: 
 
        <Switch
-        checked={enabled}
+        checked={user.isEnabled}
         onChange={updateAPI}
         color="primary"
         name="enabled"
