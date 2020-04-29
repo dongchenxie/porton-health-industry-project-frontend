@@ -79,11 +79,24 @@ function App() {
         return result
       }
     },
-  getUsers: async function (pageQuery) {
+  getUsers: async function (pageQuery, searchQuery) {
+    let urlParam = undefined
+
+    if (pageQuery && searchQuery){
+      urlParam = `${baseURL}users?page=${pageQuery}&search=${searchQuery}`
+    } else if (pageQuery === undefined && searchQuery){
+      urlParam = `${baseURL}users?search=${searchQuery}`
+    } else if (searchQuery === undefined && pageQuery){
+     urlParam = `${baseURL}users?page=${pageQuery}`
+    } else {
+     urlParam = `${baseURL}users`
+    }
+
+    console.log(urlParam)
     let result = await axios(
       {
         method: "get",
-        url:  pageQuery ? `${baseURL}users?page=${pageQuery}`: `${baseURL}users`,
+        url:  urlParam,
         headers: {
           "auth-token":localStorage.getItem("token"),
           'Access-Control-Allow-Origin': '*'

@@ -92,8 +92,11 @@ export default function Users() {
       }
 
       //call users API passing in the page, set results to view.
-      const callAPI = async (page) => {
-      let data =  await authContext.API.getUsers(page)
+      const callAPI = async (page, query) => {
+        let data = undefined
+        console.log(page, query)
+        query ?  data = await authContext.API.getUsers(page, query) :  data = await authContext.API.getUsers(page)
+        console.log(data)
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
@@ -156,7 +159,7 @@ const handleSearchChange = (e) => {
 
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
-    console.log(search)
+    callAPI(undefined, search)
   }
 }
 
