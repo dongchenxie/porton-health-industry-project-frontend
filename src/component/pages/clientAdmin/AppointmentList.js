@@ -56,7 +56,7 @@ export default function AppointmentList() {
   React.useEffect(() => {
     const start = async () => {
       // let data = await authContext.API.getUsers()
-      let data = [{appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}, {appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'comfiremd', comments: '', reason: 'injury', _id: 1}, {appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor B', status: 'cancled', comments: '', reason: 'covid-19', _id: 1}, {appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor C', status: 'pending', comments: '', reason: 'check-up', _id: 1}]
+      let data = [{patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}, {patient: "ralph wiggum", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'comfiremd', comments: '', reason: 'injury', _id: 2}, {patient: "henry jones", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor B', status: 'cancled', comments: '', reason: 'covid-19', _id: 3}, {patient: "sam doe", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor C', status: 'pending', comments: '', reason: 'check-up', _id: 4}]
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
@@ -93,31 +93,25 @@ export default function AppointmentList() {
       const renderAction = (appointment) => {
         return(<Link to={`${url}/${appointment._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Client Information and Settings</Button></Link>)
       }
-
       
-      const sortTable = (col) => {
-        console.log("sort...")
-      //   if (col === 'email'){
-      //   //bugfix here....
-      //   } else {
-      //   if(direction === "asc"){
-      //     let sorted = users.sort(function(a, b){
-      //       if(a[col] > b[col]) { return 1; }
-      //       if(a[col] < b[col]) { return -1; }  
-      //       return 0;
-      //   })  
-      //   setUsers(sorted)
-      //   setDirection("desc")
-      //   } else {
-      //     let sorted = users.sort(function(a, b){
-      //       if(a[col] < b[col]) { return 1; }
-      //       if(a[col] > b[col]) { return -1; }
-      //       return 0;
-      //   })  
-      //    setUsers(sorted)
-      //    setDirection("asc")
-      //   }
-      // }
+      const sortTable = (col) => {        
+        if(direction === "asc"){
+           let sorted = appointments.sort(function(a, b){
+             if(a[col] > b[col]) { return 1; }
+             if(a[col] < b[col]) { return -1; }  
+             return 0;
+         })  
+         setAppoitnments(sorted)
+         setDirection("desc")
+         } else {
+           let sorted = appointments.sort(function(a, b){
+             if(a[col] < b[col]) { return 1; }
+             if(a[col] > b[col]) { return -1; }
+           return 0;
+         })  
+          setAppoitnments(sorted)
+          setDirection("asc")
+         }
     }
 
 const handleSearchChange = (e) => {
