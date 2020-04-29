@@ -52,6 +52,7 @@ export default function Users() {
 
     const [error, setError] = React.useState(null);
     const [direction, setDirection] = React.useState("asc")
+    const [searchToggle, setSearchToggle] = React.useState(false);
 
     let [page, setPage] = React.useState(1);
 
@@ -160,7 +161,21 @@ const handleSearchChange = (e) => {
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
     callAPI(undefined, search)
+    setSearchToggle(true)
   }
+}
+
+//clear search fields, render base API  result again.
+const clearSearch = () => {
+  console.log('hello world')
+  setSearch("")
+  setSearchToggle(false)
+  callAPI(1)
+}
+
+//button to clear search
+const renderClearOption = () => {
+  return(<Button size="small" variant="contained" color="primary" onClick={() => clearSearch}>Clear Search</Button>)
 }
 
     return(
@@ -168,6 +183,7 @@ const submitSearch = (event) => {
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
     <div>
+      {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
       <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
       <Paper className={classes.root}>
       <TableContainer className={classes.container}>
