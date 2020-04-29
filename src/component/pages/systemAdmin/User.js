@@ -20,8 +20,6 @@ import Switch from '@material-ui/core/Switch';
 
 import PasswordResetPage from './resetPW';
 
-
-
 const useStyles = makeStyles({
     root: {
       minWidth: 275,
@@ -124,7 +122,7 @@ export default function UserDetail() {
 
 
     let updateAPI = async () => {
-      let result = await authContext.API.updateUserEnabled(user['_id'], user.isEnabled);
+      let result = await authContext.API.updateUserEnabled(user['_id'], enabled);
        if (result.status === 200){
         console.log(result)
         if (enabled){ 
@@ -206,7 +204,7 @@ export default function UserDetail() {
       Enable/Disable Account: 
 
        <Switch
-        checked={user.isEnabled}
+        checked={enabled}
         onChange={updateAPI}
         color="primary"
         name="enabled"
