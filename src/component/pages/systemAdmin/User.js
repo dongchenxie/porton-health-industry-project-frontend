@@ -66,9 +66,6 @@ export default function UserDetail() {
             if (result.role !== 'SYSTEM_ADMIN'){
              return setError("404. Please try again.")
             } else {
-
-              //this can be removed when endpoint is implemented for clinic.
-              data.data.clinic = [{isCheckInEnabled: true, name: "West Vancouver Clinic"}]
               setUser(data.data)
               setEnable(data.data.isEnabled)
               setCheckedVal(data.data.isEnabled)
@@ -108,10 +105,10 @@ export default function UserDetail() {
     const formRow = (label, data) => {
       return (
         <React.Fragment>
-          <Grid item xs={4}>
+          <Grid item xs={4}component="span">
           {label}
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={4} component="span">
           {data}
           </Grid>
           </React.Fragment>
@@ -121,14 +118,14 @@ export default function UserDetail() {
     //dropdown menu for clinics
     const renderClinicDropdown = (clinics) => {
        let clinicList = (
-        clinics.map(clinic => {
+        clinics.map((clinic, i) => {
           let clinicStatus = clinic.isCheckInEnbled ? "Open" : "Closed"
-          return(<div><Grid container item xs={12} spacing={3}>
+          return(<span key={i}><Grid container item xs={12} spacing={3} component="span">
            {formRow("Clinic Name:", clinic.name)}
            </Grid>
-           <Grid container item xs={12} spacing={3}>
+           <Grid container item xs={12} spacing={3} component="span">
            {formRow("Clinic Status:", clinicStatus )}
-           </Grid></div>)
+           </Grid></span>)
         }))
 
       return(<div style={{width: '80%'}}>
@@ -141,7 +138,7 @@ export default function UserDetail() {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Typography>
-          <Grid container spacing={1}>
+          <Grid container spacing={1} component="span">
           {clinicList}
           </Grid>  
         </Typography>
