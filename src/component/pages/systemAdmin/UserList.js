@@ -111,8 +111,15 @@ export default function Users() {
           if (result.role !== 'SYSTEM_ADMIN'){
            return setError("404. Please try again.")
           } else {
+            if(data.data.totalResults === 0){
+             setError("No results match your search.")
+             setUsers([])
+             setPageTotal(1)
+            } else {
+            setError("")
             setUsers(data.data.users)
             setPageTotal(data.data.totalPages)
+            }
           }
         })
       }
@@ -165,6 +172,7 @@ const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
     callAPI(undefined, search)
     setSearchToggle(true)
+    setPage(1)
     event.target.value = ""
   }
 }
@@ -174,17 +182,17 @@ const clearSearch = () => {
   setSearch("")
   setSearchToggle(false)
   callAPI(1)
+  setPage(1)
 }
-
 
     return(
     <div> 
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
     <div>
+      <Paper className={classes.root}>
       {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
       <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
-      <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead className>
