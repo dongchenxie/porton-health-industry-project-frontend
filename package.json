@@ -9,6 +9,7 @@
     "cra-template": "1.0.3",
     "formik": "^2.1.4",
     "material-ui-popup-state": "latest",
+    "moment": "^2.24.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
