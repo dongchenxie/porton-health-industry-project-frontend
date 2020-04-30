@@ -97,9 +97,7 @@ export default function Users() {
       //call users API passing in the page, set results to view.
       const callAPI = async (page, query) => {
         let data = undefined
-        console.log(page, query)
         query ?  data = await authContext.API.getUsers(page, query) :  data = await authContext.API.getUsers(page)
-        console.log(data)
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
@@ -195,7 +193,7 @@ const clearSearch = () => {
       <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead className>
+          <TableHead >
             <TableRow>
               {columns.map((column) => (
                 <TableCell 
@@ -209,9 +207,9 @@ const clearSearch = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((row) => {
+            {users.map((row, i) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                   {columns.map((column, id) => {
                     const value = row[column.id];
                     return (
@@ -226,8 +224,8 @@ const clearSearch = () => {
             })}
           </TableBody>
 
-          <TableBody > 
-          <div  style={{display: 'flex', justifyContent: 'center'}}> 
+          <TableBody> 
+          <div  style={{display: 'flex', justifyContent: 'center'}}>
           Page {page} of {pageTotal}
           <ArrowLeftIcon onClick={() => handleChangePage("l")}/>
           <ArrowRightIcon onClick={() => handleChangePage("r")}/>

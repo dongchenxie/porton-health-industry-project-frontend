@@ -192,10 +192,9 @@ export default function UserDetail() {
         {formRow("Role:", user.role)}
         </Grid>
         <br />
-        {user.role === 'CLIENT_ADMIN' ?  
         <Grid container item xs={12} spacing={3}>
         {formRow("Status:", enableMessage)}
-        </Grid> : <br /> }
+        </Grid>
         {user.role === 'CLIENT_ADMIN' ?  
         <Grid container item xs={12} spacing={3}>
         {formRow("Clinics:", renderClinicDropdown(clinics))}
