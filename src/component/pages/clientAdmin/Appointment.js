@@ -2,17 +2,14 @@ import React from "react";
 import AuthContext from "../../../data/AuthContext"
 import { useLocation, useRouteMatch, Link } from 'react-router-dom';
 
-
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
-import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import TextField from '@material-ui/core/TextField';
-
 
 const useStyles = makeStyles({
   root: {
@@ -32,15 +29,14 @@ const useStyles = makeStyles({
 });
 
 
-
 export default function Appointment() {
   const authContext = React.useContext(AuthContext)
   const classes = useStyles();
   let { path } = useRouteMatch();
-  let location = useLocation();
   
   const [error, setError] = React.useState(null);
   const [appoitnment, setAppoitnment] = React.useState(null);
+  const [comment, setComment] = React.useState(null);
 
   React.useEffect(() => {
     const start = async () => {
@@ -78,6 +74,16 @@ export default function Appointment() {
     );
   }
 
+  const submitComment = (e) => {
+    //PUT to appointment....
+    appoitnment.comments = comment
+    console.log(appoitnment)
+  }
+
+  const handleCommentChange = (e) => {
+    setComment(e.target.value);
+  };
+
   const renderAppointment = () => {
     return( 
     <div> <Card className={classes.root} variant="outlined">
@@ -95,25 +101,30 @@ export default function Appointment() {
    <Grid container item xs={12} spacing={3}>
    {formRow("Reason For Visit:", appoitnment.reason)}
    </Grid>
+   {appoitnment.comments ? <Grid container item xs={12} spacing={3}>
+   {formRow("Comments:", appoitnment.comments)}
+   </Grid> : ""}
    <Grid container item xs={12} spacing={3}>
    {formRow("Appointment Status:", appoitnment.status)}
    </Grid>
   </Grid>
  </CardContent>
 
- <CardActions style={{display: 'block'}}>
-   {/* to implment.... */}
-   
-        <TextField
+ <CardActions style={{display: 'block', width: '50%'}}>   
+   <TextField
+          multiline={true}
+          fullWidth={true}
           label="None"
           id="outlined-margin-none"
           className={classes.textField}
           label="Comments"
           variant="outlined"
+          onChange={handleCommentChange}
         />
-
+   <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComment}>Submit</Button>
   </CardActions>
   </Card>
+  
   <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
   </div>)
 }
