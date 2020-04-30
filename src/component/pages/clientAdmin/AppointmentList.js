@@ -58,14 +58,21 @@ export default function AppointmentList() {
   const [initialSort, setInitialSort] = React.useState(null);
   const [search, setSearch] = React.useState("");
   const [direction, setDirection] = React.useState("asc")
-  let [page, setPage] = React.useState(1);
-  
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [page, setPage] = React.useState(1);
 
+  let today = new Date()
+  const [dateA, setDateA] = React.useState(today);
+  const [dateB, setDateB] = React.useState(today);
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    console.log(date)
+    console.log(selectedDate)
+  };
 
   React.useEffect(() => {
     const start = async () => {
-
       //to implement once API finished....
       // let data = await authContext.API.getAppointments()
       let data = [{patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}, {patient: "ralph wiggum", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'comfiremd', comments: '', reason: 'injury', _id: 2}, {patient: "henry jones", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor B', status: 'cancled', comments: '', reason: 'covid-19', _id: 3}, {patient: "sam doe", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor C', status: 'pending', comments: '', reason: 'check-up', _id: 4}]
@@ -142,9 +149,19 @@ const handleChangePage = () => {
 console.log("next")
 }
     
-const handleDateChange = (date) => {
-  setSelectedDate(date);
+const handleDateA = (date) => {
+ setDateA(date)
+ console.log(date)
+ console.log(dateA)
+
 };
+
+const handleDateB = (date2) => {
+  setDateB(date2)
+  console.log(dateB)
+  console.log(date2)
+ };
+
 
 return(
   <div> 
@@ -163,19 +180,24 @@ return(
           margin="normal"
           id="date-picker-inline"
           label="From"
-          value={selectedDate}
-          onChange={handleDateChange}
+          value={dateA}
+          onChange={handleDateA}
           KeyboardButtonProps={{
             'aria-label': 'change date',
           }}
         />
+        </Grid>
+       </MuiPickersUtilsProvider>
+
+       <MuiPickersUtilsProvider utils={DateFnsUtils}>
+       <Grid container justify="space-around">
         <KeyboardDatePicker
           margin="normal"
-          id="date-picker-dialog"
+          id="date-picker-inline"
           label="To"
           format="MM/dd/yyyy"
-          value={selectedDate}
-          onChange={handleDateChange}
+          value={dateB}
+          onChange={handleDateB}
           KeyboardButtonProps={{
             'aria-label': 'change date',
           }}
@@ -187,11 +209,11 @@ return(
 
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
-        <TableHead className>
+        <TableHead >
           <TableRow>
-            {columns.map((column) => (
+            {columns.map((column, i) => (
               <TableCell 
-                key={column.id}
+                key={i}
                 align={column.align}
                 style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                 {column.label}
@@ -201,13 +223,13 @@ return(
           </TableRow>
         </TableHead>
         <TableBody>
-          {appointments.map((row) => {
+          {appointments.map((row, i) => {
             return (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                {columns.map((column, id) => {
+              <TableRow hover role="checkbox" tabIndex={-1} key={i}>
+                {columns.map((column, i) => {
                   let value = row[column.id];
                   return (
-                    <TableCell key={column.id} key={id} align={column.align}>
+                    <TableCell key={column.id} key={i} align={column.align}>
                       {column.id === 'action' ? renderAction(row) : value}
                     </TableCell>
                   );
