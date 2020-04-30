@@ -41,7 +41,7 @@ import UserDetail from '../component/pages/systemAdmin/User';
 import CreateAccount from '../component/pages/systemAdmin/CreateAccount'
 
 //client admin components:
-import ManageCheckin from '../component/pages/clientAdmin/ManageCheckin'
+import TerminalList from '../component/pages/clientAdmin/TerminalList'
 import AppointmentList from '../component/pages/clientAdmin/AppointmentList'
 import Appointment from '../component/pages/clientAdmin/Appointment'
 
@@ -169,19 +169,14 @@ export default function AdminRouter(props) {
       { role === "CLIENT_ADMIN" ? 
       <List>
         <Divider />
-          {/* <Link to={`${url}/modAppointment`} style={{textDecoration: 'none', color: 'inherit'}}> 
-            <ListItem button>
-              <ListItemText primary="Modify Appointment" />
-            </ListItem >
-          </Link>  */}
-        <Link to={`${url}/manageCheckin`} style={{textDecoration: 'none', color: 'inherit'}}>  
-          <ListItem button>
-            <ListItemText primary="Manage Online Check In" />
-          </ListItem >
-       </Link> 
        <Link to={`${url}/appointments`} style={{textDecoration: 'none', color: 'inherit'}}>  
           <ListItem button>
             <ListItemText primary="Appointments" />
+          </ListItem >
+       </Link> 
+       <Link to={`${url}/terminals`} style={{textDecoration: 'none', color: 'inherit'}}>  
+          <ListItem button>
+            <ListItemText primary="Check-in Terminals" />
           </ListItem >
        </Link> 
       </List>
@@ -346,8 +341,11 @@ export default function AdminRouter(props) {
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />
               </PrivateRoute>
-              <PrivateRoute path={`${path}/manageCheckin`}>
-                <ManageCheckin />
+              <PrivateRoute path={`${path}/terminals/:id`}>
+                <TerminalList />
+              </PrivateRoute>
+              <PrivateRoute path={`${path}/terminals`}>
+                <TerminalList />
               </PrivateRoute>
               <PrivateRoute path={`${path}/appointments/:id`}>
                 <Appointment />
