@@ -42,6 +42,7 @@ import CreateAccount from '../component/pages/systemAdmin/CreateAccount'
 
 //client admin components:
 import TerminalList from '../component/pages/clientAdmin/TerminalList'
+import Terminal from '../component/pages/clientAdmin/Terminal'
 import AppointmentList from '../component/pages/clientAdmin/AppointmentList'
 import Appointment from '../component/pages/clientAdmin/Appointment'
 
@@ -342,7 +343,7 @@ export default function AdminRouter(props) {
                 <CreateAccount />
               </PrivateRoute>
               <PrivateRoute path={`${path}/terminals/:id`}>
-                <TerminalList />
+                <Terminal/>
               </PrivateRoute>
               <PrivateRoute path={`${path}/terminals`}>
                 <TerminalList />
