@@ -3,6 +3,7 @@ import AdminRouter from './AdminRouter'
 import CheckInPage from "../component/pages/CheckIn"
 import LoginPage from '../component/pages/Login';
 import TerminalLogin from '../component/pages/TerminalLogin'
+import TerminalResult from '../component/pages/TerminalResult'
 
 import {
     BrowserRouter as Router,
@@ -26,6 +27,9 @@ function MainRouter() {
                    </Route>
                    <Route path={`/terminalLogin`}>
                 <TerminalLogin />
+              </Route>
+              <Route path={`/terminalResult`}>
+                <TerminalResult />
               </Route>
                     <Route path="/admin">
                         <AdminRouter />
