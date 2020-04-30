@@ -38,8 +38,9 @@ import dataAccessService from '../App'
 //sys. admin components:
 import UserList from '../component/pages/systemAdmin/UserList';
 import UserDetail from '../component/pages/systemAdmin/User';
-import CreateAccount from '../component/pages/CreateAccount'
+import CreateAccount from '../component/pages/systemAdmin/CreateAccount'
 
+//Terminal component
 
 
 //client admin components:
@@ -348,6 +349,7 @@ export default function AdminRouter(props) {
               <PrivateRoute path={`${path}/createAccount`}>
                 <CreateAccount />
               </PrivateRoute>
+             
               <PrivateRoute path={`${path}/searchAppointments`}>
                 <SearchAppointment />
               </PrivateRoute>

@@ -2,6 +2,7 @@ import React from 'react';
 import AdminRouter from './AdminRouter'
 import CheckInPage from "../component/pages/CheckIn"
 import LoginPage from '../component/pages/Login';
+import TerminalLogin from '../component/pages/TerminalLogin'
 
 import {
     BrowserRouter as Router,
@@ -23,6 +24,9 @@ function MainRouter() {
                     <Route path={`/login`}>
                         <LoginPage />
                    </Route>
+                   <Route path={`/terminalLogin`}>
+                <TerminalLogin />
+              </Route>
                     <Route path="/admin">
                         <AdminRouter />
                     </Route>
