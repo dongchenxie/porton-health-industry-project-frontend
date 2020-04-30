@@ -23,7 +23,6 @@ import {
   KeyboardDatePicker
 } from '@material-ui/pickers';
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 275,
@@ -59,17 +58,11 @@ export default function AppointmentList() {
   const [search, setSearch] = React.useState("");
   const [direction, setDirection] = React.useState("asc")
   const [page, setPage] = React.useState(1);
+  const [searchToggle, setSearchToggle] = React.useState(null);
 
   let today = new Date()
   const [dateA, setDateA] = React.useState(today);
   const [dateB, setDateB] = React.useState(today);
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    console.log(date)
-    console.log(selectedDate)
-  };
 
   React.useEffect(() => {
     const start = async () => {
@@ -141,8 +134,19 @@ const handleSearchChange = (e) => {
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
     console.log(search)
+    setSearchToggle(true)
+    setPage(1)
+    event.target.value = ""
   }
 }
+
+//clear search fields, render base API  result again.
+const clearSearch = () => {
+  setSearch("")
+  setSearchToggle(false)
+  setPage(1)
+}
+
 
 //to implement once API finished....
 const handleChangePage = () => {
@@ -151,17 +155,18 @@ console.log("next")
     
 const handleDateA = (date) => {
  setDateA(date)
- console.log(date)
- console.log(dateA)
-
 };
 
 const handleDateB = (date2) => {
   setDateB(date2)
-  console.log(dateB)
-  console.log(date2)
+  //do something with dateA, dateB
  };
 
+ const handleToday = () => {
+  setDateA(today)
+  setDateB(today)
+  console.log(dateA, dateB)
+ }
 
 return(
   <div> 
@@ -169,8 +174,8 @@ return(
           {appointments !== null && appointments !== undefined ? 
   <div>
     <Paper className={classes.root}>
-    <Button size="small" variant="contained" color="primary">Show Today</Button>
-
+    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
+    <Button size="small" variant="contained" color="primary" onClick={handleToday}>Show Today</Button>
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <KeyboardDatePicker
@@ -186,11 +191,6 @@ return(
             'aria-label': 'change date',
           }}
         />
-        </Grid>
-       </MuiPickersUtilsProvider>
-
-       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-       <Grid container justify="space-around">
         <KeyboardDatePicker
           margin="normal"
           id="date-picker-inline"
