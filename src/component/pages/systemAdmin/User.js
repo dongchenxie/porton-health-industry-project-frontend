@@ -79,7 +79,6 @@ export default function UserDetail() {
     }, [])
 
     const grabClinics = async () => {
-      //user id 5e990ebba93b163294ef066d
       let result = await authContext.API.getClinics();
        if (result.status === 200){
           console.log(result)
@@ -91,6 +90,7 @@ export default function UserDetail() {
        }
     }
 
+    //match user ID with clinic.
     const parseClinics = (resultObj) => {
       let userId = location.pathname.toString().split("/")[3]
       resultObj.forEach(clinicObj => {
@@ -153,13 +153,13 @@ export default function UserDetail() {
        if (result.status === 200){
         console.log(enabled)
         if (enabled){ 
-          setEnable(!enabled)
-          setCheckedVal(!checkedVal)
+          setEnable(false)
+          setCheckedVal(true)
           setEnableMessage("Enabled")
           return result
         } else {
-          setEnable(!enabled)
-          setCheckedVal(!checkedVal)
+          setEnable(true)
+          setCheckedVal(false)
           setEnableMessage("Not Enabled.")
           return result
         }
@@ -233,7 +233,6 @@ export default function UserDetail() {
      {/*///////////////*/}
      <Typography style={{marginLeft: '2%', marginTop: '2%'}}> 
       Enable/Disable Account: 
-
        <Switch
         checked={checkedVal}
         onChange={updateAPI}
