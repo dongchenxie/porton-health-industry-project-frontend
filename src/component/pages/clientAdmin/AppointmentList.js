@@ -80,7 +80,7 @@ export default function AppointmentList() {
           if (result.role !== 'CLIENT_ADMIN'){
            return setError("404. Please try again.")
           } else {
-            setapiResult(data)
+            setapiResult(formatDates(data))
             setAppoitnments(data)
             setInitialSort(data)
           }
@@ -90,6 +90,21 @@ export default function AppointmentList() {
     start()
   }, [])
   
+const formatDates = (aptObj) => {
+  let localObj = []
+  aptObj.forEach(appointment => {    
+     appointment.appointmentVal = appointment.appointmentTime
+     let parseDate = appointment.appointmentTime.split('T')[0]
+     let parseTime = appointment.appointmentTime.split('T')[1].substr(0, 5)
+
+    appointment.appointmentTime = `${parseDate} ${parseTime}`
+
+    localObj.push(appointment)
+  });
+
+  return localObj
+}
+
   const columns = [
     { id: 'patient', label: 'Patient', minWidth: 120 },
     { id: 'appointmentTime', label: 'Apt. Time', minWidth: 120 },
@@ -173,6 +188,7 @@ return(
           {error !== null ? error : ""}
           {appointments !== null && appointments !== undefined ? 
   <div>
+    {console.log(appointments)}
     <Paper className={classes.root}>
     {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
     <Button size="small" variant="contained" color="primary" onClick={handleToday}>Show Today</Button>
