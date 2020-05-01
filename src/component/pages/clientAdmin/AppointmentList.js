@@ -66,9 +66,11 @@ export default function AppointmentList() {
 
   React.useEffect(() => {
     const start = async () => {
-      //to implement once API finished....
-      // let data = await authContext.API.getAppointments()
-      let data = [{patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}, {patient: "ralph wiggum", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'comfiremd', comments: '', reason: 'injury', _id: 2}, {patient: "henry jones", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor B', status: 'cancled', comments: '', reason: 'covid-19', _id: 3}, {patient: "sam doe", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor C', status: 'pending', comments: '', reason: 'check-up', _id: 4}]
+      let data = await authContext.API.getClientAppointments()
+      console.log(data.data.data)
+      
+      // dummy data...
+      // let data = [{patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}, {patient: "ralph wiggum", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'comfiremd', comments: '', reason: 'injury', _id: 2}, {patient: "henry jones", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor B', status: 'cancled', comments: '', reason: 'covid-19', _id: 3}, {patient: "sam doe", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor C', status: 'pending', comments: '', reason: 'check-up', _id: 4}]
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
@@ -80,9 +82,9 @@ export default function AppointmentList() {
           if (result.role !== 'CLIENT_ADMIN'){
            return setError("404. Please try again.")
           } else {
-            setapiResult(formatDates(data))
-            setAppoitnments(data)
-            setInitialSort(data)
+            setapiResult(formatDates(data.data.data))
+            setAppoitnments(data.data.data)
+            setInitialSort(data.data.data)
           }
         })
       }
