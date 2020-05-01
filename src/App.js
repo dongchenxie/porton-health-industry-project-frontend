@@ -142,8 +142,10 @@ function App() {
       ).catch((e) => 
         { return { error: e }} )
       if (result.status === 200) {
+        console.log(result)
         return { status: 200, data: result.data };
       } else {
+        console.log(result)
         return result
       }
     }

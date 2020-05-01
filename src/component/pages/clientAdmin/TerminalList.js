@@ -96,6 +96,9 @@ export default function TerminalList() {
         return(<Link to={`${url}/${terminal._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Terminal Information and Settings</Button></Link>)
       }
 
+      const renderToken = (token) => {
+        return(<Button size="small" variant="contained" color="primary" onClick={() => displayToken(token)}>{token}</Button>)
+      }
       
       const sortTable = (col) => {
         console.log("sort...")
@@ -147,12 +150,33 @@ const clearSearch = () => {
   setPage(1)
 }
 
+const createTerminal = () => {
+  //POST to client/terminal endpoint.
+  alert("create popup")
+}
+
+const parseRows = (column, value, row) => {
+  if (column === 'token'){
+    return renderToken(value)
+  } else if (column === 'action'){
+    return renderAction(row)
+  } else {
+    return value
+  }
+}
+
+const displayToken = (token) => {
+  console.log(token)
+}
+
 return(
   <div> 
           {error !== null ? error : ""}
           {terminals !== null && terminals !== undefined ? 
   <div>
+    <h3>Terminals: </h3>
     <Paper className={classes.root}>
+    <Button size="small" variant="contained" color="primary" onClick={createTerminal}>Create New</Button>
     {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
     <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
     <TableContainer className={classes.container}>
@@ -178,7 +202,7 @@ return(
                   const value = row[column.id];
                   return (
                     <TableCell key={column.id} key={id} align={column.align}>
-                      {column.id === 'action' ? renderAction(row) : value}
+                      {parseRows(column.id, value, row)}
                     </TableCell>
                   );
                 })}
