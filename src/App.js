@@ -80,11 +80,24 @@ function App() {
         return result
       }
     },
-  getUsers: async function () {
+  getUsers: async function (pageQuery, searchQuery) {
+    let urlParam = undefined
+
+    if (pageQuery && searchQuery){
+      urlParam = `${baseURL}users?page=${pageQuery}&search=${searchQuery}`
+    } else if (pageQuery === undefined && searchQuery){
+      urlParam = `${baseURL}users?search=${searchQuery}`
+    } else if (searchQuery === undefined && pageQuery){
+     urlParam = `${baseURL}users?page=${pageQuery}`
+    } else {
+     urlParam = `${baseURL}users`
+    }
+
+    console.log(urlParam)
     let result = await axios(
       {
         method: "get",
-        url: `${baseURL}users`,
+        url:  urlParam,
         headers: {
           "auth-token":localStorage.getItem("token"),
           'Access-Control-Allow-Origin': '*'
@@ -129,6 +142,39 @@ function App() {
           return {error, status: 400 }
       })
       return result
+    },
+    updateUserEnabled: async function (id, status) {
+      console.log("inside function")
+      let result = await axios.put(`${baseURL}user/permission/${id}`, {
+        isEnabled: status
+    })
+        .then(function (response) {
+          console.log(response)
+            return response
+        })
+        .catch(function (error) {
+          console.log(error)
+            return {error, status: 400 }
+        })
+        return result
+      },
+      getClinics: async function () {
+      let result = await axios(
+        {
+          method: "get",
+          url:  `${baseURL}clinics`,
+          headers: {
+            "auth-token":localStorage.getItem("token"),
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+      ).catch((e) => 
+        { return { error: e }} )
+      if (result.status === 200) {
+        return { status: 200, data: result.data };
+      } else {
+        return result
+      }
     }
   }
 
