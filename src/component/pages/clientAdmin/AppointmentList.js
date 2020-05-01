@@ -53,7 +53,8 @@ export default function AppointmentList() {
   const authContext = React.useContext(AuthContext)
   const [error, setError] = React.useState(null);
   const [appointments, setAppoitnments] = React.useState(null);
-  const [apiResult, setapiResult] = React.useState(null);
+  const [initialApiResult, setinitialApiResult] = React.useState(null);
+  const [meta, setMeta] = React.useState(null);
   const [initialSort, setInitialSort] = React.useState(null);
   const [search, setSearch] = React.useState("");
   const [direction, setDirection] = React.useState("asc")
@@ -82,9 +83,14 @@ export default function AppointmentList() {
           if (result.role !== 'CLIENT_ADMIN'){
            return setError("404. Please try again.")
           } else {
-            setapiResult(formatDates(data.data.data))
+            if(data.data.metadata.totalResults === 0){
+              setError("No current appointments")
+            } else {
+            setMeta(data.data.metadata)
+            setinitialApiResult(formatDates(data.data.data))
             setAppoitnments(data.data.data)
             setInitialSort(data.data.data)
+            }
           }
         })
       }
@@ -260,7 +266,7 @@ return(
 
         <TableBody > 
         <div  style={{display: 'flex', justifyContent: 'center'}}> 
-        Page {page} of {apiResult.totalPages}
+        Page {page} of {meta.totalPages}
         <ArrowLeftIcon onClick={() => handleChangePage("l")}/>
         <ArrowRightIcon onClick={() => handleChangePage("r")}/>
         </div>
