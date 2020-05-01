@@ -78,7 +78,7 @@ export default function SimpleTable() {
                           }}>Appointment Information</Typography>
                           <br></br>
                           <hr></hr>
-      <Table className={classes.table} aria-label="simple table" className={classes.tableStyle} component={Paper} style={{}}  >
+      <Table className={classes.table} aria-label="simple table" className={classes.tableStyle}  >
         
         <TableBody style={{}}>
           {rows.map((row) => (
