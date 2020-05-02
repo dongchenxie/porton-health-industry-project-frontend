@@ -45,10 +45,10 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+
 const startStamp = "T00:00:00.000Z";
 const endStamp = "T23:59:59.999Z";
 const today = new Date().toISOString().split("T")[0]
-
 
 export default function AppointmentList() {
   const classes = useStyles();
@@ -64,6 +64,7 @@ export default function AppointmentList() {
   const [direction, setDirection] = React.useState("asc")
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
+  //const [query, useQuery] = React.useState({term: undefined, start: undefined, end: undefined, page: undefined})
 
   const [dateA, setDateA] = React.useState(today);
   const [dateB, setDateB] = React.useState(today);
@@ -74,9 +75,8 @@ export default function AppointmentList() {
     }
     start()
   }, [])
-
-
-  const callAPI = async (query, start, end) => {
+  
+  const callAPI = async (query, start, end, page) => {
     let apiData = undefined
     apiData = await authContext.API.getClientAppointments(query, start, end) 
   if (apiData === undefined){
@@ -91,8 +91,13 @@ export default function AppointmentList() {
        return setError("404. Please try again.")
       } else {
         if(apiData.data.metadata.totalResults === 0){
-         setError("No results match your search.")
-         setAppoitnments([])
+          setMeta(apiData.data.metadata)
+          setMeta((prevState) => ({
+            ...prevState,
+            totalPages: 1,
+          }))
+          setError("No current appointments")
+          setAppoitnments([])
          setPage(1)
         } else {
         setError("")
@@ -180,32 +185,37 @@ const clearSearch = () => {
   setPage(1)
 }
 
-const handleDateA = (date) => {
-  setDateA(date.toISOString())
- };
- 
- const handleDateB = (date2) => {
-   setDateB(date2)
-   let val = date2.toISOString()  
-   callAPI(undefined, dateA, val)
- };
- 
-  const handleToday = () => {
-     let a = today + startStamp
-     let b = today + endStamp
- 
-     setDateA(a)
-     setDateA(a)
-     setError("")
-     clearSearch()
-     callAPI(undefined, a, b)
-   }
+ const handleDateA = (date) => {
+    setDateA(date.toISOString())
+   };
+   
+   const handleDateB = (date2) => {
+     setDateB(date2)
+     let val = date2.toISOString()  
+     callAPI(undefined, dateA, val)
+   };
+   
+    const handleToday = () => {
+       let a = today + startStamp
+       let b = today + endStamp
+   
+       setDateA(a)
+       setDateA(a)
+       setError("")
+       clearSearch()
+       callAPI(undefined, a, b)
+     }
 
-//to implement once API finished....
-const handleChangePage = () => {
-console.log("next")
-}
-
+  //might need some correction once more seeded data added...
+const handleChangePage = async (pageDir) => {
+  if (pageDir == 'r' && page + 1 <= meta.totalPages){
+   // callAPI(page + 1)
+    setPage(page += 1)
+  } else if (pageDir == 'l' && page - 1 >= 1){
+  //  callAPI(page - 1)
+    setPage(page -= 1)
+  }
+};
 
 return(
   <div> 
