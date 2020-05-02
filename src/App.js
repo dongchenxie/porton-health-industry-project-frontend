@@ -129,11 +129,28 @@ function App() {
       })
       return result
     },
-    getClientAppointments: async function () {
+    getClientAppointments: async function (searchQuery) {
+      let urlParam = undefined
+
+      // if (pageQuery && searchQuery){
+      //   urlParam = `${baseURL}users?page=${pageQuery}&search=${searchQuery}`
+      // } else if (pageQuery === undefined && searchQuery){
+      //   urlParam = `${baseURL}users?search=${searchQuery}`
+      // } else if (searchQuery === undefined && pageQuery){
+      //  urlParam = `${baseURL}users?page=${pageQuery}`
+      // } else {
+
+      if(searchQuery){
+        urlParam = `${baseURL}client/appointments?search=${searchQuery}`
+      } else {
+       urlParam = `${baseURL}client/appointments`
+      }
+
+
       let result = await axios(
         {
           method: "get",
-          url: `${baseURL}client/appointments`,
+          url: urlParam,
           headers: {
             "auth-token":localStorage.getItem("token"),
             'Access-Control-Allow-Origin': '*'

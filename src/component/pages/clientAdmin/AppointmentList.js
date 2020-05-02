@@ -154,6 +154,36 @@ const formatAppoitments = (aptObj) => {
          }
     }
 
+    const callAPI = async (query) => {
+      let data = undefined
+      query ?  data = await authContext.API.getClientAppointments(query) :  data = await authContext.API.getClientAppointments()
+      console.log(data)
+    if (data === undefined){
+      console.log("error")
+      setError("Error grabbing data from the server.")
+    } else if (data.data === undefined){
+      console.log("error")
+      setError("Error grabbing data from the server.")
+    } else {
+      authContext.API.readToken(authContext.authState).then(function(result){
+        if (result.role !== 'CLIENT_ADMIN'){
+         return setError("404. Please try again.")
+        } else {
+          if(data.data.metadata.totalResults === 0){
+           setError("No results match your search.")
+           setAppoitnments([])
+           setPage(1)
+          } else {
+          setError("")
+          setMeta(data.data.metadata)
+          setAppoitnments(formatAppoitments(data.data.data))
+          setPage(data.data.metadata.totalPages)
+          }
+        }
+      })
+    }
+  }
+
 //to implement once API finished....
 const handleSearchChange = (e) => {
   setSearch(e.target.value);
@@ -161,7 +191,7 @@ const handleSearchChange = (e) => {
 
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
-    console.log(search)
+    callAPI(search)
     setSearchToggle(true)
     setPage(1)
     event.target.value = ""
@@ -172,6 +202,7 @@ const submitSearch = (event) => {
 const clearSearch = () => {
   setSearch("")
   setSearchToggle(false)
+  callAPI()
   setPage(1)
 }
 
@@ -201,7 +232,6 @@ return(
           {error !== null ? error : ""}
           {appointments !== null && appointments !== undefined ? 
   <div>
-    {/* { console.log(appointments)} */}
     <h3>Appointments: </h3>
     <Paper className={classes.root}>
     {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
