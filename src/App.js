@@ -143,11 +143,10 @@ function App() {
         urlParam = `${baseURL}client/appointments?start_date=${start}&end_date=${end}&page=${queryPage}`
       } else if (searchQuery && start && end){
         urlParam = `${baseURL}client/appointments?search=${searchQuery}&start_date=${start}&end_date=${end}&page=${queryPage}`
-    } else {
+      } else {
         urlParam = `${baseURL}client/appointments?page=${queryPage}`
       }
 
-      console.log("HERE:", urlParam)
       let result = await axios(
         {
           method: "get",
@@ -184,7 +183,18 @@ function App() {
       } else {
         return result
       }
-    }
+    },
+    updateAppointment: async function (id, reqBody) {
+      let result = await axios.put(`${baseURL}client/appointment/${id}`, reqBody)
+        .then(function (response) {
+            return response
+        })
+        .catch(function (error) {
+          console.log(error)
+            return {error, status: 400 }
+        })
+        return result
+      }
   }
 
   //The state 

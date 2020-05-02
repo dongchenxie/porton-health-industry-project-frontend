@@ -76,10 +76,29 @@ export default function Appointment() {
     );
   }
 
-  const submitComment = (e) => {
-    //PUT to appointment....
-    appoitnment.comments = comment
-    console.log(appoitnment)
+  const submitComment = async (e) => {
+    if (comment === "" || comment === null){
+      return setError("Can not be blank.")
+    }
+
+    let reqBody = {
+      "doctorName": appoitnment.doctorName,
+      "appointmentTime": appoitnment.appointmentTime,
+      "reason": appoitnment.reason,
+      "status": appoitnment.status,
+      "comment": comment,
+      "clinic": appoitnment.clinic,
+      "patient": appoitnment.patient
+  };
+
+       let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
+        if (result.status === 200){
+         setAppoitnment(result.data)
+         setError("")
+        } else if (result.status === 400) {
+         console.log(result)
+         setError("Error submitting data to the server.")
+        }
   }
 
   const handleCommentChange = (e) => {
@@ -103,7 +122,7 @@ export default function Appointment() {
    <Grid container item xs={12} spacing={3}>
    {formRow("Reason For Visit:", appoitnment.reason)}
    </Grid>
-   {appoitnment.comments ? <Grid container item xs={12} spacing={3}>
+   {appoitnment.comment && appoitnment.comment !== "" ? <Grid container item xs={12} spacing={3}>
    {formRow("Comments:", appoitnment.comment)}
    </Grid> : ""}
    <Grid container item xs={12} spacing={3}>

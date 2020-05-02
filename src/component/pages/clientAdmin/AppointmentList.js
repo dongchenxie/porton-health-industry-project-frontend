@@ -144,26 +144,6 @@ const formatAppoitments = (aptObj) => {
       const renderAction = (appointment) => {
         return(<Link to={`${url}/${appointment._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Appointment Information and Actions</Button></Link>)
       }
-      
-      const sortTable = (col) => {        
-        if(direction === "asc"){
-           let sorted = appointments.sort(function(a, b){
-             if(a[col] > b[col]) { return 1; }
-             if(a[col] < b[col]) { return -1; }  
-             return 0;
-         })  
-         setAppoitnments(sorted)
-         setDirection("desc")
-         } else {
-           let sorted = appointments.sort(function(a, b){
-             if(a[col] < b[col]) { return 1; }
-             if(a[col] > b[col]) { return -1; }
-           return 0;
-         })  
-          setAppoitnments(sorted)
-          setDirection("asc")
-         }
-    }
      
 const handleSearchChange = (e) => {
   setSearch(e.target.value);
@@ -173,7 +153,6 @@ const handleSearchChange = (e) => {
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
     query.term = search
-    console.log(query)
     setSearchToggle(true)
     setPage(1)
     event.target.value = ""
@@ -188,7 +167,6 @@ const clearSearch = () => {
   query.term = undefined
   query.page = undefined
 
-  console.log(query)
   setPage(1)
   return callAPI(query)
 }
@@ -206,7 +184,6 @@ const clearSearch = () => {
     query.end = val
     query.page = undefined
   
-    console.log(query)
     return callAPI(query)
    };
    
@@ -226,7 +203,6 @@ const clearSearch = () => {
       query.end = b
       query.page = undefined
 
-      console.log(query)
       return callAPI(query)
      }
 
@@ -242,6 +218,26 @@ const handleChangePage = async (pageDir) => {
   return  callAPI(query)
   }
 };
+
+const sortTable = (col) => {
+  if(direction === "asc"){
+    let sorted = appointments.sort(function(a, b){
+      if(a[col] > b[col]) { return 1; }
+      if(a[col] < b[col]) { return -1; }  
+      return 0;
+  })  
+  setAppoitnments(sorted)
+  setDirection("desc")
+  } else {
+    let sorted = appointments.sort(function(a, b){
+      if(a[col] < b[col]) { return 1; }
+      if(a[col] > b[col]) { return -1; }
+      return 0;
+  })  
+   setAppoitnments(sorted)
+   setDirection("asc")
+  }
+}
 
 return(
   <div> 
