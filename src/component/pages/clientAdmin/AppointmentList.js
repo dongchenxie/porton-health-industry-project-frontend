@@ -67,11 +67,12 @@ export default function AppointmentList() {
 
   React.useEffect(() => {
     const start = async () => {
-      let test = await authContext.API.getClientAppointments()
-      console.log(test)
-     // console.log(data.data.data)
+      let data = await authContext.API.getClientAppointments()
       // dummy data...
-       let data = {"data": { "metadata": {totalPages: 1}, "data": [{patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}, {patient: "ralph wiggum", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'comfiremd', comments: '', reason: 'injury', _id: 2}, {patient: "henry jones", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor B', status: 'cancled', comments: '', reason: 'covid-19', _id: 3}, {patient: "sam doe", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor C', status: 'pending', comments: '', reason: 'check-up', _id: 4}]}}
+      //let data = {"data": { "metadata": {totalPages: 1}, "data": [{patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}, {patient: "ralph wiggum", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'comfiremd', comments: '', reason: 'injury', _id: 2}, {patient: "henry jones", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor B', status: 'cancled', comments: '', reason: 'covid-19', _id: 3}, {patient: "sam doe", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor C', status: 'pending', comments: '', reason: 'check-up', _id: 4}]}}
+      //console.log(data)
+      console.log(data)
+
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
@@ -87,8 +88,8 @@ export default function AppointmentList() {
               setError("No current appointments")
             } else {
             setMeta(data.data.metadata)
-            setinitialApiResult(formatDates(data.data.data))
-            setAppoitnments(data.data.data)
+        //    setinitialApiResult(formatDates(data.data.data))
+            setAppoitnments(formatAppoitments(data.data.data))
             setInitialSort(data.data.data)
             }
           }
@@ -98,12 +99,16 @@ export default function AppointmentList() {
     start()
   }, [])
   
-const formatDates = (aptObj) => {
+  
+const formatAppoitments = (aptObj) => {
   let localObj = []
   aptObj.forEach(appointment => {    
      appointment.appointmentVal = appointment.appointmentTime
      let parseDate = appointment.appointmentTime.split('T')[0]
      let parseTime = appointment.appointmentTime.split('T')[1].substr(0, 5)
+
+     let fullName = `${appointment.patient[0].firstName} ${appointment.patient[0].lastName}`
+     appointment.patient = fullName
 
     appointment.appointmentTime = `${parseDate} ${parseTime}`
 
@@ -196,7 +201,7 @@ return(
           {error !== null ? error : ""}
           {appointments !== null && appointments !== undefined ? 
   <div>
-    {console.log(appointments)}
+    {/* { console.log(appointments)} */}
     <h3>Appointments: </h3>
     <Paper className={classes.root}>
     {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
