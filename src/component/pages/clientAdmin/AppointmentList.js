@@ -75,9 +75,6 @@ export default function AppointmentList() {
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
-      } else if (data === undefined){
-        console.log("error")
-        setError("Error grabbing data from the server.")
       } else {
         authContext.API.readToken(authContext.authState).then(function(result){
           if (result.role !== 'CLIENT_ADMIN'){
@@ -154,12 +151,12 @@ const formatAppoitments = (aptObj) => {
     }
 
     const callAPI = async (query, start, end) => {
-      let data = undefined
-      data = await authContext.API.getClientAppointments(query, start, end) 
-    if (data === undefined){
+      let apiData = undefined
+      apiData = await authContext.API.getClientAppointments(query, start, end) 
+    if (apiData === undefined){
       console.log("error")
       setError("Error grabbing data from the server.")
-    } else if (data.data === undefined){
+    } else if (apiData.data === undefined){
       console.log("error")
       setError("Error grabbing data from the server.")
     } else {
@@ -167,21 +164,40 @@ const formatAppoitments = (aptObj) => {
         if (result.role !== 'CLIENT_ADMIN'){
          return setError("404. Please try again.")
         } else {
-          if(data.data.metadata.totalResults === 0){
+          if(apiData.data.metadata.totalResults === 0){
            setError("No results match your search.")
            setAppoitnments([])
            setPage(1)
           } else {
           setError("")
-          setMeta(data.data.metadata)
-          setAppoitnments(formatAppoitments(data.data.data))
-          setPage(data.data.metadata.totalPages)
+          setMeta(apiData.data.metadata)
+          setAppoitnments(formatAppoitments(apiData.data.data))
+          setPage(apiData.data.metadata.totalPages)
           }
         }
       })
     }
   }
 
+  const handleDateA = (date) => {
+    setDateA(date.toISOString())
+   };
+   
+   const handleDateB = (date2) => {
+     setDateB(date2)
+     let val = date2.toISOString()  
+     callAPI(undefined, dateA, val)
+   };
+   
+    const handleToday = () => {
+       let a = today + startStamp
+       let b = today + endStamp
+   
+       setDateA(a)
+       setDateA(a)
+       callAPI(undefined, a, b)
+     }
+     
 //to implement once API finished....
 const handleSearchChange = (e) => {
   setSearch(e.target.value);
@@ -208,25 +224,7 @@ const clearSearch = () => {
 const handleChangePage = () => {
 console.log("next")
 }
-    
-const handleDateA = (date) => {
- setDateA(date.toISOString())
-};
 
-const handleDateB = (date2) => {
-  setDateB(date2)
-  let val = date2.toISOString()  
-  callAPI(undefined, dateA, val)
-};
-
- const handleToday = () => {
-    let a = today + startStamp
-    let b = today + endStamp
-
-    setDateA(a)
-    setDateA(a)
-    callAPI(undefined, a, b)
-  }
 
 return(
   <div> 

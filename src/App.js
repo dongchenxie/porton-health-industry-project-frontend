@@ -159,6 +159,24 @@ function App() {
         console.log(result)
         return result
       }
+    },
+    getIndivAppointment: async function(param) {
+      let result = await axios(
+        {
+          method: "get",
+          url: `${baseURL}client/appointment/${param}`,
+          headers: {
+            "auth-token":localStorage.getItem("token"),
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+      ).catch((e) => 
+        { return { error: e } })
+      if (result.status === 200) {
+        return { status: 200, data: result.data };
+      } else {
+        return result
+      }
     }
   }
 

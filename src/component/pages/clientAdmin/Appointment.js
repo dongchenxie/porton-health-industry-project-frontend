@@ -32,6 +32,7 @@ const useStyles = makeStyles({
 export default function Appointment() {
   const authContext = React.useContext(AuthContext)
   const classes = useStyles();
+  let location = useLocation();
   let { path } = useRouteMatch();
   
   const [error, setError] = React.useState(null);
@@ -40,8 +41,9 @@ export default function Appointment() {
 
   React.useEffect(() => {
     const start = async () => {
-      //let data = await authContext.API.getIndivUser(location.pathname.toString().split("/")[3])
-      let data = {patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}
+      let data = await authContext.API.getIndivAppointment(location.pathname.toString().split("/")[3]) 
+      console.log(data)
+     // let data = {patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
@@ -53,7 +55,7 @@ export default function Appointment() {
           if (result.role !== 'CLIENT_ADMIN'){
            return setError("404. Please try again.")
           } else {
-            setAppoitnment(data)
+            setAppoitnment(data.data)
           }
         })
       }
@@ -102,7 +104,7 @@ export default function Appointment() {
    {formRow("Reason For Visit:", appoitnment.reason)}
    </Grid>
    {appoitnment.comments ? <Grid container item xs={12} spacing={3}>
-   {formRow("Comments:", appoitnment.comments)}
+   {formRow("Comments:", appoitnment.comment)}
    </Grid> : ""}
    <Grid container item xs={12} spacing={3}>
    {formRow("Appointment Status:", appoitnment.status)}
