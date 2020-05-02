@@ -45,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-
 const startStamp = "T00:00:00.000Z";
 const endStamp = "T23:59:59.999Z";
 const today = new Date().toISOString().split("T")[0]
@@ -67,7 +66,6 @@ export default function AppointmentList() {
   const [direction, setDirection] = React.useState("asc")
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
- // const [query, setQuery] = React.useState({term: undefined, start: undefined, end: undefined, page: undefined})
 
   const [dateA, setDateA] = React.useState(today);
   const [dateB, setDateB] = React.useState(today);
@@ -171,7 +169,6 @@ const handleSearchChange = (e) => {
   setSearch(e.target.value);
 };
 
-
 //may be bug here...
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
@@ -188,16 +185,8 @@ const clearSearch = () => {
   setSearch("")
   setSearchToggle(false)
 
-  // setQuery((prevState) => ({
-  //   ...prevState,
-  //   term: undefined,
-  //   start: undefined,
-  //   end: undefined,
-  //   page: undefined
-  // }))
   query.term = undefined
   query.page = undefined
-
 
   console.log(query)
   setPage(1)
@@ -212,14 +201,6 @@ const clearSearch = () => {
      setDateB(date2)
      let val = date2.toISOString()  
 
-    //  setQuery((prevState) => ({
-    //   ...prevState,
-    //   term: undefined,
-    //   start: dateA,
-    //   end: val,
-    //   page: undefined
-    // }))
-
     query.term = undefined
     query.start = dateA
     query.end = val
@@ -229,9 +210,7 @@ const clearSearch = () => {
     return callAPI(query)
    };
    
-
-//needs bugfix
-    const handleToday = () => {
+     const handleToday = () => {
        let a = today + startStamp
        let b = today + endStamp
    
@@ -241,13 +220,6 @@ const clearSearch = () => {
        setSearch("")
        setSearchToggle(false)
        setPage(1)
-       //  setQuery((prevState) => ({
-      //   ...prevState,
-      //   term: undefined,
-      //   start: a,
-      //   end: b,
-      //   page: undefined
-      // }))
 
       query.term = undefined
       query.start = a
@@ -261,12 +233,10 @@ const clearSearch = () => {
   //might need some correction once more seeded data added...
 const handleChangePage = async (pageDir) => {
   if (pageDir == 'r' && page + 1 <= meta.totalPages){
-   // callAPI(page + 1)
     setPage(page += 1)
     query.page = page
     return callAPI(query)
   } else if (pageDir == 'l' && page - 1 >= 1){
-  //  callAPI(page - 1)
     setPage(page -= 1)
     query.page = page
   return  callAPI(query)
