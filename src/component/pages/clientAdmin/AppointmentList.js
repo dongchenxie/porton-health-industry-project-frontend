@@ -50,6 +50,9 @@ const startStamp = "T00:00:00.000Z";
 const endStamp = "T23:59:59.999Z";
 const today = new Date().toISOString().split("T")[0]
 
+const query = {term: undefined, start: undefined, end: undefined, page: undefined}
+
+
 export default function AppointmentList() {
   const classes = useStyles();
   let { url } = useRouteMatch();
@@ -64,21 +67,21 @@ export default function AppointmentList() {
   const [direction, setDirection] = React.useState("asc")
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
-  //const [query, useQuery] = React.useState({term: undefined, start: undefined, end: undefined, page: undefined})
+ // const [query, setQuery] = React.useState({term: undefined, start: undefined, end: undefined, page: undefined})
 
   const [dateA, setDateA] = React.useState(today);
   const [dateB, setDateB] = React.useState(today);
 
   React.useEffect(() => {
     const start = async () => {
-      callAPI()
+      callAPI(query)
     }
     start()
   }, [])
   
-  const callAPI = async (query, start, end, page) => {
+  const callAPI = async (query) => {
     let apiData = undefined
-    apiData = await authContext.API.getClientAppointments(query, start, end) 
+    apiData = await authContext.API.getClientAppointments(query.term, query.start, query.end, query.page) 
   if (apiData === undefined){
     console.log("error")
     setError("Error grabbing data from the server.")
@@ -168,21 +171,37 @@ const handleSearchChange = (e) => {
   setSearch(e.target.value);
 };
 
+
+//may be bug here...
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
-    callAPI(search)
+    query.term = search
+    console.log(query)
     setSearchToggle(true)
     setPage(1)
     event.target.value = ""
+    return  callAPI(query)
   }
 }
 
-//clear search fields, render base API  result again.
 const clearSearch = () => {
   setSearch("")
   setSearchToggle(false)
-  callAPI()
+
+  // setQuery((prevState) => ({
+  //   ...prevState,
+  //   term: undefined,
+  //   start: undefined,
+  //   end: undefined,
+  //   page: undefined
+  // }))
+  query.term = undefined
+  query.page = undefined
+
+
+  console.log(query)
   setPage(1)
+  return callAPI(query)
 }
 
  const handleDateA = (date) => {
@@ -192,18 +211,51 @@ const clearSearch = () => {
    const handleDateB = (date2) => {
      setDateB(date2)
      let val = date2.toISOString()  
-     callAPI(undefined, dateA, val)
+
+    //  setQuery((prevState) => ({
+    //   ...prevState,
+    //   term: undefined,
+    //   start: dateA,
+    //   end: val,
+    //   page: undefined
+    // }))
+
+    query.term = undefined
+    query.start = dateA
+    query.end = val
+    query.page = undefined
+  
+    console.log(query)
+    return callAPI(query)
    };
    
+
+//needs bugfix
     const handleToday = () => {
        let a = today + startStamp
        let b = today + endStamp
    
        setDateA(a)
-       setDateA(a)
+       setDateB(b)
        setError("")
-       clearSearch()
-       callAPI(undefined, a, b)
+       setSearch("")
+       setSearchToggle(false)
+       setPage(1)
+       //  setQuery((prevState) => ({
+      //   ...prevState,
+      //   term: undefined,
+      //   start: a,
+      //   end: b,
+      //   page: undefined
+      // }))
+
+      query.term = undefined
+      query.start = a
+      query.end = b
+      query.page = undefined
+
+      console.log(query)
+      return callAPI(query)
      }
 
   //might need some correction once more seeded data added...
@@ -211,9 +263,13 @@ const handleChangePage = async (pageDir) => {
   if (pageDir == 'r' && page + 1 <= meta.totalPages){
    // callAPI(page + 1)
     setPage(page += 1)
+    query.page = page
+    return callAPI(query)
   } else if (pageDir == 'l' && page - 1 >= 1){
   //  callAPI(page - 1)
     setPage(page -= 1)
+    query.page = page
+  return  callAPI(query)
   }
 };
 
