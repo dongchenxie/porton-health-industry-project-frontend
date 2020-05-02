@@ -70,31 +70,40 @@ export default function AppointmentList() {
 
   React.useEffect(() => {
     const start = async () => {
-      let data = await authContext.API.getClientAppointments()
-      console.log(data)
-      if (data === undefined){
-        console.log("error")
-        setError("Error grabbing data from the server.")
-      } else {
-        authContext.API.readToken(authContext.authState).then(function(result){
-          if (result.role !== 'CLIENT_ADMIN'){
-           return setError("404. Please try again.")
-          } else {
-            if(data.data.metadata.totalResults === 0){
-              setError("No current appointments")
-            } else {
-            setMeta(data.data.metadata)
-        //    setinitialApiResult(formatDates(data.data.data))
-            setAppoitnments(formatAppoitments(data.data.data))
-            setInitialSort(data.data.data)
-            }
-          }
-        })
-      }
+      callAPI()
     }
     start()
   }, [])
-  
+
+
+  const callAPI = async (query, start, end) => {
+    let apiData = undefined
+    apiData = await authContext.API.getClientAppointments(query, start, end) 
+  if (apiData === undefined){
+    console.log("error")
+    setError("Error grabbing data from the server.")
+  } else if (apiData.data === undefined){
+    console.log("error")
+    setError("Error grabbing data from the server.")
+  } else {
+    authContext.API.readToken(authContext.authState).then(function(result){
+      if (result.role !== 'CLIENT_ADMIN'){
+       return setError("404. Please try again.")
+      } else {
+        if(apiData.data.metadata.totalResults === 0){
+         setError("No results match your search.")
+         setAppoitnments([])
+         setPage(1)
+        } else {
+        setError("")
+        setMeta(apiData.data.metadata)
+        setAppoitnments(formatAppoitments(apiData.data.data))
+        setPage(apiData.data.metadata.totalPages)
+        }
+      }
+    })
+  }
+}
   
 const formatAppoitments = (aptObj) => {
   let localObj = []
@@ -149,56 +158,7 @@ const formatAppoitments = (aptObj) => {
           setDirection("asc")
          }
     }
-
-    const callAPI = async (query, start, end) => {
-      let apiData = undefined
-      apiData = await authContext.API.getClientAppointments(query, start, end) 
-    if (apiData === undefined){
-      console.log("error")
-      setError("Error grabbing data from the server.")
-    } else if (apiData.data === undefined){
-      console.log("error")
-      setError("Error grabbing data from the server.")
-    } else {
-      authContext.API.readToken(authContext.authState).then(function(result){
-        if (result.role !== 'CLIENT_ADMIN'){
-         return setError("404. Please try again.")
-        } else {
-          if(apiData.data.metadata.totalResults === 0){
-           setError("No results match your search.")
-           setAppoitnments([])
-           setPage(1)
-          } else {
-          setError("")
-          setMeta(apiData.data.metadata)
-          setAppoitnments(formatAppoitments(apiData.data.data))
-          setPage(apiData.data.metadata.totalPages)
-          }
-        }
-      })
-    }
-  }
-
-  const handleDateA = (date) => {
-    setDateA(date.toISOString())
-   };
-   
-   const handleDateB = (date2) => {
-     setDateB(date2)
-     let val = date2.toISOString()  
-     callAPI(undefined, dateA, val)
-   };
-   
-    const handleToday = () => {
-       let a = today + startStamp
-       let b = today + endStamp
-   
-       setDateA(a)
-       setDateA(a)
-       callAPI(undefined, a, b)
-     }
      
-//to implement once API finished....
 const handleSearchChange = (e) => {
   setSearch(e.target.value);
 };
@@ -219,6 +179,27 @@ const clearSearch = () => {
   callAPI()
   setPage(1)
 }
+
+const handleDateA = (date) => {
+  setDateA(date.toISOString())
+ };
+ 
+ const handleDateB = (date2) => {
+   setDateB(date2)
+   let val = date2.toISOString()  
+   callAPI(undefined, dateA, val)
+ };
+ 
+  const handleToday = () => {
+     let a = today + startStamp
+     let b = today + endStamp
+ 
+     setDateA(a)
+     setDateA(a)
+     setError("")
+     clearSearch()
+     callAPI(undefined, a, b)
+   }
 
 //to implement once API finished....
 const handleChangePage = () => {
