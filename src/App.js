@@ -140,6 +140,7 @@ function App() {
        urlParam = `${baseURL}client/appointments`
       }
 
+      console.log("HERE:", urlParam)
       let result = await axios(
         {
           method: "get",

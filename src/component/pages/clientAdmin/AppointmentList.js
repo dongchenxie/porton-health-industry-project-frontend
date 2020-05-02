@@ -204,20 +204,20 @@ const clearSearch = () => {
   setPage(1)
 }
 
-
 //to implement once API finished....
 const handleChangePage = () => {
 console.log("next")
 }
     
 const handleDateA = (date) => {
- setDateA(date)
+ setDateA(date.toISOString())
 };
 
 const handleDateB = (date2) => {
   setDateB(date2)
-  //do something with dateA, dateB
- };
+  let val = date2.toISOString()  
+  callAPI(undefined, dateA, val)
+};
 
  const handleToday = () => {
     let a = today + startStamp
