@@ -45,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+const startStamp = "T00:00:00.000Z";
+const endStamp = "T23:59:59.999Z";
+const today = new Date().toISOString().split("T")[0]
+
 
 export default function AppointmentList() {
   const classes = useStyles();
@@ -61,18 +65,13 @@ export default function AppointmentList() {
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
 
-  let today = new Date()
   const [dateA, setDateA] = React.useState(today);
   const [dateB, setDateB] = React.useState(today);
 
   React.useEffect(() => {
     const start = async () => {
       let data = await authContext.API.getClientAppointments()
-      // dummy data...
-      //let data = {"data": { "metadata": {totalPages: 1}, "data": [{patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}, {patient: "ralph wiggum", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'comfiremd', comments: '', reason: 'injury', _id: 2}, {patient: "henry jones", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor B', status: 'cancled', comments: '', reason: 'covid-19', _id: 3}, {patient: "sam doe", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'doctor C', status: 'pending', comments: '', reason: 'check-up', _id: 4}]}}
-      //console.log(data)
       console.log(data)
-
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
@@ -154,10 +153,9 @@ const formatAppoitments = (aptObj) => {
          }
     }
 
-    const callAPI = async (query) => {
+    const callAPI = async (query, start, end) => {
       let data = undefined
-      query ?  data = await authContext.API.getClientAppointments(query) :  data = await authContext.API.getClientAppointments()
-      console.log(data)
+      data = await authContext.API.getClientAppointments(query, start, end) 
     if (data === undefined){
       console.log("error")
       setError("Error grabbing data from the server.")
@@ -222,10 +220,13 @@ const handleDateB = (date2) => {
  };
 
  const handleToday = () => {
-  setDateA(today)
-  setDateB(today)
-  console.log(dateA, dateB)
- }
+    let a = today + startStamp
+    let b = today + endStamp
+
+    setDateA(a)
+    setDateA(a)
+    callAPI(undefined, a, b)
+  }
 
 return(
   <div> 
