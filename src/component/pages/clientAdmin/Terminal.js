@@ -40,7 +40,17 @@ export default function Terminal(name) {
   const [error, setError] = React.useState(null);
   const [terminal, setTerminal] = React.useState(null);
   const [termName, setTermName] = React.useState(null);
- const [checked, setChecked] = React.useState(null);
+  const [stateCheck, setStateCheck] = React.useState(null);
+
+
+  const checkvals = {
+  firstName: null,
+  lastName: null,
+  phoneNumber: null, 
+  phoneNumberLast4: null,
+  careCardNumber: null
+  }
+
 
   React.useEffect(() => {
     const start = async () => {
@@ -63,9 +73,8 @@ export default function Terminal(name) {
              return setError("404. Please try again.")
             } else {
               setTerminal(data.data)
-              console.log(data)
-              console.log(termNameData)
               setTermName(termNameData.data.terminal)
+              setChecks(data.data)
             }
           })
         }
@@ -74,9 +83,18 @@ export default function Terminal(name) {
   }, [])
 
 
+  const setChecks = (terminalObj) => {
+    for (var property in terminalObj) {
+      for ( var compareProp in checkvals ) {
+      if (compareProp === property){
+         checkvals[compareProp] = terminalObj[property]
+       }
+      }   
+    }
+    return setStateCheck(checkvals)
+  }
+
   const formRow = (label, data, keyType) => {
-    //data = bool
-    console.log(keyType)
     return (
       <React.Fragment>
         <Grid item xs={4}>
@@ -86,14 +104,22 @@ export default function Terminal(name) {
         {data}
         </Grid>
         <Grid item xs={4}>
-        <Switch checked={checked} onChange={handleSwitch} color="primary" name="checkedB" value={'test'} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+         {stateCheck !== null ?  <Switch checked={stateCheck[keyType]} onChange={handleSwitch} color="primary" name="checkedB" value={keyType} inputProps={{ 'aria-label': 'primary checkbox' }}/> : "" }
         </Grid>
         </React.Fragment>
     );
   }
 
   const handleSwitch = (event) => {
-    console.log(event.target.value)
+    let keyType = event.target.value
+    console.log(event.target.checked)
+    checkvals[keyType] = event.target.checked
+    setStateCheck(checkvals)
+//    return setStateCheck(prevState => ({
+//     ...prevState,
+//     keyType: !event.target.checked
+//  }));
+ console.log(stateCheck)
   };
   
   const submitComfirm = () => {
@@ -111,7 +137,6 @@ export default function Terminal(name) {
   // _id: "5ead1ffdaec9612138f1eede"
 
   const renderTerminalView = (terminal) => {
-    console.log(terminal)
     return( 
     <div> <Card className={classes.root} variant="outlined">
     <CardContent>
