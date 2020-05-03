@@ -175,6 +175,17 @@ function App() {
       } else {
         return result
       }
+    },
+    register: async function (reqBody){
+    axios.post(`${baseURL}users`, reqBody)
+    .then(function (response) {
+      console.log(response)
+      return response
+      })
+   .catch(function (error) {
+      console.log(error)
+      return {error, status: 400 }
+      })
     }
   }
 
