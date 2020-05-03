@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 const useStyles = makeStyles((theme)=>({
   table: {
     minWidth: 650,
@@ -33,10 +34,11 @@ const rows = [
   createData('Check in Time',"2020 May 22, 19:30"),
 ];
 
-export default function SimpleTable() {
+export default function SimpleTable(props) {
   const classes = useStyles();
 
   return (
+    <div>
     <TableContainer >
          <Typography variant="h5" component="h6" className={classes.textCenter}>Please Comfirm Your Check-in Details</Typography>
       <Table className={classes.table} aria-label="simple table" className={classes.tableStyle} component={Paper}>
@@ -56,5 +58,20 @@ export default function SimpleTable() {
         </TableBody>
       </Table>
     </TableContainer>
+    <div>
+    <Button disabled={props.activeStep === 0} onClick={props.handleBack} className={classes.button}>
+      Back
+          </Button>
+
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={props.handleNext}
+      className={classes.button}
+    >
+      {props.activeStep === props.steps.length - 1 ? 'Comfirm' : 'Next'}
+    </Button>
+  </div>
+  </div>
   );
 }

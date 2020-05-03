@@ -113,25 +113,14 @@ export default function TerminalLogin(props) {
             className={classes.form}
               noValidate
           >
+            
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={handleTextChange}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
+              name="token"
+              label="Token"
               type="password"
               id="password"
               autoComplete="current-password"

@@ -48,11 +48,11 @@ export default function HorizontalLinearStepper() {
     function getStepContent(step) {
         switch (step) {
             case 0:
-                return (< AppointmentList handleNext={handleNext}/>);
+                return (< AppointmentList handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
             case 1:
-                return (<  Verification />);
+                return (<  Verification  handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
             case 2:
-                return (<AppointmentComfirmPage />);
+                return (<AppointmentComfirmPage userInfo={userInfo}  handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
             default:
                 return (< TimePickerWidget />);
         }
@@ -126,7 +126,7 @@ export default function HorizontalLinearStepper() {
                     justify="center"
                     alignItems="center"
                 >
-                    <Grid item xs={12} sm={10} md={8} lg={6}>
+                    <Grid item xs={12} sm={10} md={9} lg={8}>
                         <Paper className={classes.paperStyle}>
                             <div>
                                 {activeStep === steps.length ? (
@@ -141,30 +141,7 @@ export default function HorizontalLinearStepper() {
                                 ) : (
                                         <div>
                                             <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
-                                            <div>
-                                                <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                                                    Back
-              </Button>
-                                                {isStepOptional(activeStep) && (
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        onClick={handleSkip}
-                                                        className={classes.button}
-                                                    >
-                                                        Skip
-                                                    </Button>
-                                                )}
-
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={handleNext}
-                                                    className={classes.button}
-                                                >
-                                                    {activeStep === steps.length - 1 ? 'Comfirm' : 'Next'}
-                                                </Button>
-                                            </div>
+                                           
                                         </div>
                                     )}
                             </div>
