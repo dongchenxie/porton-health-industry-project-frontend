@@ -18,6 +18,7 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import TextField from '@material-ui/core/TextField';
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 275,
@@ -59,8 +60,8 @@ export default function TerminalList() {
   React.useEffect(() => {
     const start = async () => {
        let data = await authContext.API.getClientTerminals()
-     // let data = [{ name: 'Kiosk at front', status: 'enabled', token: 124124124124, _id: 1}, { name: 'Kiosk at front', status: 'enabled', token: 124124124124, _id: 2}, { name: 'Kiosk at front', status: 'enabled', token: 124124124124, _id: 3}]
-      if (data === undefined){
+
+       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
       } else if (data === undefined){
@@ -71,11 +72,11 @@ export default function TerminalList() {
           if (result.role !== 'CLIENT_ADMIN'){
            return setError("404. Please try again.")
           } else {
-            if (data.data === undefined){
+            if (data.status === 400 || data.status === 404 ){
               setError("server error.")
               console.log(data)
             } else {
-            setapiResult(data.data.data)
+            setapiResult(data.data.metadata)
             setTerminals(data.data.data)
             setInitialSort(data.data.data)
             }
@@ -97,6 +98,8 @@ export default function TerminalList() {
         return { name, status, token, action, id };
       }
 
+
+      //NEED: get terminal ID
       const renderAction = (terminal) => {
         return(<Link to={`${url}/${terminal._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Terminal Information and Settings</Button></Link>)
       }
@@ -155,6 +158,7 @@ const clearSearch = () => {
   setPage(1)
 }
 
+  //NEED: post terminal
 const createTerminal = () => {
   //POST to client/terminal endpoint.
   alert("create popup")
@@ -162,6 +166,7 @@ const createTerminal = () => {
 
 const parseRows = (column, value, row) => {
   if (column === 'token'){
+    console.log(value)
     return renderToken(value)
   } else if (column === 'action'){
     return renderAction(row)
@@ -170,6 +175,7 @@ const parseRows = (column, value, row) => {
   }
 }
 
+  //NEED: get verification content
 const displayToken = (token) => {
   console.log(token)
 }
@@ -179,6 +185,7 @@ return(
           {error !== null ? error : ""}
           {terminals !== null && terminals !== undefined ? 
   <div>
+    {console.log(terminals)}
     <h3>Terminals: </h3>
     <Paper className={classes.root}>
     <Button size="small" variant="contained" color="primary" onClick={createTerminal}>Create New</Button>
