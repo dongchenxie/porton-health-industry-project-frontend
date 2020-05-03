@@ -2,7 +2,6 @@ import React from "react";
 import AuthContext from "../../../data/AuthContext"
 import { useLocation, useRouteMatch, Link } from 'react-router-dom';
 
-
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,7 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
-
 
 const useStyles = makeStyles({
   root: {
@@ -54,7 +52,6 @@ export default function Terminal(name) {
 
   React.useEffect(() => {
     const start = async () => {
-     // let data = {firstName: 'not req', lastName: 'not req', phoneNumber: 'not req', carecardNumber: 'not req', phoneNumberLat4: 'not req', carecardLast4: 'not req'}
      let termNameData = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
         if (data === undefined || termNameData === undefined || termNameData === null || data === null ){
@@ -111,31 +108,37 @@ export default function Terminal(name) {
   }
 
   const handleSwitch = (event) => {
-    // console.log(checkvals)
-    // if (checkvals.firstName !== null){
-    // let keyType = event.target.value
-    //   checkvals[keyType] = event.target.checked
-    //   setStateCheck(checkvals)
-
-    // // }
-    // let vals = stateCheck
-     let keyType = event.target.value
-    // vals[keyType] = event.target.checked
-    // setStateCheck(vals)
-
-    let oldVal =  stateCheck[keyType] 
-    let newVal = event.target.checked
-    // checkvals = stateCheck
-    // setStateCheck(checkvals)
+   let keyType = event.target.value
      setStateCheck(prevState => ({
    ...prevState,
     [keyType]: event.target.checked
     }));
-    console.log(stateCheck)
   };
   
-  const submitComfirm = () => {
-    console.log("hello world")
+  const submitComfirm = async () => {
+    //PUT to update endpoint...
+
+    //
+        // {
+        //   "name": "Terminal 1"
+        //   "status": "ENABLED"
+        //   "verificationContent": json.stringtify(jsonObject)
+        // }
+    
+    let reqBody = {"name": termName.name,
+    "status": termName.status,
+    "verificationContent": JSON.stringify(stateCheck) 
+  }
+        
+    let result = await authContext.API.getIndivTerminal(termName._id, undefined, reqBody);
+      if (result.status === 200){
+        console.log(result)
+      //  setAppoitnment(result.data)
+         setError("")
+        } else if (result.status === 400) {
+         console.log(result)
+         setError("Error submitting data to the server.")
+       }
   }
   
   // {firstName: true, lastName: true, phoneNumber: false, careCardNumber: false, phoneNumberLast4: false, …}

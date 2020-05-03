@@ -278,7 +278,7 @@ function App() {
           return { status: 400, data: result };
         }
       },
-      getIndivTerminal: async function (id, verificationReq) {
+      getIndivTerminal: async function (id, verificationReq, putParam) {
         let terminalURL = `${baseURL}client/terminal/${id}`
         if (verificationReq){
           terminalURL = `${baseURL}client/terminal/verificationContent/${id}`
@@ -286,6 +286,17 @@ function App() {
 
         console.log(terminalURL)
 
+        if (putParam){
+          let result = await axios.put(terminalURL, putParam)
+          .then(function (response) {
+              return response
+          })
+          .catch(function (error) {
+            console.log(error)
+              return {error, status: 400 }
+          })
+          return result
+        } else {
         let result = await axios(
           {
             method: "get",
@@ -304,6 +315,7 @@ function App() {
           return { status: 400, data: result };
         }
       }
+    }
   }
 
   //The state 
