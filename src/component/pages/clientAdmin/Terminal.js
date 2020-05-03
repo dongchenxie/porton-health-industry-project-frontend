@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import TextField from '@material-ui/core/TextField';
+import Switch from '@material-ui/core/Switch';
+
 
 const useStyles = makeStyles({
   root: {
@@ -38,7 +40,7 @@ export default function Terminal(name) {
   const [error, setError] = React.useState(null);
   const [terminal, setTerminal] = React.useState(null);
   const [termName, setTermName] = React.useState(null);
- 
+ const [checked, setChecked] = React.useState(null);
 
   React.useEffect(() => {
     const start = async () => {
@@ -72,7 +74,9 @@ export default function Terminal(name) {
   }, [])
 
 
-  const formRow = (label, data) => {
+  const formRow = (label, data, keyType) => {
+    //data = bool
+    console.log(keyType)
     return (
       <React.Fragment>
         <Grid item xs={4}>
@@ -81,10 +85,21 @@ export default function Terminal(name) {
         <Grid item xs={4}>
         {data}
         </Grid>
+        <Grid item xs={4}>
+        <Switch checked={checked} onChange={handleSwitch} color="primary" name="checkedB" value={'test'} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+        </Grid>
         </React.Fragment>
     );
   }
 
+  const handleSwitch = (event) => {
+    console.log(event.target.value)
+  };
+  
+  const submitComfirm = () => {
+    console.log("hello world")
+  }
+  
   // {firstName: true, lastName: true, phoneNumber: false, careCardNumber: false, phoneNumberLast4: false, …}
   // careCardLast4: false
   // careCardNumber: false
@@ -102,19 +117,19 @@ export default function Terminal(name) {
     <CardContent>
     <Grid container spacing={1}>
    <Grid container item xs={12} spacing={3}>
-   {formRow("First Name:", terminal.firstName.toString())}
+   {formRow("First Name:", terminal.firstName.toString(), 'firstName')}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Last Name:", terminal.lastName.toString())}
+   {formRow("Last Name:", terminal.lastName.toString(), 'lastName' )}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Phone Number:", terminal.phoneNumber.toString())}
+   {formRow("Phone Number:", terminal.phoneNumber.toString(), 'phoneNumber' )}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Carecard Number:", terminal.careCardNumber.toString())}
+   {formRow("Carecard Number:", terminal.careCardNumber.toString(), 'careCardNumber' )}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Last 4 Digits of Phone Number:", terminal.phoneNumberLast4.toString())}
+   {formRow("Last 4 Digits of Phone Number:", terminal.phoneNumberLast4.toString(), 'phoneNumberLast4')}
    </Grid>
   </Grid>
  </CardContent>
@@ -128,10 +143,6 @@ export default function Terminal(name) {
   
   <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
   </div>)
-}
-
-const submitComfirm = () => {
-  console.log("hello world")
 }
 
 
