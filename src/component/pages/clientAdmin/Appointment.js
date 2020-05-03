@@ -60,9 +60,6 @@ export default function Appointment() {
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
-      } else if (data === undefined){
-        console.log("error")
-        setError("Error grabbing data from the server.")
       } else {
         authContext.API.readToken(authContext.authState).then(function(result){
           if (result.role !== 'CLIENT_ADMIN'){

@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 });
 
 
-export default function Terminal() {
+export default function Terminal(name) {
   const authContext = React.useContext(AuthContext)
   const classes = useStyles();
   let location = useLocation();
@@ -37,16 +37,19 @@ export default function Terminal() {
 
   const [error, setError] = React.useState(null);
   const [terminal, setTerminal] = React.useState(null);
+  const [termName, setTermName] = React.useState(null);
  
 
   React.useEffect(() => {
     const start = async () => {
      // let data = {firstName: 'not req', lastName: 'not req', phoneNumber: 'not req', carecardNumber: 'not req', phoneNumberLat4: 'not req', carecardLast4: 'not req'}
-     let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
-        if (data === undefined){
+     let termNameData = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
+     let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
+        if (data === undefined || termNameData === undefined || termNameData === null || data === null ){
           console.log("error")
           setError("Error grabbing data from the server.")
-        } else if (data === undefined){
+
+        } else if(data.status === 400 || termNameData.status === 400) {
           console.log("error")
           setError("Error grabbing data from the server.")
         } else {
@@ -57,8 +60,10 @@ export default function Terminal() {
             if (result.role !== 'CLIENT_ADMIN'){
              return setError("404. Please try again.")
             } else {
-              setTerminal(data.data.verificationContent)
+              setTerminal(data.data)
               console.log(data)
+              console.log(termNameData)
+              setTermName(termNameData.data.terminal)
             }
           })
         }
@@ -91,6 +96,7 @@ export default function Terminal() {
   // _id: "5ead1ffdaec9612138f1eede"
 
   const renderTerminalView = (terminal) => {
+    console.log(terminal)
     return( 
     <div> <Card className={classes.root} variant="outlined">
     <CardContent>
@@ -132,6 +138,7 @@ const submitComfirm = () => {
     return(
       <div>
         {error !== null ? error : ""}
+        {termName !== null && termName !== undefined ? <h3>{termName.name}</h3> : ""}
         {terminal !== null && terminal !== undefined ? renderTerminalView(terminal) : ""}
       </div>
     ) 

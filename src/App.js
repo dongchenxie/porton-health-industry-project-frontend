@@ -278,11 +278,18 @@ function App() {
           return { status: 400, data: result };
         }
       },
-      getIndivTerminal: async function (id) {
+      getIndivTerminal: async function (id, verificationReq) {
+        let terminalURL = `${baseURL}client/terminal/${id}`
+        if (verificationReq){
+          terminalURL = `${baseURL}client/terminal/verificationContent/${id}`
+        }
+
+        console.log(terminalURL)
+
         let result = await axios(
           {
             method: "get",
-            url: `${baseURL}client/terminal/${id}`,
+            url: terminalURL,
             headers: {
               "auth-token":localStorage.getItem("token"),
               'Access-Control-Allow-Origin': '*'
