@@ -32,17 +32,17 @@ const useStyles = makeStyles({
 export default function Terminal() {
   const authContext = React.useContext(AuthContext)
   const classes = useStyles();
+  let location = useLocation();
+  let { path } = useRouteMatch();
 
   const [error, setError] = React.useState(null);
   const [terminal, setTerminal] = React.useState(null);
-   let { path } = useRouteMatch();
-
-
+ 
 
   React.useEffect(() => {
     const start = async () => {
-      let data = {firstName: 'not req', lastName: 'not req', phoneNumber: 'not req', carecardNumber: 'not req', phoneNumberLat4: 'not req', carecardLast4: 'not req'}
-  
+     // let data = {firstName: 'not req', lastName: 'not req', phoneNumber: 'not req', carecardNumber: 'not req', phoneNumberLat4: 'not req', carecardLast4: 'not req'}
+     let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
         if (data === undefined){
           console.log("error")
           setError("Error grabbing data from the server.")
@@ -57,7 +57,8 @@ export default function Terminal() {
             if (result.role !== 'CLIENT_ADMIN'){
              return setError("404. Please try again.")
             } else {
-              setTerminal(data)
+              setTerminal(data.data.verificationContent)
+              console.log(data)
             }
           })
         }
@@ -79,29 +80,36 @@ export default function Terminal() {
     );
   }
 
-  const renderTerminalView = () => {
+  // {firstName: true, lastName: true, phoneNumber: false, careCardNumber: false, phoneNumberLast4: false, …}
+  // careCardLast4: false
+  // careCardNumber: false
+  // firstName: true
+  // lastName: true
+  // phoneNumber: false
+  // phoneNumberLast4: false
+  // __v: 0
+  // _id: "5ead1ffdaec9612138f1eede"
+
+  const renderTerminalView = (terminal) => {
     return( 
     <div> <Card className={classes.root} variant="outlined">
     <CardContent>
     <Grid container spacing={1}>
    <Grid container item xs={12} spacing={3}>
-   {formRow("First Name:", terminal.firstName)}
+   {formRow("First Name:", terminal.firstName.toString())}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Last Name:", terminal.lastName)}
+   {formRow("Last Name:", terminal.lastName.toString())}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Phone Number:", terminal.phoneNumber)}
+   {formRow("Phone Number:", terminal.phoneNumber.toString())}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Carecard Number:", terminal.carecardNumber)}
+   {formRow("Carecard Number:", terminal.careCardNumber.toString())}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Last 4 Digits of Phone Number:", terminal.phoneNumberLat4)}
+   {formRow("Last 4 Digits of Phone Number:", terminal.phoneNumberLast4.toString())}
    </Grid>
-     <Grid container item xs={12} spacing={3}>
-     {formRow("Last 4 Digits of Carecard Number:", terminal.carecardLast4)}
-     </Grid>
   </Grid>
  </CardContent>
 

@@ -277,6 +277,25 @@ function App() {
           console.log("error", result)
           return { status: 400, data: result };
         }
+      },
+      getIndivTerminal: async function (id) {
+        let result = await axios(
+          {
+            method: "get",
+            url: `${baseURL}client/terminal/${id}`,
+            headers: {
+              "auth-token":localStorage.getItem("token"),
+              'Access-Control-Allow-Origin': '*'
+            }
+          }
+        ).catch((e) => 
+          { return { error: e }} )
+        if (result.status === 200) {
+          return { status: 200, data: result.data };
+        } else {
+          console.log("error", result)
+          return { status: 400, data: result };
+        }
       }
   }
 
