@@ -50,14 +50,13 @@ export default function Appointment() {
   const [error, setError] = React.useState(null);
   const [appoitnment, setAppoitnment] = React.useState(null);
   const [comment, setComment] = React.useState(null);
-  const [value, setValue] = React.useState('female');
-
+  const [checkVal, setCheckVal] = React.useState(null);
+   const [initCheck, setInitCheck] = React.useState(null);
 
   React.useEffect(() => {
     const start = async () => {
       let data = await authContext.API.getIndivAppointment(location.pathname.toString().split("/")[3]) 
       console.log(data)
-     // let data = {patient: "john smith", appointmentTime: '2020-04-11T03:36:57.292Z', doctorName: 'john doe', status: 'Pending', comments: "", reason: "Flu", _id: 1}
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
@@ -70,6 +69,7 @@ export default function Appointment() {
            return setError("404. Please try again.")
           } else {
             setAppoitnment(data.data)
+            setInitCheck(data.data.status)
           }
         })
       }
@@ -155,7 +155,7 @@ export default function Appointment() {
  <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <div>
-       <Button size="small" variant="contained" color="primary" style={{marginTop:"2%", marginBottom: '2%'}} {...bindTrigger(popupState)}>Change Appointment Status: </Button>
+       <Button size="small" variant="contained" color="primary" style={{marginTop:"2%", marginBottom: '2%'}} {...bindTrigger(popupState)}>Change Appointment Status </Button>
           <Popover
             {...bindPopover(popupState)}
             anchorOrigin={{
@@ -168,12 +168,13 @@ export default function Appointment() {
             }}
            >
             <Box p={2}>
-            <StatusChange appoitnment={appoitnment["_id"]} />
+            <StatusChange />
             </Box>
           </Popover>
         </div>
       )}
     </PopupState>
+    
    <TextField
           multiline={true}
           fullWidth={true}
@@ -192,69 +193,50 @@ export default function Appointment() {
   </div>)
 }
 
-const updateStatus = () => {
+const updateStatus = async () => {
+  if (checkVal === initCheck ){
+    return
+  }
 
-}
-
-const handleChange = (event) => {
-  setValue(event.target.value);
+  let reqBody = {
+    "doctorName": appoitnment.doctorName,
+    "appointmentTime": appoitnment.appointmentTime,
+    "reason": appoitnment.reason,
+    "status": checkVal,
+    "comment": appoitnment.comment,
+    "clinic": appoitnment.clinic,
+    "patient": appoitnment.patient
 };
 
-const StatusChange = (appoitnment) => {
+     let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
+      if (result.status === 200){
+       setAppoitnment(result.data)
+       setError("")
+      } else if (result.status === 400) {
+       console.log(result)
+       setError("Error submitting data to the server.")
+      }
+}
+
+const handleCheck = (event) => {
+  return setCheckVal(event.target.value);
+};
+
+const StatusChange = () => {
   return (
     <div>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
-          {/* <FormControl component="fieldset">
-      <FormLabel component="legend">Status:</FormLabel>
-      <FormGroup aria-label="position" row>
-        <FormControlLabel
-          value="top"
-          control={<Radio color="primary" />}
-          label="Checked In"
-          labelPlacement="top"
-        />
-          <FormControlLabel
-          value="top"
-          control={<Radio color="primary" />}
-          label="Pending"
-          labelPlacement="top"
-        />
-          <FormControlLabel
-          value="top"
-          control={<Radio color="primary" />}
-          label="Canceled"
-          labelPlacement="top"
-        />
-
-
-            <Button
-              onClick={updateStatus}
-              fullWidth
-              variant="contained"
-              color="primary"
-            >
-              Confirm
-            </Button>
-            </FormGroup>
-        </FormControl> */}
         <FormControl component="fieldset">
       <FormLabel component="legend">Status</FormLabel>
       <br/>
-      <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}  aria-label="position" row>
-        <FormControlLabel value="female" control={<Radio />} label="Checked In" labelPlacement="top" />
-        <FormControlLabel value="male" control={<Radio />} label="Pending" labelPlacement="top" />
-        <FormControlLabel value="other" control={<Radio />} label="Canceled" labelPlacement="top" />
+      <RadioGroup aria-label="status" name="status" onChange={handleCheck} aria-label="position" row>
+        <FormControlLabel value="CHECK_IN" control={<Radio />} label="Checked In" labelPlacement="top" />
+        <FormControlLabel value="PENDING" control={<Radio />} label="Pending" labelPlacement="top" />
+        <FormControlLabel value="NOT_SHOW" control={<Radio />} label="Canceled" labelPlacement="top" />
       </RadioGroup>
-      <Button
-              onClick={updateStatus}
-              fullWidth
-              variant="contained"
-              color="primary"
-            >
-              Confirm
-            </Button>
+      <Button onClick={updateStatus} fullWidth variant="contained"color="primary" > Confirm </Button>
     </FormControl>
         </div>
       </Container>
