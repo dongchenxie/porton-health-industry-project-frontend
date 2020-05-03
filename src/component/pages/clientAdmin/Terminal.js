@@ -43,7 +43,7 @@ export default function Terminal(name) {
   const [stateCheck, setStateCheck] = React.useState(null);
 
 
-  const checkvals = {
+  let checkvals = {
   firstName: null,
   lastName: null,
   phoneNumber: null, 
@@ -111,15 +111,27 @@ export default function Terminal(name) {
   }
 
   const handleSwitch = (event) => {
-    let keyType = event.target.value
-    console.log(event.target.checked)
-    checkvals[keyType] = event.target.checked
-    setStateCheck(checkvals)
-//    return setStateCheck(prevState => ({
-//     ...prevState,
-//     keyType: !event.target.checked
-//  }));
- console.log(stateCheck)
+    // console.log(checkvals)
+    // if (checkvals.firstName !== null){
+    // let keyType = event.target.value
+    //   checkvals[keyType] = event.target.checked
+    //   setStateCheck(checkvals)
+
+    // // }
+    // let vals = stateCheck
+     let keyType = event.target.value
+    // vals[keyType] = event.target.checked
+    // setStateCheck(vals)
+
+    let oldVal =  stateCheck[keyType] 
+    let newVal = event.target.checked
+    // checkvals = stateCheck
+    // setStateCheck(checkvals)
+     setStateCheck(prevState => ({
+   ...prevState,
+    [keyType]: event.target.checked
+    }));
+    console.log(stateCheck)
   };
   
   const submitComfirm = () => {
