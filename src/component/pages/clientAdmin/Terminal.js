@@ -116,15 +116,6 @@ export default function Terminal(name) {
   };
   
   const submitComfirm = async () => {
-    //PUT to update endpoint...
-
-    //
-        // {
-        //   "name": "Terminal 1"
-        //   "status": "ENABLED"
-        //   "verificationContent": json.stringtify(jsonObject)
-        // }
-    
     let reqBody = {"name": termName.name,
     "status": termName.status,
     "verificationContent": JSON.stringify(stateCheck) 
@@ -139,6 +130,8 @@ export default function Terminal(name) {
          console.log(result)
          setError("Error submitting data to the server.")
        }
+
+       setTerminal(stateCheck)
   }
   
   // {firstName: true, lastName: true, phoneNumber: false, careCardNumber: false, phoneNumberLast4: false, …}
@@ -157,19 +150,19 @@ export default function Terminal(name) {
     <CardContent>
     <Grid container spacing={1}>
    <Grid container item xs={12} spacing={3}>
-   {formRow("First Name:", terminal.firstName.toString(), 'firstName')}
+   {formRow("First Name:", configStr(terminal.firstName), 'firstName')}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Last Name:", terminal.lastName.toString(), 'lastName' )}
+   {formRow("Last Name:", configStr(terminal.lastName), 'lastName' )}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Phone Number:", terminal.phoneNumber.toString(), 'phoneNumber' )}
+   {formRow("Phone Number:", configStr(terminal.phoneNumber), 'phoneNumber' )}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Carecard Number:", terminal.careCardNumber.toString(), 'careCardNumber' )}
+   {formRow("Carecard Number:", configStr(terminal.careCardNumber), 'careCardNumber' )}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Last 4 Digits of Phone Number:", terminal.phoneNumberLast4.toString(), 'phoneNumberLast4')}
+   {formRow("Last 4 Digits of Phone Number:", configStr(terminal.phoneNumberLast4), 'phoneNumberLast4')}
    </Grid>
   </Grid>
  </CardContent>
@@ -185,6 +178,10 @@ export default function Terminal(name) {
   </div>)
 }
 
+const configStr = (str) => {
+let parsedStr = str ?  "Required" : "Not Required"
+return parsedStr
+}
 
     return(
       <div>
