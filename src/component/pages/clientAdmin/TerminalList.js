@@ -47,7 +47,7 @@ export default function TerminalList() {
 
   const authContext = React.useContext(AuthContext)
   const [error, setError] = React.useState(null);
-  const [terminals, setAppoitnments] = React.useState(null);
+  const [terminals, setTerminals] = React.useState(null);
   const [apiResult, setapiResult] = React.useState(null);
   const [initialSort, setInitialSort] = React.useState(null);
   const [search, setSearch] = React.useState("");
@@ -58,8 +58,8 @@ export default function TerminalList() {
 
   React.useEffect(() => {
     const start = async () => {
-      // let data = await authContext.API.getUsers()
-      let data = [{ name: 'Kiosk at front', status: 'enabled', token: 124124124124, _id: 1}, { name: 'Kiosk at front', status: 'enabled', token: 124124124124, _id: 2}, { name: 'Kiosk at front', status: 'enabled', token: 124124124124, _id: 3}]
+       let data = await authContext.API.getClientTerminals()
+     // let data = [{ name: 'Kiosk at front', status: 'enabled', token: 124124124124, _id: 1}, { name: 'Kiosk at front', status: 'enabled', token: 124124124124, _id: 2}, { name: 'Kiosk at front', status: 'enabled', token: 124124124124, _id: 3}]
       if (data === undefined){
         console.log("error")
         setError("Error grabbing data from the server.")
@@ -71,10 +71,15 @@ export default function TerminalList() {
           if (result.role !== 'CLIENT_ADMIN'){
            return setError("404. Please try again.")
           } else {
-            setapiResult(data)
-            setAppoitnments(data)
-            setInitialSort(data)
-          }
+            if (data.data === undefined){
+              setError("server error.")
+              console.log(data)
+            } else {
+            setapiResult(data.data.data)
+            setTerminals(data.data.data)
+            setInitialSort(data.data.data)
+            }
+         }
         })
       }
     }

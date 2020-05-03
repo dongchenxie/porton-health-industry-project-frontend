@@ -240,6 +240,44 @@ function App() {
             return {error, status: 400 }
         })
         return result
+      },
+      getClientTerminals: async function () {
+        // searchQuery, start, end, page
+        // let urlParam = undefined
+        // let queryPage = "1"
+  
+        // if(page !== undefined){
+        //   queryPage = page
+        // }
+  
+        // if (searchQuery && start === undefined && end === undefined){
+        //   urlParam = `${baseURL}client/appointments?search=${searchQuery}&page=${queryPage}`
+        // } else if (searchQuery === undefined && start && end) {
+        //   urlParam = `${baseURL}client/appointments?start_date=${start}&end_date=${end}&page=${queryPage}`
+        // } else if (searchQuery && start && end){
+        //   urlParam = `${baseURL}client/appointments?search=${searchQuery}&start_date=${start}&end_date=${end}&page=${queryPage}`
+        // } else {
+        //   urlParam = `${baseURL}client/appointments?page=${queryPage}`
+        // }
+  
+        let result = await axios(
+          {
+            method: "get",
+            url: `${baseURL}client/terminals`,
+            headers: {
+              "auth-token":localStorage.getItem("token"),
+              'Access-Control-Allow-Origin': '*'
+            }
+          }
+        ).catch((e) => 
+          { return { error: e }} )
+        if (result.status === 200) {
+          console.log(result)
+          return { status: 200, data: result.data };
+        } else {
+          console.log("error", result)
+          return result
+        }
       }
   }
 
