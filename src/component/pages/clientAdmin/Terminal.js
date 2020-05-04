@@ -71,6 +71,7 @@ export default function Terminal(name) {
           setError("Error grabbing data from the server.")
 
         } else if(data.status === 400 || termNameData.status === 400) {
+          console.log(data)
           console.log("error")
           setError("Terminal has been deleted.")
         } else {
@@ -86,6 +87,7 @@ export default function Terminal(name) {
               setChecks(data.data)
               setInitCheck(termNameData.data.terminal.status)
               setCheckEnable(termNameData.data.terminal.status)
+              console.log('terminal')
             }
           })
         }
@@ -130,7 +132,7 @@ export default function Terminal(name) {
          setError("Error submitting data to the server.")
        }
 
-       setTerminal(stateCheck)
+      return setTerminal(stateCheck)
   }
 
 const configStr = (str) => {
@@ -148,6 +150,7 @@ const submitPut = async (reqBody) => {
          console.log(result)
          setError("Error submitting data to the server.")
        }
+       console.log(result)
     }
 
     const handleCheckEnable = (event) => {
@@ -158,11 +161,7 @@ const submitPut = async (reqBody) => {
     }
 
     const updateStatus = async () => {
-      console.log("in func")
-      if (checkEnable === initCheck ){
-        console.log('fail')
-        return
-      }
+    
       let reqBody = {"name": termName.name,
       "status": checkEnable,
       "verificationContent": JSON.stringify(stateCheck) 

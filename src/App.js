@@ -295,6 +295,7 @@ function App() {
             console.log(error)
               return {error, status: 400 }
           })
+          console.log(result)
           return result
         } else {
         let result = await axios(
