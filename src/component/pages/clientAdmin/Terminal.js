@@ -8,7 +8,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
-import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -53,8 +52,6 @@ export default function Terminal(name) {
   const [initCheck, setInitCheck] = React.useState(null);
   const [renderDisabled, setRenderDisabled] = React.useState(null);
 
-
-
   let checkvals = {
   firstName: null,
   lastName: null,
@@ -68,7 +65,7 @@ export default function Terminal(name) {
     const start = async () => {
      let termNameData = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
-      console.log(termNameData, data)
+     
      if (termNameData.data.terminal.status === "DISABLED" && data.status === 400 ){
        setTermName(termNameData.data.terminal)
        setInitCheck(termNameData.data.terminal.status)
@@ -95,7 +92,6 @@ export default function Terminal(name) {
               setChecks(data.data)
               setInitCheck(termNameData.data.terminal.status)
               setCheckEnable(termNameData.data.terminal.status)
-              console.log('terminal')
             }
           })
         }
@@ -161,15 +157,7 @@ const submitPut = async (reqBody) => {
        console.log(result)
     }
 
-    const handleCheckEnable = (event) => {
-      console.log("test click")
-      console.log(event.target.value)
-       setCheckEnable(event.target.value);
-       console.log(checkEnable)
-    }
-
     const updateStatus = async () => {
-    
       let reqBody = {"name": termName.name,
       "status": checkEnable,
       "verificationContent": JSON.stringify(stateCheck) 
@@ -177,30 +165,6 @@ const submitPut = async (reqBody) => {
 
      submitPut(reqBody)
     }
-
-
-//terminal popup
-const EnableTerminal = () => {
-  return (
-    <div>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <div className={classes.paper}>
-        <FormControl component="fieldset">
-      <FormLabel component="legend">Status</FormLabel>
-      <br/>
-      <RadioGroup aria-label="status" name="status" onChange={handleCheckEnable} aria-label="position" row>
-        <FormControlLabel value="ENABLED" control={<Radio />} label="Enable" labelPlacement="top" />
-        <FormControlLabel value="DISABLED" control={<Radio />} label="Disable" labelPlacement="top" />
-      </RadioGroup>
-      <Button onClick={updateStatus} fullWidth variant="contained"color="primary" > Confirm </Button>
-    </FormControl>
-        </div>
-      </Container>
-    </div>
-  );     
- }
-
 
         const handleSwitch = (event) => {
       let keyType = event.target.value
@@ -260,6 +224,35 @@ const EnableTerminal = () => {
     </div>)
   }
 
+
+//terminal popup functions:
+
+const handleCheckEnable = (event) => {
+  console.log(event.target.value)
+   return setCheckEnable(event.target.value);
+}
+
+const EnableTerminal = () => {
+  return (
+    <div>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+        <FormControl component="fieldset">
+      <FormLabel component="legend">Status</FormLabel>
+      <br/>
+      <RadioGroup aria-label="status" name="status" onChange={handleCheckEnable} aria-label="position" row>
+        <FormControlLabel value="ENABLED" control={<Radio />} label="Enable" labelPlacement="top" />
+        <FormControlLabel value="DISABLED" control={<Radio />} label="Disable" labelPlacement="top" />
+      </RadioGroup>
+      <Button onClick={updateStatus} fullWidth variant="contained"color="primary"> Confirm </Button>
+    </FormControl>
+        </div>
+      </Container>
+    </div>
+  );     
+ }
+
 const RenderDisableView = () => {
   return( <div> 
     <h3>Terminal Is Currently Disabled</h3>
@@ -288,11 +281,12 @@ const RenderDisableView = () => {
    </div> )
 }
 
+
     return(
       <div>
         {error !== null ? error : ""}
         {termName !== null && termName !== undefined ? <h3>{termName.name}</h3> : ""}
-        {renderDisabled === true ? <div><RenderDisableView /></div> : "false"}
+        {renderDisabled === true ? <RenderDisableView /> : ""}
         {terminal !== null && terminal !== undefined && renderDisabled === null ? 
         <div> 
    <PopupState variant="popover" popupId="demo-popup-popover">
@@ -317,9 +311,9 @@ const RenderDisableView = () => {
         </div>
       )}
     </PopupState>
-   {renderTerminalView(terminal)}
+    {renderTerminalView(terminal)}
         </div> 
-         : ""}
+         : "" }
       </div>
     ) 
   }

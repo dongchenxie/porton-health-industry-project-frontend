@@ -242,24 +242,6 @@ function App() {
         return result
       },
       getClientTerminals: async function () {
-        // searchQuery, start, end, page
-        // let urlParam = undefined
-        // let queryPage = "1"
-  
-        // if(page !== undefined){
-        //   queryPage = page
-        // }
-  
-        // if (searchQuery && start === undefined && end === undefined){
-        //   urlParam = `${baseURL}client/appointments?search=${searchQuery}&page=${queryPage}`
-        // } else if (searchQuery === undefined && start && end) {
-        //   urlParam = `${baseURL}client/appointments?start_date=${start}&end_date=${end}&page=${queryPage}`
-        // } else if (searchQuery && start && end){
-        //   urlParam = `${baseURL}client/appointments?search=${searchQuery}&start_date=${start}&end_date=${end}&page=${queryPage}`
-        // } else {
-        //   urlParam = `${baseURL}client/appointments?page=${queryPage}`
-        // }
-  
         let result = await axios(
           {
             method: "get",
@@ -283,8 +265,6 @@ function App() {
         if (verificationReq){
           terminalURL = `${baseURL}client/terminal/verificationContent/${id}`
         }
-
-        console.log(terminalURL)
 
         if (putParam){
           let result = await axios.put(terminalURL, putParam)
@@ -318,9 +298,6 @@ function App() {
       }
     },
     createClientTerminal: async function (param) {
-      // http://localhost:3333/api/client/terminal/
-      
-  
         let result = await axios(
           {
             method: "POST",
@@ -338,7 +315,6 @@ function App() {
           console.log("error", result)
           return { status: 400, data: result };
         }
-      
     }
   }
 
