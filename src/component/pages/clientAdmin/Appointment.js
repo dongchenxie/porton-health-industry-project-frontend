@@ -238,7 +238,8 @@ const StatusChange = () => {
         </div>
       </Container>
     </div>
-  );    }
+  )  
+}
 
     return(
       <div>

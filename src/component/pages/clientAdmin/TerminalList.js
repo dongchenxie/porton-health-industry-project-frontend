@@ -17,6 +17,14 @@ import MuiTableSortLabel  from '@material-ui/core/TableSortLabel';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import TextField from '@material-ui/core/TextField';
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import Popover from '@material-ui/core/Popover';
+import Box from '@material-ui/core/Box';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -55,11 +63,14 @@ export default function TerminalList() {
   const [direction, setDirection] = React.useState("asc")
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
+  const [query, setQuery] = React.useState(undefined);
+  const [hash, setHash] = React.useState(null);
 
 
   React.useEffect(() => {
     const start = async () => {
        let data = await authContext.API.getClientTerminals()
+       console.log(data)
 
        if (data === undefined){
         console.log("error")
@@ -79,6 +90,7 @@ export default function TerminalList() {
             setapiResult(data.data.metadata)
             setTerminals(data.data.data)
             setInitialSort(data.data.data)
+            console.log(data)
             }
          }
         })
@@ -98,98 +110,192 @@ export default function TerminalList() {
         return { name, status, token, action, id };
       }
 
+const callAPI = async (query, page) => {
+  //old
+  let apiData = undefined
+   apiData = await authContext.API.getClientTerminals(query, page)
+  console.log(apiData)
 
-      //NEED: get terminal ID
-      const renderAction = (terminal) => {
-        return(<Link to={`${url}/${terminal._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Terminal Information and Settings</Button></Link>)
-      }
-
-      const renderToken = (token) => {
-        return(<Button size="small" variant="contained" color="primary" onClick={() => displayToken(token)}>{token}</Button>)
-      }
-      
-      const sortTable = (col) => {
-        console.log("sort...")
-      //   if (col === 'email'){
-      //   //bugfix here....
-      //   } else {
-      //   if(direction === "asc"){
-      //     let sorted = users.sort(function(a, b){
-      //       if(a[col] > b[col]) { return 1; }
-      //       if(a[col] < b[col]) { return -1; }  
-      //       return 0;
-      //   })  
-      //   setUsers(sorted)
-      //   setDirection("desc")
-      //   } else {
-      //     let sorted = users.sort(function(a, b){
-      //       if(a[col] < b[col]) { return 1; }
-      //       if(a[col] > b[col]) { return -1; }
-      //       return 0;
-      //   })  
-      //    setUsers(sorted)
-      //    setDirection("asc")
-      //   }
-      // }
+  if (apiData === undefined && apiData.data === undefined){
+   console.log("error")
+   setError("Error grabbing data from the server.")
+ }  else {
+   authContext.API.readToken(authContext.authState).then(function(result){
+     if (result.role !== 'CLIENT_ADMIN'){
+      return setError("404. Please try again.")
+     } else {
+      if(apiData.data.metadata.totalResults === 0){
+        setapiResult(apiData.data.metadata)
+        setapiResult((prevState) => ({
+          ...prevState,
+          totalPages: 1,
+        }))
+        setError("No results match search.")
+        setTerminals([])
+       } else {
+      setError("")
+       setapiResult(apiData.data.metadata)
+       setTerminals(apiData.data.data)
+       setInitialSort(apiData.data.data)
+       console.log(apiData)
+       }
     }
+   })
+ }
+}
 
-    
-const handleChangePage = () => {
-  console.log("next")
+
+  //may be bug here...
+const submitSearch = (event) => {
+  if (event.key === "Enter" && search !== "") {
+    setSearchToggle(true)
+    setPage(1)
+    setQuery(event.target.value)
+    event.target.value = ""
+    return callAPI(query, undefined)
   }
-
-    const handleSearchChange = (e) => {
-      setSearch(e.target.value);
-    };
-    
-    const submitSearch = (event) => {
-      if (event.key === "Enter" && search !== "") {
-        console.log(search)
-        setSearchToggle(true)
-        setPage(1)
-        event.target.value = ""
-      }
-    }
+}
     
 //clear search fields, render base API  result again.
 const clearSearch = () => {
   setSearch("")
   setSearchToggle(false)
+  setQuery(undefined)
+  callAPI(undefined, undefined)
   setPage(1)
 }
 
+  ///////
   //NEED: post terminal
-const createTerminal = () => {
+  ///////
+const createTerminal = async () => {
   //POST to client/terminal endpoint.
-  alert("create popup")
+  let data = await authContext.API.createClientTerminal("TESTFROMREACT")
+  console.log(data)
 }
 
+const sortTable = (col) => {
+  if(direction === "asc"){
+    let sorted = terminals.sort(function(a, b){
+      if(a[col] > b[col]) { return 1; }
+      if(a[col] < b[col]) { return -1; }  
+     return 0;
+  })  
+  setTerminals(sorted)
+ setDirection("desc")
+  } else {
+    let sorted = terminals.sort(function(a, b) {
+      if(a[col] < b[col]) { return 1; }
+      if(a[col] > b[col]) { return -1; }
+      return 0;
+  })  
+  setTerminals(sorted)
+     setDirection("asc")
+  }
+}
+
+const handleChangePage = async (pageDir) => {
+ if (pageDir == 'r' && page + 1 <= setapiResult.totalPages && query !== undefined){
+   setPage(page += 1)
+   return callAPI(query, page)
+ } else if (pageDir == 'l' && page - 1 >= 1 && query !== undefined){
+   setPage(page -= 1)
+ return  callAPI(query, page)
+ }
+};
+
+
+const handleSearchChange = (e) => {
+setSearch(e.target.value);
+setQuery(e.target.value)
+};
+
+
+//token pop-up features
+
+const renderToken = (token) => {
+  return(
+    <PopupState variant="popover" popupId="demo-popup-popover">
+          {(popupState) => (
+            <div>
+           <Button size="small" variant="contained" color="primary" {...bindTrigger(popupState)}>{hashToken(token)}</Button>
+              <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+               >
+                <Box p={2}>
+                <DisplayToken token={token} />
+                </Box>
+              </Popover>
+            </div>
+          )}
+        </PopupState>)
+}
+
+const DisplayToken = (token) => {
+  return (
+    <div>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+        <p>{token.token}</p>
+        </div>
+      </Container>
+    </div>
+  );     
+}
+
+const hashToken = (tokenStr) => {
+  if (tokenStr == null){
+    return tokenStr
+  }
+
+let local = []
+tokenStr.toString().split("").forEach(parse)
+
+function parse(item, index, arr) {
+ let hash = arr[index] = "*"
+ local.push(hash)
+}
+
+return local.join("")
+}
+
+
+
+//create tables:
+
 const parseRows = (column, value, row) => {
-  if (column === 'token'){
-    console.log(value)
+  if (column === 'token' && row.status !== 'DELETED'){
     return renderToken(value)
-  } else if (column === 'action'){
+  } else if (column === 'action' && row.status !== 'DELETED'){
     return renderAction(row)
   } else {
     return value
   }
 }
 
-  //NEED: get verification content
-const displayToken = (token) => {
-  console.log(token)
+const renderAction = (terminal) => {
+  return( <Link to={`${url}/${terminal._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Terminal Information and Settings</Button></Link> ) 
 }
+
 
 return(
   <div> 
           {error !== null ? error : ""}
           {terminals !== null && terminals !== undefined ? 
   <div>
-    {console.log(terminals)}
-    <h3>Terminals: </h3>
+    <h3>  Terminals: </h3>
     <Paper className={classes.root}>
-    <Button size="small" variant="contained" color="primary" onClick={createTerminal}>Create New</Button>
-    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
+    <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginLeft: '1%', marginTop: '1%'}} onClick={createTerminal}>Create New</Button>
+    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch} style={{marginRight: '2%', marginLeft: '1%', marginTop: '1%'}}>Clear Search</Button> : ""}
     <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
@@ -201,7 +307,7 @@ return(
                 align={column.align}
                 style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                 {column.label}
-                {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
+                {column.id !== 'action' && column.id !== 'token' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
               </TableCell>
             ))}
           </TableRow>
@@ -239,4 +345,4 @@ return(
       : "" }
 </div>
   ) 
-  }
+}
