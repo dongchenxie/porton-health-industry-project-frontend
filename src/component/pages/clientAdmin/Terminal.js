@@ -51,6 +51,8 @@ export default function Terminal(name) {
   const [stateCheck, setStateCheck] = React.useState(null);
   const [checkEnable, setCheckEnable] = React.useState(null);
   const [initCheck, setInitCheck] = React.useState(null);
+  const [renderDisabled, setRenderDisabled] = React.useState(null);
+
 
 
   let checkvals = {
@@ -66,7 +68,13 @@ export default function Terminal(name) {
     const start = async () => {
      let termNameData = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
-        if (data === undefined || termNameData === undefined || termNameData === null || data === null ){
+      console.log(termNameData, data)
+     if (termNameData.data.terminal.status === "DISABLED" && data.status === 400 ){
+       setTermName(termNameData.data.terminal)
+       setInitCheck(termNameData.data.terminal.status)
+       setCheckEnable(termNameData.data.terminal.status)
+       setRenderDisabled(true)
+        } else if (data === undefined || termNameData === undefined || termNameData === null || data === null ){
           console.log("error")
           setError("Error grabbing data from the server.")
 
@@ -252,11 +260,40 @@ const EnableTerminal = () => {
     </div>)
   }
 
+const RenderDisableView = () => {
+  return( <div> 
+    <h3>Terminal Is Currently Disabled</h3>
+    <PopupState variant="popover" popupId="demo-popup-popover">
+       {(popupState) => (
+         <div>
+        <Button size="small" variant="contained" color="primary" style={{marginTop:"2%", marginBottom: '1%'}} {...bindTrigger(popupState)}>Enable/Disable Terminal</Button>
+           <Popover
+             {...bindPopover(popupState)}
+             anchorOrigin={{
+               vertical: 'bottom',
+               horizontal: 'center',
+             }}
+             transformOrigin={{
+               vertical: 'top',
+               horizontal: 'center',
+             }}
+            >
+             <Box p={2}>
+             <EnableTerminal />
+             </Box>
+           </Popover>
+         </div>
+       )}
+     </PopupState>
+   </div> )
+}
+
     return(
       <div>
         {error !== null ? error : ""}
         {termName !== null && termName !== undefined ? <h3>{termName.name}</h3> : ""}
-        {terminal !== null && terminal !== undefined ? 
+        {renderDisabled === true ? <div><RenderDisableView /></div> : "false"}
+        {terminal !== null && terminal !== undefined && renderDisabled === null ? 
         <div> 
    <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
