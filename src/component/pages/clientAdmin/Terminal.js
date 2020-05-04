@@ -65,7 +65,7 @@ export default function Terminal(name) {
     const start = async () => {
      let termNameData = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
-     
+
      if (termNameData.data.terminal.status === "DISABLED" && data.status === 400 ){
        setTermName(termNameData.data.terminal)
        setInitCheck(termNameData.data.terminal.status)
@@ -219,7 +219,7 @@ const submitPut = async (reqBody) => {
     </CardActions>
     </Card>
   
-    <Button variant="contained" onClick={delTerminal} style={{marginTop: '3%', marginLeft: '4%', marginBottom: '1%', backgroundColor: 'blue', color: 'white'}}> Delete Terminal </Button>
+    <Button variant="contained" onClick={delTerminal} style={{marginTop: '3%', marginBottom: '1%', backgroundColor: 'blue', color: 'white', display: 'block'}}> Delete Terminal </Button>
     <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
     </div>)
   }

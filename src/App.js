@@ -251,8 +251,6 @@ function App() {
           urlParam = `${baseURL}client/terminals?search=${queryParam}&page=${pageParam}`
         }
 
-        console.log(urlParam)
-
         let result = await axios(
           {
             method: "get",

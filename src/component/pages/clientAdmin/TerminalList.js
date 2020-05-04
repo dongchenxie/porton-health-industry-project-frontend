@@ -110,48 +110,6 @@ export default function TerminalList() {
         return { name, status, token, action, id };
       }
 
-
-      const renderAction = (terminal) => {
-        return( <Link to={`${url}/${terminal._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Terminal Information and Settings</Button></Link> ) 
-      }
-      
-      const sortTable = (col) => {
-         if(direction === "asc"){
-           let sorted = terminals.sort(function(a, b){
-             if(a[col] > b[col]) { return 1; }
-             if(a[col] < b[col]) { return -1; }  
-            return 0;
-         })  
-         setTerminals(sorted)
-        setDirection("desc")
-         } else {
-           let sorted = terminals.sort(function(a, b) {
-             if(a[col] < b[col]) { return 1; }
-             if(a[col] > b[col]) { return -1; }
-             return 0;
-         })  
-         setTerminals(sorted)
-            setDirection("asc")
-         }
-       }
-
-      const handleChangePage = async (pageDir) => {
-        if (pageDir == 'r' && page + 1 <= setapiResult.totalPages && query !== undefined){
-          setPage(page += 1)
-          return callAPI(query, page)
-        } else if (pageDir == 'l' && page - 1 >= 1 && query !== undefined){
-          setPage(page -= 1)
-        return  callAPI(query, page)
-        }
-      };
-
-
-    const handleSearchChange = (e) => {
-      setSearch(e.target.value);
-      setQuery(e.target.value)
-    };
-    
-
 const callAPI = async (query, page) => {
   //old
   let apiData = undefined
@@ -216,16 +174,44 @@ const createTerminal = async () => {
   console.log(data)
 }
 
-const parseRows = (column, value, row) => {
-  if (column === 'token' && row.status !== 'DELETED'){
-    return renderToken(value)
-  } else if (column === 'action' && row.status !== 'DELETED'){
-    return renderAction(row)
+const sortTable = (col) => {
+  if(direction === "asc"){
+    let sorted = terminals.sort(function(a, b){
+      if(a[col] > b[col]) { return 1; }
+      if(a[col] < b[col]) { return -1; }  
+     return 0;
+  })  
+  setTerminals(sorted)
+ setDirection("desc")
   } else {
-    return value
+    let sorted = terminals.sort(function(a, b) {
+      if(a[col] < b[col]) { return 1; }
+      if(a[col] > b[col]) { return -1; }
+      return 0;
+  })  
+  setTerminals(sorted)
+     setDirection("asc")
   }
 }
 
+const handleChangePage = async (pageDir) => {
+ if (pageDir == 'r' && page + 1 <= setapiResult.totalPages && query !== undefined){
+   setPage(page += 1)
+   return callAPI(query, page)
+ } else if (pageDir == 'l' && page - 1 >= 1 && query !== undefined){
+   setPage(page -= 1)
+ return  callAPI(query, page)
+ }
+};
+
+
+const handleSearchChange = (e) => {
+setSearch(e.target.value);
+setQuery(e.target.value)
+};
+
+
+//token pop-up features
 
 const renderToken = (token) => {
   return(
@@ -266,7 +252,6 @@ const DisplayToken = (token) => {
   );     
 }
 
-
 const hashToken = (tokenStr) => {
   if (tokenStr == null){
     return tokenStr
@@ -281,6 +266,24 @@ function parse(item, index, arr) {
 }
 
 return local.join("")
+}
+
+
+
+//create tables:
+
+const parseRows = (column, value, row) => {
+  if (column === 'token' && row.status !== 'DELETED'){
+    return renderToken(value)
+  } else if (column === 'action' && row.status !== 'DELETED'){
+    return renderAction(row)
+  } else {
+    return value
+  }
+}
+
+const renderAction = (terminal) => {
+  return( <Link to={`${url}/${terminal._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Terminal Information and Settings</Button></Link> ) 
 }
 
 
