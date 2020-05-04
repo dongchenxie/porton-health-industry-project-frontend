@@ -55,6 +55,7 @@ export default function TerminalList() {
   const [direction, setDirection] = React.useState("asc")
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
+  const [query, setQuery] = React.useState(undefined);
 
 
   React.useEffect(() => {
@@ -129,20 +130,27 @@ export default function TerminalList() {
          }
        }
 
-    
-const handleChangePage = () => {
-  console.log("next")
-  }
+      const handleChangePage = async (pageDir) => {
+        if (pageDir == 'r' && page + 1 <= setapiResult.totalPages && query !== undefined){
+          setPage(page += 1)
+          return callAPI(query, page)
+        } else if (pageDir == 'l' && page - 1 >= 1 && query !== undefined){
+          setPage(page -= 1)
+        return  callAPI(query, page)
+        }
+      };
+
 
     const handleSearchChange = (e) => {
       setSearch(e.target.value);
+      setQuery(e.target.value)
     };
     
 
-const callAPI = async (query) => {
+const callAPI = async (query, page) => {
   //old
   let apiData = undefined
-   apiData = await authContext.API.getClientTerminals(query)
+   apiData = await authContext.API.getClientTerminals(query, page)
   console.log(apiData)
 
   if (apiData === undefined && apiData.data === undefined){
@@ -179,9 +187,9 @@ const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
     setSearchToggle(true)
     setPage(1)
-    let query = event.target.value
+    setQuery(event.target.value)
     event.target.value = ""
-    return callAPI(query)
+    return callAPI(query, undefined)
   }
 }
     
@@ -189,7 +197,8 @@ const submitSearch = (event) => {
 const clearSearch = () => {
   setSearch("")
   setSearchToggle(false)
-  callAPI()
+  setQuery(undefined)
+  callAPI(undefined, undefined)
   setPage(1)
 }
 

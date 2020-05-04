@@ -241,11 +241,17 @@ function App() {
         })
         return result
       },
-      getClientTerminals: async function (queryParam) {
+      getClientTerminals: async function (queryParam, pageParam) {
         let urlParam = `${baseURL}client/terminals`
-        if (queryParam){
+        if (queryParam && pageParam === undefined){
           urlParam = `${baseURL}client/terminals?search=${queryParam}`
+        } else if (pageParam && queryParam === undefined){
+          urlParam = `${baseURL}client/terminals?page=${pageParam}`
+        } else if (pageParam && queryParam){
+          urlParam = `${baseURL}client/terminals?search=${queryParam}&page=${pageParam}`
         }
+
+        console.log(urlParam)
 
         let result = await axios(
           {
