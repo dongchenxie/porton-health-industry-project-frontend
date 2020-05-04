@@ -40,7 +40,7 @@ export default function SimpleTable(props) {
   return (
     <div>
     <TableContainer >
-         <Typography variant="h5" component="h6" className={classes.textCenter}>Please Comfirm Your Check-in Details</Typography>
+         <Typography variant="h5" component="h6" className={classes.textCenter}>You Have Checked In</Typography>
       <Table className={classes.table} aria-label="simple table" className={classes.tableStyle} component={Paper}>
         
         <TableBody>
@@ -49,19 +49,17 @@ export default function SimpleTable(props) {
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="left">{row.calories}</TableCell>
+              <TableCell align="left">{row.fat}</TableCell>
+              <TableCell align="left">{row.carbs}</TableCell>
+              <TableCell align="left">{row.protein}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
     <div>
-    <Button disabled={props.activeStep === 0} onClick={props.handleBack} className={classes.button}>
-      Back
-          </Button>
+   
 
     <Button
       variant="contained"
@@ -69,7 +67,7 @@ export default function SimpleTable(props) {
       onClick={props.handleNext}
       className={classes.button}
     >
-      {props.activeStep === props.steps.length - 1 ? 'Comfirm' : 'Next'}
+      {props.activeStep === props.steps.length - 1 ? 'Done' : 'Next'}
     </Button>
   </div>
   </div>

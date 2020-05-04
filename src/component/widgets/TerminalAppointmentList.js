@@ -39,6 +39,17 @@ export default function SimpleTable(props) {
   const handleThisIsMe = () => {
     props.handleNext()
   }
+  const dataMask =(data)=>{
+    let result=''
+    for(let i=0;i<data.length;i++){
+      if(i==0||i==data.length-1){
+        result+=data[i]
+      }else{
+        result+="*"
+      }
+    }
+    return result
+  }
 
   return (
     <div>
@@ -60,11 +71,11 @@ export default function SimpleTable(props) {
                 {/* <TableCell component="th" scope="row">
                 {row.name}
               </TableCell> */}
-                <TableCell align="right">{row.firstname}</TableCell>
-                <TableCell align="right">{row.lastname}</TableCell>
-                <TableCell align="right">{row.apptTime}</TableCell>
-                <TableCell align="right">{row.doctorName}</TableCell>
-                <TableCell align="right"><Button variant="contained" color="primary" onClick={() => { handleThisIsMe(row._id) }}>This is me</Button></TableCell>
+                <TableCell align="left">{ dataMask(row.firstname)}</TableCell>
+                <TableCell align="left">{dataMask(row.lastname)}</TableCell>
+                <TableCell align="left">{row.apptTime}</TableCell>
+                <TableCell align="left">{row.doctorName}</TableCell>
+                <TableCell align="left"><Button variant="contained" color="primary" onClick={() => { handleThisIsMe(row._id) }}>This is me</Button></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -72,16 +83,16 @@ export default function SimpleTable(props) {
       </TableContainer>
       <div>
         <Button disabled={props.activeStep === 0} onClick={props.handleBack} className={classes.button}>
-          Back
+          Prev Page
               </Button>
 
         <Button
           variant="contained"
           color="primary"
-          onClick={props.handleNext}
+        
           className={classes.button}
         >
-          {props.activeStep === props.steps.length - 1 ? 'Comfirm' : 'Next'}
+          Next Page
         </Button>
       </div>
     </div>

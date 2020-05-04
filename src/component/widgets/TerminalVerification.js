@@ -2,10 +2,15 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+  },
+  textCenter: {
+    textAlign: "center",
+    marginBottom: theme.spacing(1)
   },
   textField: {
     marginBottom: theme.spacing(1),
@@ -15,14 +20,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function LayoutTextFields(props) {
   const classes = useStyles();
   const verificationContent = {
     firstName: true,
-    lastName: false,
-    phoneNumber: false,
+    lastName: true,
+    phoneNumber: true,
     careCardNumber: false,
-    phoneNumberLast4: false,
+    phoneNumberLast4: true,
     careCardLast4: false
   }
   const availableTerms = [
@@ -43,7 +49,7 @@ export default function LayoutTextFields(props) {
   }
   return (
     <div className={classes.root}>
-
+      <Typography variant="h5" component="h6" className={classes.textCenter}>Please Provide the Below Informaiton to Verify Your Check In</Typography>
       {availableTerms.map((term) => {
         console.log(term)
         if (verificationContent[term]) {
@@ -73,7 +79,7 @@ export default function LayoutTextFields(props) {
           onClick={props.handleNext}
           className={classes.button}
         >
-          {props.activeStep === props.steps.length - 1 ? 'Comfirm' : 'Next'}
+          {props.activeStep === props.steps.length - 1 ? 'Comfirm' : 'Complete Your Check In'}
         </Button>
       </div>
 

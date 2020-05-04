@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-    return ['Tell us your check in time', 'Tell us your carecard number', 'Comfirm your Appointment'];
+    return ['Find Your Appointment', 'Verify Your Information', 'Comfirm Your Appointment'];
 }
 
 
@@ -48,9 +48,9 @@ export default function HorizontalLinearStepper() {
     function getStepContent(step) {
         switch (step) {
             case 0:
-                return (< AppointmentList handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
+                return (< AppointmentList handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
             case 1:
-                return (<  Verification  handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
+                return (<  Verification  handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
             case 2:
                 return (<AppointmentComfirmPage userInfo={userInfo}  handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
             default:
