@@ -17,6 +17,14 @@ import MuiTableSortLabel  from '@material-ui/core/TableSortLabel';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import TextField from '@material-ui/core/TextField';
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import Popover from '@material-ui/core/Popover';
+import Box from '@material-ui/core/Box';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -56,6 +64,7 @@ export default function TerminalList() {
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
   const [query, setQuery] = React.useState(undefined);
+  const [hash, setHash] = React.useState(null);
 
 
   React.useEffect(() => {
@@ -104,10 +113,6 @@ export default function TerminalList() {
 
       const renderAction = (terminal) => {
         return( <Link to={`${url}/${terminal._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Terminal Information and Settings</Button></Link> ) 
-      }
-
-      const renderToken = (token) => {
-        return(<Button size="small" variant="contained" color="primary" onClick={() => displayToken(token)}>{token}</Button>)
       }
       
       const sortTable = (col) => {
@@ -212,7 +217,7 @@ const createTerminal = async () => {
 }
 
 const parseRows = (column, value, row) => {
-  if (column === 'token'){
+  if (column === 'token' && row.status !== 'DELETED'){
     return renderToken(value)
   } else if (column === 'action' && row.status !== 'DELETED'){
     return renderAction(row)
@@ -221,9 +226,61 @@ const parseRows = (column, value, row) => {
   }
 }
 
-  //NEED: get verification content
-const displayToken = (token) => {
-  console.log(token)
+
+const renderToken = (token) => {
+  return(
+    <PopupState variant="popover" popupId="demo-popup-popover">
+          {(popupState) => (
+            <div>
+           <Button size="small" variant="contained" color="primary" {...bindTrigger(popupState)}>{hashToken(token)}</Button>
+              <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+               >
+                <Box p={2}>
+                <DisplayToken token={token} />
+                </Box>
+              </Popover>
+            </div>
+          )}
+        </PopupState>)
+}
+
+const DisplayToken = (token) => {
+  return (
+    <div>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+        <p>{token.token}</p>
+        </div>
+      </Container>
+    </div>
+  );     
+}
+
+
+const hashToken = (tokenStr) => {
+  if (tokenStr == null){
+    return tokenStr
+  }
+
+let local = []
+tokenStr.toString().split("").forEach(parse)
+
+function parse(item, index, arr) {
+ let hash = arr[index] = "*"
+ local.push(hash)
+}
+
+return local.join("")
 }
 
 
