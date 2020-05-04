@@ -315,6 +315,29 @@ function App() {
           return { status: 400, data: result };
         }
       }
+    },
+    createClientTerminal: async function (param) {
+      // http://localhost:3333/api/client/terminal/
+      
+  
+        let result = await axios(
+          {
+            method: "POST",
+            url: `${baseURL}client/terminal/${param}`,
+            headers: {
+              "auth-token":localStorage.getItem("token"),
+              'Access-Control-Allow-Origin': '*'
+            }
+          }
+        ).catch((e) => 
+          { return { error: e }} )
+        if (result.status === 200) {
+          return { status: 200, data: result.data };
+        } else {
+          console.log("error", result)
+          return { status: 400, data: result };
+        }
+      
     }
   }
 

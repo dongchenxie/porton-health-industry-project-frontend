@@ -60,6 +60,7 @@ export default function TerminalList() {
   React.useEffect(() => {
     const start = async () => {
        let data = await authContext.API.getClientTerminals()
+       console.log(data)
 
        if (data === undefined){
         console.log("error")
@@ -101,8 +102,9 @@ export default function TerminalList() {
 
       //NEED: get terminal ID
       const renderAction = (terminal) => {
-        return(<Link to={`${url}/${terminal._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Terminal Information and Settings</Button></Link>)
+        return( <Link to={`${url}/${terminal._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Terminal Information and Settings</Button></Link> ) 
       }
+
 
       const renderToken = (token) => {
         return(<Button size="small" variant="contained" color="primary" onClick={() => displayToken(token)}>{token}</Button>)
@@ -158,17 +160,21 @@ const clearSearch = () => {
   setPage(1)
 }
 
+  ///////
   //NEED: post terminal
-const createTerminal = () => {
+  ///////
+const createTerminal = async () => {
   //POST to client/terminal endpoint.
-  alert("create popup")
+  let data = await authContext.API.createClientTerminal("TESTFROMREACT")
+  console.log(data)
 }
 
 const parseRows = (column, value, row) => {
+  console.log( row)
   if (column === 'token'){
     console.log(value)
     return renderToken(value)
-  } else if (column === 'action'){
+  } else if (column === 'action' && row.status !== 'DELETED'){
     return renderAction(row)
   } else {
     return value
@@ -179,6 +185,7 @@ const parseRows = (column, value, row) => {
 const displayToken = (token) => {
   console.log(token)
 }
+
 
 return(
   <div> 

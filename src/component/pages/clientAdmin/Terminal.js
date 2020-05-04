@@ -10,6 +10,16 @@ import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import Popover from '@material-ui/core/Popover';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles({
   root: {
@@ -39,6 +49,8 @@ export default function Terminal(name) {
   const [terminal, setTerminal] = React.useState(null);
   const [termName, setTermName] = React.useState(null);
   const [stateCheck, setStateCheck] = React.useState(null);
+  const [checkEnable, setCheckEnable] = React.useState(null);
+  const [initCheck, setInitCheck] = React.useState(null);
 
 
   let checkvals = {
@@ -60,7 +72,7 @@ export default function Terminal(name) {
 
         } else if(data.status === 400 || termNameData.status === 400) {
           console.log("error")
-          setError("Error grabbing data from the server.")
+          setError("Terminal has been deleted.")
         } else {
           /////
           //MIGHT NEED TO FIX ORDER OF TOKEN VERIFICATION.....
@@ -72,6 +84,8 @@ export default function Terminal(name) {
               setTerminal(data.data)
               setTermName(termNameData.data.terminal)
               setChecks(data.data)
+              setInitCheck(termNameData.data.terminal.status)
+              setCheckEnable(termNameData.data.terminal.status)
             }
           })
         }
@@ -80,6 +94,15 @@ export default function Terminal(name) {
   }, [])
 
 
+  const delTerminal = () => {
+    let reqBody = {"name": termName.name,
+    "status": 'DELETED',
+    "verificationContent": JSON.stringify(stateCheck) 
+   }
+   setError("Terminal has been deleted.")
+   return submitPut(reqBody)
+  }
+  
   const setChecks = (terminalObj) => {
     for (var property in terminalObj) {
       for ( var compareProp in checkvals ) {
@@ -91,30 +114,6 @@ export default function Terminal(name) {
     return setStateCheck(checkvals)
   }
 
-  const formRow = (label, data, keyType) => {
-    return (
-      <React.Fragment>
-        <Grid item xs={4}>
-        {label}
-        </Grid>
-        <Grid item xs={4}>
-        {data}
-        </Grid>
-        <Grid item xs={4}>
-         {stateCheck !== null ?  <Switch checked={stateCheck[keyType]} onChange={handleSwitch} color="primary" name="checkedB" value={keyType} inputProps={{ 'aria-label': 'primary checkbox' }}/> : "" }
-        </Grid>
-        </React.Fragment>
-    );
-  }
-
-  const handleSwitch = (event) => {
-   let keyType = event.target.value
-     setStateCheck(prevState => ({
-   ...prevState,
-    [keyType]: event.target.checked
-    }));
-  };
-  
   const submitComfirm = async () => {
     let reqBody = {"name": termName.name,
     "status": termName.status,
@@ -133,72 +132,10 @@ export default function Terminal(name) {
 
        setTerminal(stateCheck)
   }
-  
-  // {firstName: true, lastName: true, phoneNumber: false, careCardNumber: false, phoneNumberLast4: false, …}
-  // careCardLast4: false
-  // careCardNumber: false
-  // firstName: true
-  // lastName: true
-  // phoneNumber: false
-  // phoneNumberLast4: false
-  // __v: 0
-  // _id: "5ead1ffdaec9612138f1eede"
-
-  const renderTerminalView = (terminal) => {
-    return( 
-    <div> <Card className={classes.root} variant="outlined">
-    <CardContent>
-    <Grid container spacing={1}>
-   <Grid container item xs={12} spacing={3}>
-   {formRow("First Name:", configStr(terminal.firstName), 'firstName')}
-   </Grid>
-   <Grid container item xs={12} spacing={3}>
-   {formRow("Last Name:", configStr(terminal.lastName), 'lastName' )}
-   </Grid>
-   <Grid container item xs={12} spacing={3}>
-   {formRow("Phone Number:", configStr(terminal.phoneNumber), 'phoneNumber' )}
-   </Grid>
-   <Grid container item xs={12} spacing={3}>
-   {formRow("Carecard Number:", configStr(terminal.careCardNumber), 'careCardNumber' )}
-   </Grid>
-   <Grid container item xs={12} spacing={3}>
-   {formRow("Last 4 Digits of Phone Number:", configStr(terminal.phoneNumberLast4), 'phoneNumberLast4')}
-   </Grid>
-  </Grid>
- </CardContent>
-
- <CardActions style={{display: 'block', width: '50%'}}>   
-
-   <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComfirm}>Comfirm</Button>
-  </CardActions>
-  </Card>
-  
-  <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
-  </div>)
-}
 
 const configStr = (str) => {
 let parsedStr = str ?  "Required" : "Not Required"
 return parsedStr
-}
-
-const enabaleTerminal = () => {
-console.log(termName, terminal)
-// //clinic: "5ea9186d4a33612928dc0b3e"
-// creationDate: "2020-05-02T01:05:38.677Z"
-// name: "Terminal 1"
-// status: "ENABLED"
-// token: "NA"
-// verificationContent: "5ead1ffdaec9612138f1eede"
-
-}
-
-const delTerminal = () => {
-  let reqBody = {"name": termName.name,
-  "status": 'DELETED',
-  "verificationContent": JSON.stringify(stateCheck) 
- }
- return submitPut(reqBody)
 }
 
 const submitPut = async (reqBody) => {
@@ -211,7 +148,110 @@ const submitPut = async (reqBody) => {
          console.log(result)
          setError("Error submitting data to the server.")
        }
-}
+    }
+
+    const handleCheckEnable = (event) => {
+      console.log("test click")
+      console.log(event.target.value)
+       setCheckEnable(event.target.value);
+       console.log(checkEnable)
+    }
+
+    const updateStatus = async () => {
+      console.log("in func")
+      if (checkEnable === initCheck ){
+        console.log('fail')
+        return
+      }
+      let reqBody = {"name": termName.name,
+      "status": checkEnable,
+      "verificationContent": JSON.stringify(stateCheck) 
+     }
+
+     submitPut(reqBody)
+    }
+
+
+//terminal popup
+const EnableTerminal = () => {
+  return (
+    <div>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+        <FormControl component="fieldset">
+      <FormLabel component="legend">Status</FormLabel>
+      <br/>
+      <RadioGroup aria-label="status" name="status" onChange={handleCheckEnable} aria-label="position" row>
+        <FormControlLabel value="ENABLED" control={<Radio />} label="Enable" labelPlacement="top" />
+        <FormControlLabel value="DISABLED" control={<Radio />} label="Disable" labelPlacement="top" />
+      </RadioGroup>
+      <Button onClick={updateStatus} fullWidth variant="contained"color="primary" > Confirm </Button>
+    </FormControl>
+        </div>
+      </Container>
+    </div>
+  );     
+ }
+
+
+        const handleSwitch = (event) => {
+      let keyType = event.target.value
+        setStateCheck(prevState => ({
+      ...prevState,
+       [keyType]: event.target.checked
+       }));
+     };
+  
+    const formRow = (label, data, keyType) => {
+      return (
+        <React.Fragment>
+          <Grid item xs={4}>
+          {label}
+          </Grid>
+          <Grid item xs={4}>
+          {data}
+          </Grid>
+          <Grid item xs={4}>
+           {stateCheck !== null ?  <Switch checked={stateCheck[keyType]} onChange={handleSwitch} color="primary" name="checkedB" value={keyType} inputProps={{ 'aria-label': 'primary checkbox' }}/> : "" }
+          </Grid>
+          </React.Fragment>
+      );
+    }
+
+     const renderTerminalView = (terminal) => {
+      return( 
+      <div> <Card className={classes.root} variant="outlined">
+      <CardContent>
+      <Grid container spacing={1}>
+     <Grid container item xs={12} spacing={3}>
+     {formRow("First Name:", configStr(terminal.firstName), 'firstName')}
+     </Grid>
+     <Grid container item xs={12} spacing={3}>
+     {formRow("Last Name:", configStr(terminal.lastName), 'lastName' )}
+     </Grid>
+     <Grid container item xs={12} spacing={3}>
+     {formRow("Phone Number:", configStr(terminal.phoneNumber), 'phoneNumber' )}
+     </Grid>
+     <Grid container item xs={12} spacing={3}>
+     {formRow("Carecard Number:", configStr(terminal.careCardNumber), 'careCardNumber' )}
+     </Grid>
+     <Grid container item xs={12} spacing={3}>
+     {formRow("Last 4 Digits of Phone Number:", configStr(terminal.phoneNumberLast4), 'phoneNumberLast4')}
+     </Grid>
+    </Grid>
+   </CardContent>
+  
+   <CardActions style={{display: 'block', width: '50%'}}>   
+  
+     <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComfirm}>Comfirm</Button>
+    </CardActions>
+    </Card>
+  
+    <Button variant="contained" onClick={delTerminal} style={{marginTop: '3%', marginLeft: '4%', marginBottom: '1%', backgroundColor: 'blue', color: 'white'}}> Delete Terminal </Button>
+    <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
+    </div>)
+  }
 
     return(
       <div>
@@ -219,10 +259,29 @@ const submitPut = async (reqBody) => {
         {termName !== null && termName !== undefined ? <h3>{termName.name}</h3> : ""}
         {terminal !== null && terminal !== undefined ? 
         <div> 
-   <Button variant="contained" onClick={enabaleTerminal} style={{marginTop: '2%', marginRight: '2%', marginBottom: '1%', backgroundColor: 'blue', color: 'white'}}> Enable/Disable Check-in</Button> 
-   <Button variant="contained" onClick={delTerminal} style={{marginTop: '2%', marginBottom: '1%', backgroundColor: 'blue', color: 'white'}}> Delete Terminal </Button>
+   <PopupState variant="popover" popupId="demo-popup-popover">
+      {(popupState) => (
+        <div>
+       <Button size="small" variant="contained" color="primary" style={{marginTop:"2%", marginBottom: '1%'}} {...bindTrigger(popupState)}>Enable/Disable Check-in</Button>
+          <Popover
+            {...bindPopover(popupState)}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+           >
+            <Box p={2}>
+            <EnableTerminal />
+            </Box>
+          </Popover>
+        </div>
+      )}
+    </PopupState>
    {renderTerminalView(terminal)}
-
         </div> 
          : ""}
       </div>
