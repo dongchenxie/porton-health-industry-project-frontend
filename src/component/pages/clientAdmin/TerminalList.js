@@ -111,29 +111,24 @@ export default function TerminalList() {
       }
       
       const sortTable = (col) => {
-        console.log("sort...")
-      //   if (col === 'email'){
-      //   //bugfix here....
-      //   } else {
-      //   if(direction === "asc"){
-      //     let sorted = users.sort(function(a, b){
-      //       if(a[col] > b[col]) { return 1; }
-      //       if(a[col] < b[col]) { return -1; }  
-      //       return 0;
-      //   })  
-      //   setUsers(sorted)
-      //   setDirection("desc")
-      //   } else {
-      //     let sorted = users.sort(function(a, b){
-      //       if(a[col] < b[col]) { return 1; }
-      //       if(a[col] > b[col]) { return -1; }
-      //       return 0;
-      //   })  
-      //    setUsers(sorted)
-      //    setDirection("asc")
-      //   }
-      // }
-    }
+         if(direction === "asc"){
+           let sorted = terminals.sort(function(a, b){
+             if(a[col] > b[col]) { return 1; }
+             if(a[col] < b[col]) { return -1; }  
+            return 0;
+         })  
+         setTerminals(sorted)
+        setDirection("desc")
+         } else {
+           let sorted = terminals.sort(function(a, b){
+             if(a[col] < b[col]) { return 1; }
+             if(a[col] > b[col]) { return -1; }
+             return 0;
+         })  
+         setTerminals(sorted)
+            setDirection("asc")
+         }
+       }
 
     
 const handleChangePage = () => {
@@ -208,7 +203,7 @@ return(
                 align={column.align}
                 style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                 {column.label}
-                {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
+                {column.id !== 'action' && column.id !== 'token' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
               </TableCell>
             ))}
           </TableRow>
