@@ -9,11 +9,14 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import TimePickerWidget from"../widgets/timePicker";
+import TimePickerWidget from "../widgets/timePicker";
 import CareCardPage from '../widgets/careCard';
 import AppointmentComfirmPage from '../widgets/AppointmentComfirm'
+import AppointmentList from "../widgets/TerminalAppointmentList"
+import Verification from "../widgets/TerminalVerification"
 const useStyles = makeStyles((theme) => ({
     root: {
+        backgroundColor: "#ffffff",
         width: '100%',
     },
     button: {
@@ -29,30 +32,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-    return ['Tell us your check in time', 'Tell us your carecard number', 'Comfirm your Appointment'];
+    return ['Find Your Appointment', 'Verify Your Information', 'Comfirm Your Appointment'];
 }
 
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return (< TimePickerWidget/>);
-        case 1:
-            return  (< CareCardPage/>);
-        case 2:
-            return  (<AppointmentComfirmPage/>);
-        default:
-            return  (< TimePickerWidget/>);
-    }
-}
+
 
 export default function HorizontalLinearStepper() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
+    const [userInfo, setUserInfo] = React.useState({})
     const steps = getSteps();
     let { url } = useRouteMatch();
 
-
+    function getStepContent(step) {
+        switch (step) {
+            case 0:
+                return (< AppointmentList handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
+            case 1:
+                return (<  Verification  handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
+            case 2:
+                return (<AppointmentComfirmPage userInfo={userInfo}  handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
+            default:
+                return (< TimePickerWidget />);
+        }
+    }
     const isStepOptional = (step) => {
         return false;
     };
@@ -99,7 +103,7 @@ export default function HorizontalLinearStepper() {
         <Container>
 
             <div className={classes.root}>
-                <Stepper activeStep={activeStep}>
+                <Stepper activeStep={activeStep} alternativeLabel>
                     {steps.map((label, index) => {
                         const stepProps = {};
                         const labelProps = {};
@@ -122,52 +126,29 @@ export default function HorizontalLinearStepper() {
                     justify="center"
                     alignItems="center"
                 >
-                   <Grid item xs={12} sm={10} md={8} lg={6}>
-                    <Paper className={classes.paperStyle}>
-                        <div>
-                            {activeStep === steps.length ? (
-                                <div>
-                                    <Typography className={classes.instructions}>
-                                        All steps completed - you&apos;re finished
-            </Typography>
-                                    <Button onClick={handleReset} className={classes.button}>
-                                        Reset
-            </Button>
-                                </div>
-                            ) : (
+                    <Grid item xs={12} sm={10} md={9} lg={8}>
+                        <Paper className={classes.paperStyle}>
+                            <div>
+                                {activeStep === steps.length ? (
                                     <div>
-                                        <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
-                                        <div>
-                                            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                                                Back
-              </Button>
-                                            {isStepOptional(activeStep) && (
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={handleSkip}
-                                                    className={classes.button}
-                                                >
-                                                    Skip
-                                                </Button>
-                                            )}
-
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={handleNext}
-                                                className={classes.button}
-                                            >
-                                                {activeStep === steps.length - 1 ? 'Comfirm' : 'Next'}
-                                            </Button>
-                                        </div>
+                                        <Typography className={classes.instructions}>
+                                            All steps completed - you&apos;re finished
+            </Typography>
+                                        <Button onClick={handleReset} className={classes.button}>
+                                            Reset
+            </Button>
                                     </div>
-                                )}
-                        </div>
-                    </Paper>
+                                ) : (
+                                        <div>
+                                            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                                           
+                                        </div>
+                                    )}
+                            </div>
+                        </Paper>
                     </Grid>
-                    </Grid>
-                    <Link to={`${url}login`} style={{textDecoration: 'none', color: 'inherit'}}> Admins click here to log in. </Link> 
+                </Grid>
+                <Link to={`${url}login`} style={{ textDecoration: 'none', color: 'inherit' }}> Admins click here to log in. </Link>
             </div>
 
         </Container>
