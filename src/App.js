@@ -241,11 +241,16 @@ function App() {
         })
         return result
       },
-      getClientTerminals: async function () {
+      getClientTerminals: async function (queryParam) {
+        let urlParam = `${baseURL}client/terminals`
+        if (queryParam){
+          urlParam = `${baseURL}client/terminals?search=${queryParam}`
+        }
+
         let result = await axios(
           {
             method: "get",
-            url: `${baseURL}client/terminals`,
+            url: urlParam,
             headers: {
               "auth-token":localStorage.getItem("token"),
               'Access-Control-Allow-Origin': '*'

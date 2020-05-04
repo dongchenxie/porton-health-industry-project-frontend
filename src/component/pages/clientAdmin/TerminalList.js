@@ -80,6 +80,7 @@ export default function TerminalList() {
             setapiResult(data.data.metadata)
             setTerminals(data.data.data)
             setInitialSort(data.data.data)
+            console.log(data)
             }
          }
         })
@@ -100,11 +101,9 @@ export default function TerminalList() {
       }
 
 
-      //NEED: get terminal ID
       const renderAction = (terminal) => {
         return( <Link to={`${url}/${terminal._id}`} style={{textDecoration: 'none', color: 'inherit'}}><Button size="small" variant="contained" color="primary">Terminal Information and Settings</Button></Link> ) 
       }
-
 
       const renderToken = (token) => {
         return(<Button size="small" variant="contained" color="primary" onClick={() => displayToken(token)}>{token}</Button>)
@@ -120,7 +119,7 @@ export default function TerminalList() {
          setTerminals(sorted)
         setDirection("desc")
          } else {
-           let sorted = terminals.sort(function(a, b){
+           let sorted = terminals.sort(function(a, b) {
              if(a[col] < b[col]) { return 1; }
              if(a[col] > b[col]) { return -1; }
              return 0;
@@ -139,19 +138,58 @@ const handleChangePage = () => {
       setSearch(e.target.value);
     };
     
-    const submitSearch = (event) => {
-      if (event.key === "Enter" && search !== "") {
-        console.log(search)
-        setSearchToggle(true)
-        setPage(1)
-        event.target.value = ""
-      }
+
+const callAPI = async (query) => {
+  //old
+  let apiData = undefined
+   apiData = await authContext.API.getClientTerminals(query)
+  console.log(apiData)
+
+  if (apiData === undefined && apiData.data === undefined){
+   console.log("error")
+   setError("Error grabbing data from the server.")
+ }  else {
+   authContext.API.readToken(authContext.authState).then(function(result){
+     if (result.role !== 'CLIENT_ADMIN'){
+      return setError("404. Please try again.")
+     } else {
+      if(apiData.data.metadata.totalResults === 0){
+        setapiResult(apiData.data.metadata)
+        setapiResult((prevState) => ({
+          ...prevState,
+          totalPages: 1,
+        }))
+        setError("No results match search.")
+        setTerminals([])
+       } else {
+      setError("")
+       setapiResult(apiData.data.metadata)
+       setTerminals(apiData.data.data)
+       setInitialSort(apiData.data.data)
+       console.log(apiData)
+       }
     }
+   })
+ }
+}
+
+
+  //may be bug here...
+const submitSearch = (event) => {
+  if (event.key === "Enter" && search !== "") {
+    setSearchToggle(true)
+    setPage(1)
+    let query = event.target.value
+    event.target.value = ""
+    return callAPI(query)
+  }
+}
     
 //clear search fields, render base API  result again.
 const clearSearch = () => {
   setSearch("")
   setSearchToggle(false)
+  callAPI()
   setPage(1)
 }
 
@@ -165,9 +203,7 @@ const createTerminal = async () => {
 }
 
 const parseRows = (column, value, row) => {
-  console.log( row)
   if (column === 'token'){
-    console.log(value)
     return renderToken(value)
   } else if (column === 'action' && row.status !== 'DELETED'){
     return renderAction(row)
@@ -187,11 +223,10 @@ return(
           {error !== null ? error : ""}
           {terminals !== null && terminals !== undefined ? 
   <div>
-    {console.log(terminals)}
-    <h3>Terminals: </h3>
+    <h3>  Terminals: </h3>
     <Paper className={classes.root}>
-    <Button size="small" variant="contained" color="primary" onClick={createTerminal}>Create New</Button>
-    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
+    <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginLeft: '1%', marginTop: '1%'}} onClick={createTerminal}>Create New</Button>
+    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch} style={{marginRight: '2%', marginLeft: '1%', marginTop: '1%'}}>Clear Search</Button> : ""}
     <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
