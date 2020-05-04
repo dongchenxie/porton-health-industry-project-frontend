@@ -168,7 +168,6 @@ export default function Terminal(name) {
  </CardContent>
 
  <CardActions style={{display: 'block', width: '50%'}}>   
-    
 
    <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComfirm}>Comfirm</Button>
   </CardActions>
@@ -183,11 +182,49 @@ let parsedStr = str ?  "Required" : "Not Required"
 return parsedStr
 }
 
+const enabaleTerminal = () => {
+console.log(termName, terminal)
+// //clinic: "5ea9186d4a33612928dc0b3e"
+// creationDate: "2020-05-02T01:05:38.677Z"
+// name: "Terminal 1"
+// status: "ENABLED"
+// token: "NA"
+// verificationContent: "5ead1ffdaec9612138f1eede"
+
+}
+
+const delTerminal = () => {
+  let reqBody = {"name": termName.name,
+  "status": 'DELETED',
+  "verificationContent": JSON.stringify(stateCheck) 
+ }
+ return submitPut(reqBody)
+}
+
+const submitPut = async (reqBody) => {
+    let result = await authContext.API.getIndivTerminal(termName._id, undefined, reqBody);
+      if (result.status === 200){
+        console.log(result)
+      //  setAppoitnment(result.data)
+         setError("")
+        } else if (result.status === 400) {
+         console.log(result)
+         setError("Error submitting data to the server.")
+       }
+}
+
     return(
       <div>
         {error !== null ? error : ""}
         {termName !== null && termName !== undefined ? <h3>{termName.name}</h3> : ""}
-        {terminal !== null && terminal !== undefined ? renderTerminalView(terminal) : ""}
+        {terminal !== null && terminal !== undefined ? 
+        <div> 
+   <Button variant="contained" onClick={enabaleTerminal} style={{marginTop: '2%', marginRight: '2%', marginBottom: '1%', backgroundColor: 'blue', color: 'white'}}> Enable/Disable Check-in</Button> 
+   <Button variant="contained" onClick={delTerminal} style={{marginTop: '2%', marginBottom: '1%', backgroundColor: 'blue', color: 'white'}}> Delete Terminal </Button>
+   {renderTerminalView(terminal)}
+
+        </div> 
+         : ""}
       </div>
     ) 
   }
