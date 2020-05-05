@@ -1,6 +1,6 @@
 import React from 'react';
 import AdminRouter from './AdminRouter'
-import CheckInPage from "../component/pages/CheckIn"
+import Terminal from "../component/pages/Terminal"
 import LoginPage from '../component/pages/Login';
 import TerminalLogin from '../component/pages/TerminalLogin'
 import TerminalResult from '../component/pages/TerminalResult'
@@ -9,9 +9,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link,
     Redirect
-    
 } from "react-router-dom";
 
 function MainRouter() {
@@ -20,7 +18,7 @@ function MainRouter() {
             <div >
                 <Switch>
                     <Route exact path="/">
-                        <CheckInPage />
+                        <Terminal  />
                     </Route>
                     <Route path={`/login`}>
                         <LoginPage />

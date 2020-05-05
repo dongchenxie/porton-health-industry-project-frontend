@@ -13,6 +13,18 @@ password: 123456
 </br>
 
 <h4>
+client admin with seeded data:
+</h4>
+<p>
+email: b@b.com
+</p>
+<p>
+password: password
+</p>
+
+</br>
+
+<h4>
 client admin:
 </h4>
 <p>
@@ -21,6 +33,8 @@ email: test123@gmail.com
 <p>
 password: 1234567
 </p>
+
+
 
 </br>
 </br>

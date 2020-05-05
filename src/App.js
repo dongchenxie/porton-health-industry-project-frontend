@@ -175,6 +175,156 @@ function App() {
       } else {
         return result
       }
+    },
+    getClientAppointments: async function (searchQuery, start, end, page) {
+      let urlParam = undefined
+      let queryPage = "1"
+
+      if(page !== undefined){
+        queryPage = page
+      }
+
+      if (searchQuery && start === undefined && end === undefined){
+        urlParam = `${baseURL}client/appointments?search=${searchQuery}&page=${queryPage}`
+      } else if (searchQuery === undefined && start && end) {
+        urlParam = `${baseURL}client/appointments?start_date=${start}&end_date=${end}&page=${queryPage}`
+      } else if (searchQuery && start && end){
+        urlParam = `${baseURL}client/appointments?search=${searchQuery}&start_date=${start}&end_date=${end}&page=${queryPage}`
+      } else {
+        urlParam = `${baseURL}client/appointments?page=${queryPage}`
+      }
+
+      let result = await axios(
+        {
+          method: "get",
+          url: urlParam,
+          headers: {
+            "auth-token":localStorage.getItem("token"),
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+      ).catch((e) => 
+        { return { error: e }} )
+      if (result.status === 200) {
+        console.log(result)
+        return { status: 200, data: result.data };
+      } else {
+        console.log(result)
+        return result
+      }
+    },
+    getIndivAppointment: async function(param) {
+      let result = await axios(
+        {
+          method: "get",
+          url: `${baseURL}client/appointment/${param}`,
+          headers: {
+            "auth-token":localStorage.getItem("token"),
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+      ).catch((e) => 
+        { return { error: e } })
+      if (result.status === 200) {
+        return { status: 200, data: result.data };
+      } else {
+        return result
+      }
+    },
+    updateAppointment: async function (id, reqBody) {
+      let result = await axios.put(`${baseURL}client/appointment/${id}`, reqBody)
+        .then(function (response) {
+            return response
+        })
+        .catch(function (error) {
+          console.log(error)
+            return {error, status: 400 }
+        })
+        return result
+      },
+      getClientTerminals: async function (queryParam, pageParam) {
+        let urlParam = `${baseURL}client/terminals`
+        if (queryParam && pageParam === undefined){
+          urlParam = `${baseURL}client/terminals?search=${queryParam}`
+        } else if (pageParam && queryParam === undefined){
+          urlParam = `${baseURL}client/terminals?page=${pageParam}`
+        } else if (pageParam && queryParam){
+          urlParam = `${baseURL}client/terminals?search=${queryParam}&page=${pageParam}`
+        }
+
+        let result = await axios(
+          {
+            method: "get",
+            url: urlParam,
+            headers: {
+              "auth-token":localStorage.getItem("token"),
+              'Access-Control-Allow-Origin': '*'
+            }
+          }
+        ).catch((e) => 
+          { return { error: e }} )
+        if (result.status === 200) {
+          return { status: 200, data: result.data };
+        } else {
+          console.log("error", result)
+          return { status: 400, data: result };
+        }
+      },
+      getIndivTerminal: async function (id, verificationReq, putParam) {
+        let terminalURL = `${baseURL}client/terminal/${id}`
+        if (verificationReq){
+          terminalURL = `${baseURL}client/terminal/verificationContent/${id}`
+        }
+
+        if (putParam){
+          let result = await axios.put(terminalURL, putParam)
+          .then(function (response) {
+              return response
+          })
+          .catch(function (error) {
+            console.log(error)
+              return {error, status: 400 }
+          })
+          console.log(result)
+          return result
+        } else {
+        let result = await axios(
+          {
+            method: "get",
+            url: terminalURL,
+            headers: {
+              "auth-token":localStorage.getItem("token"),
+              'Access-Control-Allow-Origin': '*'
+            }
+          }
+        ).catch((e) => 
+          { return { error: e }} )
+        if (result.status === 200) {
+          return { status: 200, data: result.data };
+        } else {
+          console.log("error", result)
+          return { status: 400, data: result };
+        }
+      }
+    },
+    createClientTerminal: async function (param) {
+        let result = await axios(
+          {
+            method: "POST",
+            url: `${baseURL}client/terminal/${param}`,
+            headers: {
+              "auth-token":localStorage.getItem("token"),
+              'Access-Control-Allow-Origin': '*'
+            }
+          }
+        ).catch((e) => 
+          { return { error: e }} )
+        if (result.status === 200) {
+          return { status: 200, data: result.data };
+        } else {
+          console.log("error", result)
+          return { status: 400, data: result };
+        }
     }
   }
 

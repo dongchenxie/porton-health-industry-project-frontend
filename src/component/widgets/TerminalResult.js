@@ -6,21 +6,21 @@ export default function ModifyAppointment() {
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
-    const start = async () => {
-        authContext.API.readToken(authContext.authState).then(function(result){
-          if (result.role !== 'CLIENT_ADMIN'){
-           return setError("404. Please try again.")
-          } 
-        })
-    }
-    start()
+    // const start = async () => {
+    //     authContext.API.readToken(authContext.authState).then(function(result){
+    //       if (result.role !== 'CLIENT_ADMIN'){
+    //        return setError("404. Please try again.")
+    //       } 
+    //     })
+    // }
+    // start()
   }, [])
 
     return(
       <div>
       {error !== null ? error : 
         <div>
-          <h2>click here to modify account</h2>
+          <h2>terminal appointment list view</h2>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
           Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. 
           Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. 
