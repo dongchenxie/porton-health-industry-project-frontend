@@ -40,6 +40,9 @@ import UserList from '../component/pages/systemAdmin/UserList';
 import UserDetail from '../component/pages/systemAdmin/User';
 import CreateAccount from '../component/pages/systemAdmin/CreateAccount'
 
+//Terminal component
+
+
 //client admin components:
 import TerminalList from '../component/pages/clientAdmin/TerminalList'
 import Terminal from '../component/pages/clientAdmin/Terminal'
@@ -210,6 +213,12 @@ export default function AdminRouter(props) {
       <Link to={`${url}/about`} style={{textDecoration: 'none', color: 'inherit'}}>
         <ListItem button>
           <ListItemText primary="About" />
+        </ListItem >
+      </Link>  
+
+      <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}>
+        <ListItem button>
+          <ListItemText primary="Create Account" />
         </ListItem >
       </Link>  
       
