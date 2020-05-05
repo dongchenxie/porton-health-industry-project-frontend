@@ -96,8 +96,6 @@ const validationSchema = Yup.object().shape({
 
 export default function SignUp() {
   const classes = useStyles();
-
-  
     let history = useHistory();
     let location = useLocation();
     const authContext = React.useContext(AuthContext);
@@ -152,11 +150,7 @@ export default function SignUp() {
               
           } 
          
-          
-    
-  
-  
-  
+
 
           return (
             <Container component="main" maxWidth="xs">
@@ -261,7 +255,6 @@ export default function SignUp() {
                         fullWidth
                         name="password"
                         label="Password"
-                      
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -285,7 +278,7 @@ export default function SignUp() {
                   // eslint-disable-next-line no-undef
                   value={state.role}
                   // eslint-disable-next-line no-undef
-                  //onChange={handleChange}
+                  onChange={handleChange}
                   inputProps={{
                     name: 'role',
                     id: 'role-native-simple',
