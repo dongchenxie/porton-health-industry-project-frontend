@@ -1,7 +1,8 @@
 import React from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup'
-
+import MuiAlert from '@material-ui/lab/Alert';
+//import AlertTitle from '@material-ui/lab/AlertTitle';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -9,7 +10,10 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
- //import Checkbox from '@material-ui/core/Checkbox';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -39,6 +43,11 @@ import Error from '../../middleware/Error'
 //const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
 
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -63,6 +72,12 @@ const useStyles = makeStyles((theme) => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
   },
 
 }));
@@ -100,6 +115,7 @@ export default function SignUp() {
     let location = useLocation();
     const authContext = React.useContext(AuthContext);
     let [name, setName] = React.useState("");
+    const [open, setOpen] = React.useState(false);
   const handleNameChange = (e) => {
     console.log(e.target.value);
     setName(e.target.value);
@@ -120,10 +136,28 @@ export default function SignUp() {
     setRole(e.target.value);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
+  }
+
     const [state, setState] = React.useState({
       System_Admin: '',
       Client_Admin: '',
     });
+
+    const handleClick = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setOpen(false);
+    };
+  
   
    
 
@@ -134,15 +168,8 @@ export default function SignUp() {
           let result =await authContext.API.register(`${name}`, `${email}`, `${password}`, `${role}`)
           console.log(result)
           if(result.status === 200){
+             return alert("Account successfully created")
              
-              localStorage.setItem("token", result.token)
-              authContext.setAuthState((prev) => {
-              return {
-                  ...prev,
-                  isAuthenticated: true
-              }
-              })
-              history.replace(from);
           }else{
               console.log (result)
               
@@ -180,7 +207,7 @@ export default function SignUp() {
                   
                   {({
                     values, 
-                  errors,
+                    errors,
                    touched,
                     handleChange, 
                     handleBlur, 
@@ -200,7 +227,7 @@ export default function SignUp() {
                         fullWidth
                         type="text"
                         id="firstName"
-                        
+  
                         label="First Name"
                         autoFocus
                         onChange={handleChange}
@@ -299,7 +326,8 @@ export default function SignUp() {
                   </Grid>
                   <Button
                    // eslint-disable-next-line no-undef
-                   //onClick={register}
+                   onClick={handleClick}
+
                     type="submit"
                     disabled={isSubmitting}
                     fullWidth
@@ -307,9 +335,21 @@ export default function SignUp() {
                     color="primary"
                     // eslint-disable-next-line no-undef
                     className={classes.submit}
+                    
                   >
                     Create a New Account
                   </Button>
+                 
+                  <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+               
+                 <Alert onClose={handleClose} severity="success">
+              Your account has been successfully created!
+        </Alert>
+       
+                  
+         </Snackbar>
+        
+                  
                   <Grid container justify="flex-end">
                    
                   </Grid>
