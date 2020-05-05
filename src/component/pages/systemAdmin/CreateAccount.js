@@ -90,7 +90,8 @@ const validationSchema = Yup.object().shape({
   .min(6, "You must have atleast 6 characters for the password")
   .required("Password needed"),
 
-  role: Yup.string().required("Choose the Role")
+  role: Yup.string()
+  .required('Role needed')
 })
 
 export default function SignUp() {
@@ -280,7 +281,7 @@ export default function SignUp() {
                   variant="outlined"
                          required
                          fullWidth
-                  native
+                         native
                   // eslint-disable-next-line no-undef
                   value={state.role}
                   // eslint-disable-next-line no-undef
