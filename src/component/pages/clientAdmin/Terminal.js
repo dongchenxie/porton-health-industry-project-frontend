@@ -67,7 +67,6 @@ export default function Terminal(name) {
      let termNameData = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
      
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
-     console.log("START: ", data, termNameData)
 
      if (data.status === 400 && termNameData.status === 400 && termNameData.data.terminal === undefined) {
       console.log(data)

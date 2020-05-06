@@ -312,9 +312,9 @@ return(
   <div>
     <h3>  Terminals: </h3>
     <Paper className={classes.root}>
-    <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginLeft: '1%', marginTop: '1%'}} onClick={createTerminal}>Create New</Button>
+    <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginLeft: '1%', marginTop: '2%'}} onClick={createTerminal}>Create New</Button>
     {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch} style={{marginRight: '2%', marginLeft: '1%', marginTop: '1%'}}>Clear Search</Button> : ""}
-    <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+    <TextField id="outlined-basic" label="Search By Field" size="small" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
         <TableHead className>

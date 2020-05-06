@@ -207,8 +207,8 @@ const parseValue = (value) => {
             {users !== null && users !== undefined ? 
     <div>
       <Paper className={classes.root}>
-      {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
-      <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+      {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginLeft: '2%', marginTop: '2%'}} onClick={clearSearch}>Clear Search</Button> : ""}
+      <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{float: 'right', marginTop: '2%', marginRight: '2%', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead >
