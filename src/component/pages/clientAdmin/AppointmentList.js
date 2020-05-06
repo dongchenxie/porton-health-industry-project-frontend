@@ -63,7 +63,9 @@ export default function AppointmentList() {
   const [meta, setMeta] = React.useState(null);
   const [initialSort, setInitialSort] = React.useState(null);
   const [search, setSearch] = React.useState("");
-  const [direction, setDirection] = React.useState("asc")
+
+  let sortKey = {doctorName: "asc", appointmentTime: "asc", patient: "asc", status: "asc"}
+  const [direction, setDirection] = React.useState(sortKey)
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
 
@@ -220,23 +222,47 @@ const handleChangePage = async (pageDir) => {
 };
 
 const sortTable = (col) => {
-  if(direction === "asc"){
+  if(direction[col] === "asc"){
     let sorted = appointments.sort(function(a, b){
       if(a[col] > b[col]) { return 1; }
       if(a[col] < b[col]) { return -1; }  
-      return 0;
+     return 0;
   })  
   setAppoitnments(sorted)
-  setDirection("desc")
+  return setDirection(prevState => ({
+  ...prevState,
+  [col]: "desc"
+  }));
   } else {
-    let sorted = appointments.sort(function(a, b){
+    let sorted = appointments.sort(function(a, b) {
       if(a[col] < b[col]) { return 1; }
       if(a[col] > b[col]) { return -1; }
       return 0;
   })  
-   setAppoitnments(sorted)
-   setDirection("asc")
+  setAppoitnments(sorted)
+  return setDirection(prevState => ({
+    ...prevState,
+    [col]: "asc"
+    }));
   }
+}
+
+const parseStatus = (str) => {
+  if (str === 'CHECK_IN'){
+    return str = "Checked In"
+  } else if (str === 'NOT_SHOW'){
+    return str = "Not Shown"
+  } else if (str === 'CANCELED') {
+   return str = "Canceled"
+  }
+}
+
+const parseDate = (datestr) => {
+  let parse = datestr.split(" ")
+  let timeStamp = parse[1]
+  let d = new Date(parse[0])
+  let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
+  return format(Date()).toString().split("-").join(" ") + " " + timeStamp
 }
 
 return(
@@ -246,8 +272,8 @@ return(
   <div>
     <h3>Appointments: </h3>
     <Paper className={classes.root}>
-    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
-    <Button size="small" variant="contained" color="primary" onClick={handleToday}>Show Today</Button>
+    {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginRight: '1%', marginLeft: '2%', marginTop: '1%'}} onClick={clearSearch}>Clear Search</Button> : ""}
+    <Button size="small" variant="contained" color="primary" style={{marginLeft: '1%', marginTop: '1%'}} onClick={handleToday}>Show Today</Button>
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <KeyboardDatePicker
@@ -289,7 +315,7 @@ return(
                 align={column.align}
                 style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                 {column.label}
-                {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
+                {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction[column.id]}> </MuiTableSortLabel> : ""}
               </TableCell>
             ))}
           </TableRow>
@@ -300,6 +326,11 @@ return(
               <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                 {columns.map((column, i) => {
                   let value = row[column.id];
+                  if (column.id === 'status' ){
+                    value = parseStatus(value) 
+                  } else if (column.id === 'appointmentTime'){
+                    value = parseDate(value)
+                  }
                   return (
                     <TableCell key={column.id} key={i} align={column.align}>
                       {column.id === 'action' ? renderAction(row) : value}
@@ -327,4 +358,4 @@ return(
       : "" }
 </div>
   ) 
-  }
+}

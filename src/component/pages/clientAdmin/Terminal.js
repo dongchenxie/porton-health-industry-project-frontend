@@ -67,10 +67,6 @@ export default function Terminal(name) {
      
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
 
-     console.log("IS IT HERE>>>?????", data)
-     console.log("IS IT HERE>>>?????", termNameData)
-
-
      if (termNameData.data.terminal[0].status === "DISABLED" && data.status === 400 ){
        setTermName(termNameData.data.terminal[0])
        setInitCheck(termNameData.data.terminal[0].status)
