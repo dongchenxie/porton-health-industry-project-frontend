@@ -81,7 +81,6 @@ export default function UserDetail() {
     const grabClinics = async () => {
       let result = await authContext.API.getClinics();
        if (result.status === 200){
-          console.log(result)
          return parseClinics(result.data)
         }  else if(result.status === 400) {
         console.log(result, error)
@@ -151,7 +150,6 @@ export default function UserDetail() {
     let updateAPI = async () => {
       let result = await authContext.API.updateUserEnabled(user['_id'], enabled);
        if (result.status === 200){
-        console.log(enabled)
         if (enabled){ 
           setEnable(false)
           setCheckedVal(true)

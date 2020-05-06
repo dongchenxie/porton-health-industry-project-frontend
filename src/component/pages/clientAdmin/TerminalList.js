@@ -60,7 +60,9 @@ export default function TerminalList() {
   const [apiResult, setapiResult] = React.useState(null);
   const [initialSort, setInitialSort] = React.useState(null);
   const [search, setSearch] = React.useState("");
-  const [direction, setDirection] = React.useState("asc")
+
+  let sortKey = {name: "asc", status: "asc"}
+  const [direction, setDirection] = React.useState(sortKey)
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
   const [query, setQuery] = React.useState(undefined);
@@ -175,14 +177,17 @@ const createTerminal = async () => {
 }
 
 const sortTable = (col) => {
-  if(direction === "asc"){
+  if(direction[col] === "asc"){
     let sorted = terminals.sort(function(a, b){
       if(a[col] > b[col]) { return 1; }
       if(a[col] < b[col]) { return -1; }  
      return 0;
   })  
   setTerminals(sorted)
- setDirection("desc")
+  return setDirection(prevState => ({
+  ...prevState,
+  [col]: "desc"
+  }));
   } else {
     let sorted = terminals.sort(function(a, b) {
       if(a[col] < b[col]) { return 1; }
@@ -190,7 +195,10 @@ const sortTable = (col) => {
       return 0;
   })  
   setTerminals(sorted)
-     setDirection("asc")
+  return setDirection(prevState => ({
+    ...prevState,
+    [col]: "asc"
+    }));
   }
 }
 
@@ -269,14 +277,26 @@ return local.join("")
 }
 
 
-
 //create tables:
+
+const parseStatus = (val) => {
+if (val === 'ENABLED'){
+  val = 'Enabled'
+} else if (val === 'DISABLED') {
+  val = 'Disabled'
+} else if (val === 'DELETED'){
+  val = 'Deleted'
+}
+  return val
+}
 
 const parseRows = (column, value, row) => {
   if (column === 'token' && row.status !== 'DELETED'){
     return renderToken(value)
   } else if (column === 'action' && row.status !== 'DELETED'){
     return renderAction(row)
+  }  else if (column === 'status') {  
+    return parseStatus(value)
   } else {
     return value
   }
@@ -307,7 +327,7 @@ return(
                 align={column.align}
                 style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                 {column.label}
-                {column.id !== 'action' && column.id !== 'token' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
+                {column.id !== 'action' && column.id !== 'token' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction[column.id]}> </MuiTableSortLabel> : ""}
               </TableCell>
             ))}
           </TableRow>
