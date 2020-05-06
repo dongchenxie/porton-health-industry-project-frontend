@@ -129,21 +129,21 @@ export default function SignUp() {
     setUser({...user,[e.target.name] : e.target.value});
 }
 const resetForm = ()=>{
-  setUser({firstName : "", lastName : "", password : "",role : ""});
-}
+   setUser({firstName : "", lastName : "", password : "",role : ""});
+ }
 
-const onSubmit = e =>{
-  e.preventDefault();
+ const onSubmit = e =>{
+   e.preventDefault();
   AuthService.register(user).then(data=>{
       const { message } = data;
-      setMessage(message);
-      resetForm();
+       setMessage(message);
+       resetForm();
        if(!message.msgError){
-          timerID = setTimeout(()=>{
+           timerID = setTimeout(()=>{
                history.push('/login');
-           },2000)
+            },2000)
     }
-})}
+ })}
    
   const handleNameChange = (e) => {
     console.log(e.target.value);
@@ -185,14 +185,21 @@ const onSubmit = e =>{
   let { from } = location.state || { from: { pathname: "/" } };
       let register = async() => {
           let result =await authContext.API.register(`${name}`, `${email}`, `${password}`, `${role}`)
-          console.log(result)
           if(result.status === 200){
-             return alert("Account successfully created")
+           console.log(result)
+          return alert("Its a success")
+          }else if(result.status === 400){
+            console.log(result)
+           return alert('Server error')
+          }
+
+          // 
+          //    return alert("Account successfully created")
              
-          }else{
-              console.log (result)
+          // }else{
+          //     console.log (result)
               
-              }
+          //     }
               
           } 
          
@@ -249,10 +256,10 @@ const onSubmit = e =>{
   
                         label="First Name"
                         autoFocus
-                        onChange={onChange} 
+                        // onChange={onChange} 
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value ={user.firstName}
+                        // value ={user.firstName}
                         value={values.firstName}
                         className={touched.firstName && errors.firstName ? "has-error" : null}/>
                         <Error touched={touched.firstName} message={errors.firstName}/>
@@ -268,10 +275,10 @@ const onSubmit = e =>{
                         name="lastName"
                        
                         autoComplete="lname"
-                        onChange={onChange} 
+                        // onChange={onChange} 
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value ={user.lastName}
+                        // value ={user.lastName}
                         value={values.lastName}
                         className={touched.lastName && errors.lastName ? "has-error" : null}
                       />
@@ -289,10 +296,10 @@ const onSubmit = e =>{
                         name="email"
                         type = "email"
                         autoComplete="email"
-                        onChange={onChange} 
+                        // onChange={onChange} 
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value ={user.email}
+                        // value ={user.email}
                         value={values.email}
                         className={touched.email && errors.email ? "has-error" : null}
                        
@@ -310,10 +317,10 @@ const onSubmit = e =>{
                         type="password"
                         id="password"
                         autoComplete="current-password"
-                        onChange={onChange} 
+                        // onChange={onChange} 
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value ={user.password}
+                        // value ={user.password}
                         value={values.password}
                         className={touched.password && errors.password ? "has-error" : null}
                       />
