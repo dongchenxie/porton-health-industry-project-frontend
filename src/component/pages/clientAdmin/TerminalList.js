@@ -60,7 +60,9 @@ export default function TerminalList() {
   const [apiResult, setapiResult] = React.useState(null);
   const [initialSort, setInitialSort] = React.useState(null);
   const [search, setSearch] = React.useState("");
-  const [direction, setDirection] = React.useState("asc")
+
+  let sortKey = {name: "asc", status: "asc"}
+  const [direction, setDirection] = React.useState(sortKey)
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
   const [query, setQuery] = React.useState(undefined);
@@ -71,14 +73,10 @@ export default function TerminalList() {
     const start = async () => {
        let data = await authContext.API.getClientTerminals()
        console.log(data)
-
-       if (data === undefined){
+       if (data === undefined || data.error){
         console.log("error")
         setError("Error grabbing data from the server.")
-      } else if (data === undefined){
-        console.log("error")
-        setError("Error grabbing data from the server.")
-      } else {
+        }  else {
         authContext.API.readToken(authContext.authState).then(function(result){
           if (result.role !== 'CLIENT_ADMIN'){
            return setError("404. Please try again.")
@@ -175,14 +173,17 @@ const createTerminal = async () => {
 }
 
 const sortTable = (col) => {
-  if(direction === "asc"){
+  if(direction[col] === "asc"){
     let sorted = terminals.sort(function(a, b){
       if(a[col] > b[col]) { return 1; }
       if(a[col] < b[col]) { return -1; }  
      return 0;
   })  
   setTerminals(sorted)
- setDirection("desc")
+  return setDirection(prevState => ({
+  ...prevState,
+  [col]: "desc"
+  }));
   } else {
     let sorted = terminals.sort(function(a, b) {
       if(a[col] < b[col]) { return 1; }
@@ -190,7 +191,10 @@ const sortTable = (col) => {
       return 0;
   })  
   setTerminals(sorted)
-     setDirection("asc")
+  return setDirection(prevState => ({
+    ...prevState,
+    [col]: "asc"
+    }));
   }
 }
 
@@ -269,14 +273,28 @@ return local.join("")
 }
 
 
-
 //create tables:
 
+const parseStatus = (val) => {
+if (val === 'ENABLED'){
+  val = 'Enabled'
+} else if (val === 'DISABLED') {
+  val = 'Disabled'
+} else if (val === 'DELETED'){
+  val = 'Deleted'
+}
+  return val
+}
+
 const parseRows = (column, value, row) => {
-  if (column === 'token' && row.status !== 'DELETED'){
+  if (column === 'token' && row.status === 'DELETED'){
+    return ""
+  } else if (column === 'token' && row.status !== 'DELETED'){
     return renderToken(value)
   } else if (column === 'action' && row.status !== 'DELETED'){
     return renderAction(row)
+  }  else if (column === 'status') {  
+    return parseStatus(value)
   } else {
     return value
   }
@@ -294,9 +312,9 @@ return(
   <div>
     <h3>  Terminals: </h3>
     <Paper className={classes.root}>
-    <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginLeft: '1%', marginTop: '1%'}} onClick={createTerminal}>Create New</Button>
+    <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginLeft: '1%', marginTop: '2%'}} onClick={createTerminal}>Create New</Button>
     {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch} style={{marginRight: '2%', marginLeft: '1%', marginTop: '1%'}}>Clear Search</Button> : ""}
-    <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+    <TextField id="outlined-basic" label="Search By Field" size="small" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
         <TableHead className>
@@ -307,7 +325,7 @@ return(
                 align={column.align}
                 style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                 {column.label}
-                {column.id !== 'action' && column.id !== 'token' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
+                {column.id !== 'action' && column.id !== 'token' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction[column.id]}> </MuiTableSortLabel> : ""}
               </TableCell>
             ))}
           </TableRow>

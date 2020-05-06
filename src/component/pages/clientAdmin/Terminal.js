@@ -1,6 +1,6 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
-import { useLocation, useRouteMatch, Link } from 'react-router-dom';
+import { useLocation, useRouteMatch, Link, useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -19,6 +19,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
+import { da } from "date-fns/locale";
 
 const useStyles = makeStyles({
   root: {
@@ -43,6 +44,8 @@ export default function Terminal(name) {
   const classes = useStyles();
   let location = useLocation();
   let { path } = useRouteMatch();
+  const history = useHistory()
+
 
   const [error, setError] = React.useState(null);
   const [terminal, setTerminal] = React.useState(null);
@@ -64,21 +67,21 @@ export default function Terminal(name) {
   React.useEffect(() => {
     const start = async () => {
      let termNameData = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
+     
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
 
-     if (termNameData.data.terminal.status === "DISABLED" && data.status === 400 ){
-       setTermName(termNameData.data.terminal)
-       setInitCheck(termNameData.data.terminal.status)
-       setCheckEnable(termNameData.data.terminal.status)
-       setRenderDisabled(true)
-        } else if (data === undefined || termNameData === undefined || termNameData === null || data === null ){
+     if (data.status === 400 && termNameData.status === 400 && termNameData.data.terminal === undefined) {
+      console.log(data)
+      console.log("error")
+      return setError("Error grabbing data from the server.")
+    } else if (termNameData.data.terminal[0].status === "DISABLED" && data.status === 400 ){
+       setTermName(termNameData.data.terminal[0])
+       setInitCheck(termNameData.data.terminal[0].status)
+       setCheckEnable(termNameData.data.terminal[0].status)
+       return setRenderDisabled(true)
+     } else if (data === undefined || termNameData === undefined || termNameData === null || data === null || data.status == 400){
           console.log("error")
-          setError("Error grabbing data from the server.")
-
-        } else if(data.status === 400 || termNameData.status === 400) {
-          console.log(data)
-          console.log("error")
-          setError("Terminal has been deleted.")
+          return setError("Error grabbing data from the server.")
         } else {
           /////
           //MIGHT NEED TO FIX ORDER OF TOKEN VERIFICATION.....
@@ -87,11 +90,11 @@ export default function Terminal(name) {
             if (result.role !== 'CLIENT_ADMIN'){
              return setError("404. Please try again.")
             } else {
-              setTerminal(data.data)
-              setTermName(termNameData.data.terminal)
-              setChecks(data.data)
-              setInitCheck(termNameData.data.terminal.status)
-              setCheckEnable(termNameData.data.terminal.status)
+              setTerminal(data.data.terminal[0].verificationContent[0])
+              setTermName(termNameData.data.terminal[0])
+              setChecks(data.data.terminal[0].verificationContent[0])
+              setInitCheck(termNameData.data.terminal[0].status)
+              return setCheckEnable(termNameData.data.terminal[0].status)
             }
           })
         }
@@ -106,7 +109,7 @@ export default function Terminal(name) {
     "verificationContent": JSON.stringify(stateCheck) 
    }
    setError("Terminal has been deleted.")
-   return submitPut(reqBody)
+   return submitPut(false, reqBody)
   }
   
   const setChecks = (terminalObj) => {
@@ -136,20 +139,17 @@ export default function Terminal(name) {
          setError("Error submitting data to the server.")
        }
 
+      history.go()
       return setTerminal(stateCheck)
   }
 
-const configStr = (str) => {
-let parsedStr = str ?  "Required" : "Not Required"
-return parsedStr
-}
-
-const submitPut = async (reqBody) => {
-    let result = await authContext.API.getIndivTerminal(termName._id, undefined, reqBody);
+const submitPut = async (path, reqBody) => {
+    let result = await authContext.API.getIndivTerminal(termName._id, path, reqBody);
       if (result.status === 200){
         console.log(result)
       //  setAppoitnment(result.data)
          setError("")
+         history.go()
         } else if (result.status === 400) {
          console.log(result)
          setError("Error submitting data to the server.")
@@ -163,7 +163,7 @@ const submitPut = async (reqBody) => {
       "verificationContent": JSON.stringify(stateCheck) 
      }
 
-     submitPut(reqBody)
+     submitPut(false, reqBody)
     }
 
         const handleSwitch = (event) => {
@@ -190,7 +190,21 @@ const submitPut = async (reqBody) => {
       );
     }
 
+    const configStr = (str) => {
+    let parsedStr = str ?  "Required" : "Not Required"
+    return parsedStr
+    }
+
+  
      const renderTerminalView = (terminal) => {
+    //   console.log("***********OBJ**********", terminal, terminal.firstName)
+    
+      //  let setVal = undefined
+      //  if (terminal.termverificationContent[0]){
+      //    setVal = terminal.termverificationContent[0]
+      //  } else {
+      //    setVal = terminal
+      //  }
       return( 
       <div> <Card className={classes.root} variant="outlined">
       <CardContent>
@@ -220,7 +234,6 @@ const submitPut = async (reqBody) => {
     </Card>
   
     <Button variant="contained" onClick={delTerminal} style={{marginTop: '3%', marginBottom: '1%', backgroundColor: 'blue', color: 'white', display: 'block'}}> Delete Terminal </Button>
-    <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
     </div>)
   }
 
@@ -288,7 +301,7 @@ const RenderDisableView = () => {
         {termName !== null && termName !== undefined ? <h3>{termName.name}</h3> : ""}
         {renderDisabled === true ? <RenderDisableView /> : ""}
         {terminal !== null && terminal !== undefined && renderDisabled === null ? 
-        <div> 
+      <div> 
    <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <div>
@@ -311,9 +324,10 @@ const RenderDisableView = () => {
         </div>
       )}
     </PopupState>
-    {renderTerminalView(terminal)}
+     {renderTerminalView(terminal)}
         </div> 
          : "" }
+    <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white', display: 'block'}}> Return to list </Button> </Link>
       </div>
     ) 
   }

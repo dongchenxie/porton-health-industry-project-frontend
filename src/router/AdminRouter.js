@@ -206,15 +206,8 @@ export default function AdminRouter(props) {
           <ListItemText primary="Home" />
         </ListItem >
       </Link>
-
-      <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}>
-        <ListItem button>
-          <ListItemText primary="Create Account" />
-        </ListItem >
-      </Link>  
-      
+  
       <Link to={`${url}/profile`} style={{textDecoration: 'none', color: 'inherit'}}>
-        
         {/* WHAT IS PURPOSE OF THIS FUNCTION? */}
         <ListItem button onClick={handleProfileClose}>
           <ListItemText primary="Profile" />

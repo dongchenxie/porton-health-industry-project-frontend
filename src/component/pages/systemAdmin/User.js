@@ -81,7 +81,6 @@ export default function UserDetail() {
     const grabClinics = async () => {
       let result = await authContext.API.getClinics();
        if (result.status === 200){
-          console.log(result)
          return parseClinics(result.data)
         }  else if(result.status === 400) {
         console.log(result, error)
@@ -151,7 +150,6 @@ export default function UserDetail() {
     let updateAPI = async () => {
       let result = await authContext.API.updateUserEnabled(user['_id'], enabled);
        if (result.status === 200){
-        console.log(enabled)
         if (enabled){ 
           setEnable(false)
           setCheckedVal(true)
@@ -170,6 +168,23 @@ export default function UserDetail() {
        }
       };
 
+      const parseValue = (value) => {
+        if (value === 'CLIENT_ADMIN'){
+          value = 'Client Admin'
+          return value
+        } else if (value === 'SYSTEM_ADMIN'){
+          value = "System Admin"
+          return value
+        }
+        return value
+      }
+
+      const renderDate = (datestr) => {
+        let d = new Date(datestr)
+        let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
+       return format(Date()).toString().split("-").join(" ") 
+      }
+
       //render grid info
     const renderUser = () => {
          return( 
@@ -186,10 +201,10 @@ export default function UserDetail() {
         {formRow("Email:", user.email)}
         </Grid>
         <Grid container item xs={12} spacing={3}>
-        {formRow("Creation Date:", user.date.split('T')[0])}
+        {formRow("Creation Date:", renderDate(user.date.split('T')[0]))}
         </Grid>
         <Grid container item xs={12} spacing={3}>
-        {formRow("Role:", user.role)}
+        {formRow("Role:", parseValue(user.role))}
         </Grid>
         <br />
         <Grid container item xs={12} spacing={3}>
@@ -228,8 +243,6 @@ export default function UserDetail() {
       )}
     </PopupState>
 
-     {/* to implement: */}
-     {/*///////////////*/}
      <Typography style={{marginLeft: '2%', marginTop: '2%'}}> 
       Enable/Disable Account: 
        <Switch

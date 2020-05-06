@@ -63,9 +63,12 @@ export default function AppointmentList() {
   const [meta, setMeta] = React.useState(null);
   const [initialSort, setInitialSort] = React.useState(null);
   const [search, setSearch] = React.useState("");
-  const [direction, setDirection] = React.useState("asc")
+
+  let sortKey = {doctorName: "asc", appointmentTime: "asc", patient: "asc", status: "asc"}
+  const [direction, setDirection] = React.useState(sortKey)
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
+  const [helper, setHelper] = React.useState(null);
 
   const [dateA, setDateA] = React.useState(today);
   const [dateB, setDateB] = React.useState(today);
@@ -97,11 +100,12 @@ export default function AppointmentList() {
             ...prevState,
             totalPages: 1,
           }))
-          setError("No current appointments")
+          setHelper("No current appointments")
           setAppoitnments([])
          setPage(1)
         } else {
         setError("")
+        setHelper("")
         setMeta(apiData.data.metadata)
         setAppoitnments(formatAppoitments(apiData.data.data))
         setPage(apiData.data.metadata.totalPages)
@@ -166,25 +170,32 @@ const clearSearch = () => {
 
   query.term = undefined
   query.page = undefined
-
+  setHelper("")
   setPage(1)
   return callAPI(query)
 }
 
- const handleDateA = (date) => {
-    setDateA(date.toISOString())
-   };
+ const handleDateA = (date, event) => {
+   console.log(date)
+    if (date != 'Invalid Date'){
+      return setDateA(date.toISOString())  
+    }
+  };
    
    const handleDateB = (date2) => {
-     setDateB(date2)
-     let val = date2.toISOString()  
-
-    query.term = undefined
-    query.start = dateA
-    query.end = val
-    query.page = undefined
-  
-    return callAPI(query)
+    if (date2 != 'Invalid Date'){
+      setDateB(date2)
+      let val = date2.toISOString()  
+ 
+     query.term = undefined
+     query.start = dateA
+     query.end = val
+     query.page = undefined
+   
+     return callAPI(query)
+    } else {
+      return setError('Enter a Valid Date')
+    }
    };
    
      const handleToday = () => {
@@ -220,23 +231,49 @@ const handleChangePage = async (pageDir) => {
 };
 
 const sortTable = (col) => {
-  if(direction === "asc"){
+  if(direction[col] === "asc"){
     let sorted = appointments.sort(function(a, b){
       if(a[col] > b[col]) { return 1; }
       if(a[col] < b[col]) { return -1; }  
-      return 0;
+     return 0;
   })  
   setAppoitnments(sorted)
-  setDirection("desc")
+  return setDirection(prevState => ({
+  ...prevState,
+  [col]: "desc"
+  }));
   } else {
-    let sorted = appointments.sort(function(a, b){
+    let sorted = appointments.sort(function(a, b) {
       if(a[col] < b[col]) { return 1; }
       if(a[col] > b[col]) { return -1; }
       return 0;
   })  
-   setAppoitnments(sorted)
-   setDirection("asc")
+  setAppoitnments(sorted)
+  return setDirection(prevState => ({
+    ...prevState,
+    [col]: "asc"
+    }));
   }
+}
+
+const parseStatus = (str) => {
+  if (str === 'CHECK_IN'){
+    return str = "Checked In"
+  } else if (str === 'PENDING'){
+    return str = "Pending Appointment"
+  } else if (str === 'NOT_SHOWN'){
+    return str = "Patient Did Not Show Up"
+  } else if (str === 'CANCELED') {
+   return str = "Canceled"
+  }
+}
+
+const parseDate = (datestr) => {
+  let parse = datestr.split(" ")
+  let timeStamp = parse[1]
+  let d = new Date(parse[0])
+  let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
+  return format(Date()).toString().split("-").join(" ") + " " + timeStamp
 }
 
 return(
@@ -244,10 +281,9 @@ return(
           {error !== null ? error : ""}
           {appointments !== null && appointments !== undefined ? 
   <div>
-    <h3>Appointments: </h3>
+    <h3>Appointments:      <Button size="small" variant="contained" color="primary" style={{marginLeft: '1%'}} onClick={handleToday}>Show Today</Button>
+</h3> 
     <Paper className={classes.root}>
-    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
-    <Button size="small" variant="contained" color="primary" onClick={handleToday}>Show Today</Button>
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <KeyboardDatePicker
@@ -276,8 +312,9 @@ return(
         />      
         </Grid>
       </MuiPickersUtilsProvider>
+      <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '4%', marginTop: '2%', marginRight: '2%', float: 'right'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
 
-    <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+      {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginRight: '1%', marginLeft: '2%', marginTop: '4%'}} onClick={clearSearch}>Clear Search</Button> : ""}
 
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
@@ -289,7 +326,7 @@ return(
                 align={column.align}
                 style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                 {column.label}
-                {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
+                {column.id !== 'action' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction[column.id]}> </MuiTableSortLabel> : ""}
               </TableCell>
             ))}
           </TableRow>
@@ -300,6 +337,11 @@ return(
               <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                 {columns.map((column, i) => {
                   let value = row[column.id];
+                  if (column.id === 'status' ){
+                    value = parseStatus(value) 
+                  } else if (column.id === 'appointmentTime'){
+                    value = parseDate(value)
+                  }
                   return (
                     <TableCell key={column.id} key={i} align={column.align}>
                       {column.id === 'action' ? renderAction(row) : value}
@@ -322,9 +364,10 @@ return(
 
       </Table>
     </TableContainer>
+    {helper !== null ? <div style={{marginTop: '2%', marginLeft: '2%'}}>{helper}</div> : "" }
   </Paper>
 </div>
       : "" }
 </div>
   ) 
-  }
+}

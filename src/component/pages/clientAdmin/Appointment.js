@@ -1,6 +1,6 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
-import { useLocation, useRouteMatch, Link } from 'react-router-dom';
+import { useLocation, useRouteMatch, Link, useHistory } from 'react-router-dom';
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,18 +46,20 @@ export default function Appointment() {
   const classes = useStyles();
   let location = useLocation();
   let { path } = useRouteMatch();
+  const history = useHistory();
   
   const [error, setError] = React.useState(null);
   const [appoitnment, setAppoitnment] = React.useState(null);
   const [comment, setComment] = React.useState(null);
   const [checkVal, setCheckVal] = React.useState(null);
-   const [initCheck, setInitCheck] = React.useState(null);
+  const [initCheck, setInitCheck] = React.useState(null);
+  const [helper, setHelper] = React.useState(null);
 
   React.useEffect(() => {
     const start = async () => {
       let data = await authContext.API.getIndivAppointment(location.pathname.toString().split("/")[3]) 
       console.log(data)
-      if (data === undefined){
+      if (data === undefined || data.error){
         console.log("error")
         setError("Error grabbing data from the server.")
       } else {
@@ -90,7 +92,7 @@ export default function Appointment() {
 
   const submitComment = async (e) => {
     if (comment === "" || comment === null){
-      return setError("Can not be blank.")
+      return setHelper("Can not be blank.")
     }
 
     let reqBody = {
@@ -100,13 +102,13 @@ export default function Appointment() {
       "status": appoitnment.status,
       "comment": comment,
       "clinic": appoitnment.clinic,
-      "patient": appoitnment.patient
+      "patient": appoitnment.patient._id
   };
 
-       let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
+  let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
         if (result.status === 200){
-         setAppoitnment(result.data)
          setError("")
+         history.go()
         } else if (result.status === 400) {
          console.log(result)
          setError("Error submitting data to the server.")
@@ -117,21 +119,35 @@ export default function Appointment() {
     setComment(e.target.value);
   };
 
-  const handleStatus = (e) => {
-    alert('hello')
-  };
+  const parseStatus = (str) =>{ 
+    console.log(str)
+  if (str === 'CHECK_IN'){
+    return str = "Checked In"
+  } else if (str === 'PENDING'){
+    return str = "Pending Status"
+  } else if (str === 'CANCELED') {
+   return str = "Canceled"
+    } else if (str === 'NOT_SHOW') {
+      return str = "Patient Did Not Attend"
+    }
+  }
 
+const parseDate = (dateStr) => {
+  let d = new Date(dateStr)
+  let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
+  return format(Date()).toString().split("-").join(" ")
+}
 
   const renderAppointment = () => {
     return( 
-    <div> <Card className={classes.root} variant="outlined">
+    <div style={{marginBottom: '2%'}}> <Card className={classes.root} variant="outlined">
     <CardContent>
     <Grid container spacing={1}>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Patient Name:", appoitnment.patient)}
+   {formRow("Patient Name:", appoitnment.patient.firstName + " " + appoitnment.patient.lastName)}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Appointment Time:", appoitnment.appointmentTime.split('T')[0])}
+   {formRow("Appointment Time:", parseDate(appoitnment.appointmentTime.split('T')[0]))}
    </Grid>
    <Grid container item xs={12} spacing={3}>
    {formRow("Doctor:", appoitnment.doctorName)}
@@ -143,7 +159,7 @@ export default function Appointment() {
    {formRow("Comments:", appoitnment.comment)}
    </Grid> : ""}
    <Grid container item xs={12} spacing={3}>
-   {formRow("Appointment Status:", appoitnment.status)}
+   {formRow("Appointment Status:", parseStatus(appoitnment.status))}
    </Grid>
   </Grid>
  </CardContent>
@@ -185,8 +201,6 @@ export default function Appointment() {
    <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComment}>Submit</Button>
   </CardActions>
   </Card>
-  
-  <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
   </div>)
 }
 
@@ -202,13 +216,15 @@ const updateStatus = async () => {
     "status": checkVal,
     "comment": appoitnment.comment,
     "clinic": appoitnment.clinic,
-    "patient": appoitnment.patient
+    "patient": appoitnment.patient._id
 };
+
+console.log(checkVal)
 
      let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
       if (result.status === 200){
-       setAppoitnment(result.data)
        setError("")
+       history.go()
       } else if (result.status === 400) {
        console.log(result)
        setError("Error submitting data to the server.")
@@ -245,6 +261,8 @@ const StatusChange = () => {
       <div>
         {error !== null ? error : "" }
         {appoitnment !== null && appoitnment !== undefined ? renderAppointment(appoitnment) : ""}
+        <div style={{display: 'block', marginBottom: '2%'}}>{helper !== null ? helper : "" }</div> 
+        <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
       </div>
     ) 
   }
