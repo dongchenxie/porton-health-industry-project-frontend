@@ -40,14 +40,14 @@ function App() {
         return { ...prev, isAuthenticated: false, token: null }
       })
     },
-    readToken: async function(currentSetAuthState){
-      console.log( `${baseURL}user/readToken/${localStorage.getItem('token')}`)
-      let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)     
+    readToken: async function (currentSetAuthState) {
+      console.log(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
+      let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
       // .catch((e) => {
       //   console.log( "error reading token: ", 
       //   return { error: e }//Error example
       // })
-      if(result.status === 200){
+      if (result.status === 200) {
         console.log("login ok")
         localStorage.setItem("user", JSON.stringify(result.data))
         // setAuthState.currentSetAuthState((prev) => {
@@ -55,7 +55,7 @@ function App() {
         // })
         // return { status: 200}
         return result.data
-      }else{
+      } else {
         return this.signOut()
       }
     },
@@ -66,12 +66,12 @@ function App() {
           method: "get",
           url: `${baseURL}posts`,
           headers: {
-            "auth-token":localStorage.getItem("token"),
+            "auth-token": localStorage.getItem("token"),
             'Access-Control-Allow-Origin': '*'
           }
         }
-      ).catch((e) => 
-        { return {error: e}
+      ).catch((e) => {
+        return { error: e }
       })
       if (result.status === 200) {
         return { status: 200, data: result.data };
@@ -79,100 +79,113 @@ function App() {
         return result
       }
     },
-  getUsers: async function (pageQuery, searchQuery) {
-    let urlParam = undefined
+    getUsers: async function (pageQuery, searchQuery) {
+      let urlParam = undefined
 
-    if (pageQuery && searchQuery){
-      urlParam = `${baseURL}users?page=${pageQuery}&search=${searchQuery}`
-    } else if (pageQuery === undefined && searchQuery){
-      urlParam = `${baseURL}users?search=${searchQuery}`
-    } else if (searchQuery === undefined && pageQuery){
-     urlParam = `${baseURL}users?page=${pageQuery}`
-    } else {
-     urlParam = `${baseURL}users`
-    }
+      if (pageQuery && searchQuery) {
+        urlParam = `${baseURL}users?page=${pageQuery}&search=${searchQuery}`
+      } else if (pageQuery === undefined && searchQuery) {
+        urlParam = `${baseURL}users?search=${searchQuery}`
+      } else if (searchQuery === undefined && pageQuery) {
+        urlParam = `${baseURL}users?page=${pageQuery}`
+      } else {
+        urlParam = `${baseURL}users`
+      }
 
-    console.log(urlParam)
-    let result = await axios(
-      {
-        method: "get",
-        url:  urlParam,
-        headers: {
-          "auth-token":localStorage.getItem("token"),
-          'Access-Control-Allow-Origin': '*'
+      console.log(urlParam)
+      let result = await axios(
+        {
+          method: "get",
+          url: urlParam,
+          headers: {
+            "auth-token": localStorage.getItem("token"),
+            'Access-Control-Allow-Origin': '*'
+          }
         }
+      ).catch((e) => { return { error: e } })
+      if (result.status === 200) {
+        return { status: 200, data: result.data };
+      } else {
+        return result
       }
-    ).catch((e) => 
-      { return { error: e }} )
-    if (result.status === 200) {
-      return { status: 200, data: result.data };
-    } else {
-      return result
-    }
-  },
-  getIndivUser: async function (param) {
-    let result = await axios(
-      {
-        method: "get",
-        url: `${baseURL}user/${param}`,
-        headers: {
-          "auth-token":localStorage.getItem("token"),
-          'Access-Control-Allow-Origin': '*'
+    },
+    getIndivUser: async function (param) {
+      let result = await axios(
+        {
+          method: "get",
+          url: `${baseURL}user/${param}`,
+          headers: {
+            "auth-token": localStorage.getItem("token"),
+            'Access-Control-Allow-Origin': '*'
+          }
         }
+      ).catch((e) => { return { error: e } })
+      if (result.status === 200) {
+        return { status: 200, data: result.data };
+      } else {
+        return result
       }
-    ).catch((e) => 
-      { return { error: e } })
-    if (result.status === 200) {
-      return { status: 200, data: result.data };
-    } else {
-      return result
-    }
-   },
-   resetUserPassword: async function (id, password) {
-    let result = await axios.put(`${baseURL}user/passwordReset/${id}`, {
-      password: password
-  })
-      .then(function (response) {
-        console.log(response)
+    },
+    resetUserPassword: async function (id, password) {
+      let result = await axios.put(`${baseURL}user/passwordReset/${id}`, {
+        password: password
+      })
+        .then(function (response) {
+          console.log(response)
           return response
-      })
-      .catch(function (error) {
-        console.log(error)
-          return {error, status: 400 }
-      })
+        })
+        .catch(function (error) {
+          console.log(error)
+          return { error, status: 400 }
+        })
       return result
     },
     updateUserEnabled: async function (id, status) {
       console.log("inside function")
       let result = await axios.put(`${baseURL}user/permission/${id}`, {
         isEnabled: status
-    })
+      })
         .then(function (response) {
           console.log(response)
-            return response
+          return response
         })
         .catch(function (error) {
           console.log(error)
-            return {error, status: 400 }
+          return { error, status: 400 }
         })
-        return result
-      },
-      getClinics: async function () {
+      return result
+    },
+    getClinics: async function () {
       let result = await axios(
         {
           method: "get",
-          url:  `${baseURL}clinics`,
+          url: `${baseURL}clinics`,
           headers: {
-            "auth-token":localStorage.getItem("token"),
+            "auth-token": localStorage.getItem("token"),
             'Access-Control-Allow-Origin': '*'
           }
         }
-      ).catch((e) => 
-        { return { error: e }} )
+      ).catch((e) => { return { error: e } })
       if (result.status === 200) {
         return { status: 200, data: result.data };
       } else {
         return result
+      }
+    },
+    TerminalLogin: async function (token){
+      let result = await axios.post(`${baseURL}terminal/login`, {
+        "token": token
+      }).catch((e) => {
+        console.log(e.response)
+        return { error: e }//Error example
+      })
+      console.log("after login request")
+      if (result.status === 200) {
+        console.log("OK")
+        return { status: 200, token: result.data.token };//Success example
+      } else {
+        console.log(result.response)
+        return { status: 200,error:result}
       }
     }
   }

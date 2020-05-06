@@ -72,7 +72,14 @@ export default function TerminalLogin(props) {
 
   const login = async () => {
     console.log("terminal login page!")
-     props.setIsAuthed(true)
+    const result=authContext.API.TerminalLogin(password)
+    if(result.status === 200){
+      props.setIsAuthed(true)
+    }else{
+      alert(result.error)
+    }
+     
+     
     // let result = await authContext.API.login(`${username}`, `${password}`);
     // //testing purpose "results var"
     // // let result = await authContext.API.login("xxx@x.com", "password");
