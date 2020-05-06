@@ -73,14 +73,10 @@ export default function TerminalList() {
     const start = async () => {
        let data = await authContext.API.getClientTerminals()
        console.log(data)
-
-       if (data === undefined){
+       if (data === undefined || data.error){
         console.log("error")
         setError("Error grabbing data from the server.")
-      } else if (data === undefined){
-        console.log("error")
-        setError("Error grabbing data from the server.")
-      } else {
+        }  else {
         authContext.API.readToken(authContext.authState).then(function(result){
           if (result.role !== 'CLIENT_ADMIN'){
            return setError("404. Please try again.")

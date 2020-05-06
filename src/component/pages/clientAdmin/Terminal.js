@@ -19,6 +19,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
+import { da } from "date-fns/locale";
 
 const useStyles = makeStyles({
   root: {
@@ -66,20 +67,20 @@ export default function Terminal(name) {
      let termNameData = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
      
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
+     console.log("START: ", data, termNameData)
 
-     if (termNameData.data.terminal[0].status === "DISABLED" && data.status === 400 ){
+     if (data.status === 400 && termNameData.status === 400 && termNameData.data.terminal === undefined) {
+      console.log(data)
+      console.log("error")
+      return setError("Error grabbing data from the server.")
+    } else if (termNameData.data.terminal[0].status === "DISABLED" && data.status === 400 ){
        setTermName(termNameData.data.terminal[0])
        setInitCheck(termNameData.data.terminal[0].status)
        setCheckEnable(termNameData.data.terminal[0].status)
-       setRenderDisabled(true)
-        } else if (data === undefined || termNameData === undefined || termNameData === null || data === null ){
+       return setRenderDisabled(true)
+     } else if (data === undefined || termNameData === undefined || termNameData === null || data === null || data.status == 400){
           console.log("error")
-          setError("Error grabbing data from the server.")
-
-        } else if(data.status === 400 || termNameData.status === 400) {
-          console.log(data)
-          console.log("error")
-          setError("Terminal has been deleted.")
+          return setError("Error grabbing data from the server.")
         } else {
           /////
           //MIGHT NEED TO FIX ORDER OF TOKEN VERIFICATION.....
@@ -92,7 +93,7 @@ export default function Terminal(name) {
               setTermName(termNameData.data.terminal[0])
               setChecks(data.data.terminal[0].verificationContent[0])
               setInitCheck(termNameData.data.terminal[0].status)
-              setCheckEnable(termNameData.data.terminal[0].status)
+              return setCheckEnable(termNameData.data.terminal[0].status)
             }
           })
         }
@@ -230,7 +231,6 @@ const submitPut = async (path, reqBody) => {
     </Card>
   
     <Button variant="contained" onClick={delTerminal} style={{marginTop: '3%', marginBottom: '1%', backgroundColor: 'blue', color: 'white', display: 'block'}}> Delete Terminal </Button>
-    <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
     </div>)
   }
 
@@ -288,7 +288,6 @@ const RenderDisableView = () => {
          </div>
        )}
      </PopupState>
-     <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
    </div> )
 }
 
@@ -325,6 +324,7 @@ const RenderDisableView = () => {
      {renderTerminalView(terminal)}
         </div> 
          : "" }
+    <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white', display: 'block'}}> Return to list </Button> </Link>
       </div>
     ) 
   }
