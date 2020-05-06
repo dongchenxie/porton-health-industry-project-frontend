@@ -175,20 +175,27 @@ const clearSearch = () => {
   return callAPI(query)
 }
 
- const handleDateA = (date) => {
-    setDateA(date.toISOString())
-   };
+ const handleDateA = (date, event) => {
+   console.log(date)
+    if (date != 'Invalid Date'){
+      return setDateA(date.toISOString())  
+    }
+  };
    
    const handleDateB = (date2) => {
-     setDateB(date2)
-     let val = date2.toISOString()  
-
-    query.term = undefined
-    query.start = dateA
-    query.end = val
-    query.page = undefined
-  
-    return callAPI(query)
+    if (date2 != 'Invalid Date'){
+      setDateB(date2)
+      let val = date2.toISOString()  
+ 
+     query.term = undefined
+     query.start = dateA
+     query.end = val
+     query.page = undefined
+   
+     return callAPI(query)
+    } else {
+      return setError('Enter a Valid Date')
+    }
    };
    
      const handleToday = () => {
