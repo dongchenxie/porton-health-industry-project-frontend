@@ -281,10 +281,9 @@ return(
           {error !== null ? error : ""}
           {appointments !== null && appointments !== undefined ? 
   <div>
-    <h3>Appointments: </h3>
+    <h3>Appointments:      <Button size="small" variant="contained" color="primary" style={{marginLeft: '1%'}} onClick={handleToday}>Show Today</Button>
+</h3> 
     <Paper className={classes.root}>
-    {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginRight: '1%', marginLeft: '2%', marginTop: '1%'}} onClick={clearSearch}>Clear Search</Button> : ""}
-    <Button size="small" variant="contained" color="primary" style={{marginLeft: '1%', marginTop: '1%'}} onClick={handleToday}>Show Today</Button>
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <KeyboardDatePicker
@@ -313,8 +312,9 @@ return(
         />      
         </Grid>
       </MuiPickersUtilsProvider>
+      <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '4%', marginTop: '2%', marginRight: '2%', float: 'right'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
 
-    <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+      {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginRight: '1%', marginLeft: '2%', marginTop: '4%'}} onClick={clearSearch}>Clear Search</Button> : ""}
 
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
