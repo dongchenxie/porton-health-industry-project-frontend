@@ -68,6 +68,7 @@ export default function AppointmentList() {
   const [direction, setDirection] = React.useState(sortKey)
   const [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
+  const [helper, setHelper] = React.useState(null);
 
   const [dateA, setDateA] = React.useState(today);
   const [dateB, setDateB] = React.useState(today);
@@ -99,11 +100,12 @@ export default function AppointmentList() {
             ...prevState,
             totalPages: 1,
           }))
-          setError("No current appointments")
+          setHelper("No current appointments")
           setAppoitnments([])
          setPage(1)
         } else {
         setError("")
+        setHelper("")
         setMeta(apiData.data.metadata)
         setAppoitnments(formatAppoitments(apiData.data.data))
         setPage(apiData.data.metadata.totalPages)
@@ -168,7 +170,7 @@ const clearSearch = () => {
 
   query.term = undefined
   query.page = undefined
-
+  setHelper("")
   setPage(1)
   return callAPI(query)
 }
@@ -355,6 +357,7 @@ return(
 
       </Table>
     </TableContainer>
+    {helper !== null ? <div style={{marginTop: '2%', marginLeft: '2%'}}>{helper}</div> : "" }
   </Paper>
 </div>
       : "" }
