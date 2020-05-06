@@ -181,6 +181,12 @@ export default function UserDetail() {
         return value
       }
 
+      const renderDate = (datestr) => {
+        let d = new Date(datestr)
+        let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
+       return format(Date()).toString().split("-").join(" ") 
+      }
+
       //render grid info
     const renderUser = () => {
          return( 
@@ -197,7 +203,7 @@ export default function UserDetail() {
         {formRow("Email:", user.email)}
         </Grid>
         <Grid container item xs={12} spacing={3}>
-        {formRow("Creation Date:", user.date.split('T')[0])}
+        {formRow("Creation Date:", renderDate(user.date.split('T')[0]))}
         </Grid>
         <Grid container item xs={12} spacing={3}>
         {formRow("Role:", parseValue(user.role))}
