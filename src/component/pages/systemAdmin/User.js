@@ -170,6 +170,17 @@ export default function UserDetail() {
        }
       };
 
+      const parseValue = (value) => {
+        if (value === 'CLIENT_ADMIN'){
+          value = 'Client Admin'
+          return value
+        } else if (value === 'SYSTEM_ADMIN'){
+          value = "System Admin"
+          return value
+        }
+        return value
+      }
+
       //render grid info
     const renderUser = () => {
          return( 
@@ -189,7 +200,7 @@ export default function UserDetail() {
         {formRow("Creation Date:", user.date.split('T')[0])}
         </Grid>
         <Grid container item xs={12} spacing={3}>
-        {formRow("Role:", user.role)}
+        {formRow("Role:", parseValue(user.role))}
         </Grid>
         <br />
         <Grid container item xs={12} spacing={3}>
@@ -228,8 +239,6 @@ export default function UserDetail() {
       )}
     </PopupState>
 
-     {/* to implement: */}
-     {/*///////////////*/}
      <Typography style={{marginLeft: '2%', marginTop: '2%'}}> 
       Enable/Disable Account: 
        <Switch
