@@ -158,39 +158,18 @@ function App() {
         return result
       },
       registerUserAccount:  async function (reqBody) {
-        console.log(reqBody)
-
         let result = await axios.post(`${baseURL}user/register`, reqBody
          ).catch((e) => {
           console.log(e.response)
-          return { error: e }//Error example
+          return { error: e.response, status: e.response.status }
         })
-        if (result.status === 200) {
+        console.log("WAIT CONDITION", result)
+        if (result.status === 201) {
           console.log(result)
-          return { status: 200, data: result };
-        } else {
-          return result
+          return { status: 201, data: result.data };
+        } else if (result.status === 400) {
+           return { status: 400, data: result };
         }
-
-
-        // let result = await axios(
-        //   {
-        //     method: "POST",
-        //     body: reqBody,
-        //     url: `${baseURL}user/register`,
-        //     headers: {
-        //       "auth-token":localStorage.getItem("token"),
-        //       'Access-Control-Allow-Origin': '*'
-        //     }
-        //   }
-        // ).catch((e) => 
-        //   { return { error: e }} )
-        // if (result.status === 200) {
-        //   return { status: 200, data: result.data };
-        // } else {
-        //   console.log("error", result)
-        //   return { status: 400, data: result };
-        // }
       },
       getClinics: async function () {
       let result = await axios(

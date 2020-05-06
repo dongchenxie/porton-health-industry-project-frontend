@@ -4,18 +4,10 @@ import React from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup'
 
-//import AlertTitle from '@material-ui/lab/AlertTitle';
-
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -25,16 +17,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 //import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
+
 import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
- 
-  Redirect,
   useHistory,
   useLocation
 
@@ -44,7 +30,6 @@ import AuthAPI from "../../../data/DataAccessService";
 import Error from '../../middleware/Error'
 // import AuthService from '../../../Services/AuthService'
 // import Message from '../../middleware/Message'
-const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
 
 
 const useStyles = makeStyles((theme) => ({
@@ -109,7 +94,7 @@ export default function SignUp() {
     let history = useHistory();
     let location = useLocation();
     const authContext = React.useContext(AuthContext);
-    const [error, setError] = React.useState(null);
+   const [errorHelper, setErrorHelper] = React.useState(null);
     
     let [name, setName] = React.useState("");
   const handleNameChange = (e) => {
@@ -141,37 +126,29 @@ export default function SignUp() {
     });
 
      const handleRegister = async (reqBody) => {
-       console.log(reqBody)
       let result = await authContext.API.registerUserAccount(reqBody);
-      
-    //  if (result.status === 200) {
-    //     fetch(BASE_URL + '/register', 
-    //     { method : 'POST',
-    //     headers: {
-    //       "Accept": "application/json",
-    //       "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify(result)
-    //     })
-    //    return (result , alert("Your account has been successfully created"))
-       
-    //   }  else if(result.status === 400) {
-    //     console.log(result, error)
-    //     setError("Problem with server.")
-    //     return result
-        
-    //  }
-
+      console.log("here you called the function", result)
     
-    if (result.status === 200){
+    if (result && result.status === 201){
       console.log(result)
-    //  setAppoitnment(result.data)
-      //  setError("")
-      } else if (result.status === 400) {
-       console.log(result)
-      //  setError("Error submitting data to the server.")
-     }
-
+      setErrorHelper("New Account Created.")
+      return setTimeout(() => {
+        history.go()
+      }, 1000)
+      } else if ( result.data.error.data.error == 'Email already exists.') {
+        console.log(result)
+       setErrorHelper("Email Already exists. Try again.")
+       return setTimeout(() => {
+        history.go()
+       }, 1000)
+      }
+      else if (result.status === 400){
+        console.log(result)
+        setErrorHelper("Error submiting data to the server.")
+       return setTimeout(() => {
+        history.go()
+       }, 1000)
+      }
     }
     
           return (
@@ -182,7 +159,7 @@ export default function SignUp() {
                 <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                 Create A New Account
+                 Create a New Account
                 </Typography>
                 <Formik initialValues={{ 
                   firstName : '',
@@ -191,21 +168,14 @@ export default function SignUp() {
                      role: ''}}
                   validationSchema={validationSchema}
                   onSubmit={( values, {setSubmitting, resetForm, setErrors}) => {
-             
                      setSubmitting(true)
-        
                     setTimeout(() => {
-                      // if (values.email == 'vibharana1@gmail.com'|| 'donna1@gmail.com' || 'test123@gmail.com' || 'kimo123@gmail.com'){
-                      //   console.log(values.email, "?????")
-                      //   return  setErrors({ email : 'The email has already been taken'})
-                      //   } else {
-                        handleRegister({"firstName": values.firstName.toString(), "lastName": values.lastName.toString(), "email": values.email.toString(), "password": values.password.toString(), "role": values.role.toString()})
-                          resetForm()
-                      //  }
+                      //may need some error handling here....
+                      handleRegister({"firstName": values.firstName.toString(), "lastName": values.lastName.toString(), "email": values.email.toString(), "password": values.password.toString(), "role": values.role.toString()})
+                      resetForm()
                       setSubmitting(false)
-                    }, 2000)
+                    }, 1000)
                   }}>
-        
                   
                   {({
                     values, 
@@ -327,6 +297,7 @@ export default function SignUp() {
                     </Grid>
                     <Error touched={touched.role} message={errors.role}/>
                   </Grid>
+                  {errorHelper ?  errorHelper : ""}
                   <Button
                     type="submit"
                     disabled={isSubmitting}

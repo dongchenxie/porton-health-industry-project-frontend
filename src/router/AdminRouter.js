@@ -40,9 +40,6 @@ import UserList from '../component/pages/systemAdmin/UserList';
 import UserDetail from '../component/pages/systemAdmin/User';
 import CreateAccount from '../component/pages/systemAdmin/CreateAccount'
 
-//Terminal component
-
-
 //client admin components:
 import TerminalList from '../component/pages/clientAdmin/TerminalList'
 import Terminal from '../component/pages/clientAdmin/Terminal'
@@ -50,7 +47,6 @@ import AppointmentList from '../component/pages/clientAdmin/AppointmentList'
 import Appointment from '../component/pages/clientAdmin/Appointment'
 
 //shared:
-import About from '../component/pages/shared/About'
 import Profile from '../component/pages/shared/Profile'
 
 //App styles:
@@ -210,12 +206,6 @@ export default function AdminRouter(props) {
         </ListItem >
       </Link>
 
-      <Link to={`${url}/about`} style={{textDecoration: 'none', color: 'inherit'}}>
-        <ListItem button>
-          <ListItemText primary="About" />
-        </ListItem >
-      </Link>  
-
       <Link to={`${url}/createAccount`} style={{textDecoration: 'none', color: 'inherit'}}>
         <ListItem button>
           <ListItemText primary="Create Account" />
@@ -342,9 +332,6 @@ export default function AdminRouter(props) {
               <Route exact path={path}>
                 <Home />
               </Route>
-              <PrivateRoute path={`${path}/about`}>
-                <About />
-              </PrivateRoute>
               <Route path={`${path}/profile`}>
                 <Profile />
               </Route>
