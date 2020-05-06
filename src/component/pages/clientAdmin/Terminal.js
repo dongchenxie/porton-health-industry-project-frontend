@@ -65,12 +65,14 @@ export default function Terminal(name) {
     const start = async () => {
      let termNameData = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
      console.log("HEERE", termNameData)
+     
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
+     console.log("HEERE", data)
 
      if (termNameData.data.terminal[0].status === "DISABLED" && data.status === 400 ){
-       setTermName(termNameData.data.terminal)
-       setInitCheck(termNameData.data.terminal.status)
-       setCheckEnable(termNameData.data.terminal.status)
+       setTermName(termNameData.data.terminal[0])
+       setInitCheck(termNameData.data.terminal[0].status)
+       setCheckEnable(termNameData.data.terminal[0].status)
        setRenderDisabled(true)
         } else if (data === undefined || termNameData === undefined || termNameData === null || data === null ){
           console.log("error")
@@ -88,11 +90,15 @@ export default function Terminal(name) {
             if (result.role !== 'CLIENT_ADMIN'){
              return setError("404. Please try again.")
             } else {
-              setTerminal(data.data)
-              setTermName(termNameData.data.terminal)
-              setChecks(data.data)
-              setInitCheck(termNameData.data.terminal.status)
-              setCheckEnable(termNameData.data.terminal.status)
+              console.log("IIIIIII", data.data.terminal[0])
+              setTerminal(data.data.terminal[0].verificationContent[0])
+              console.log('HOME', data.data.terminal[0])
+              console.log("DID IT WORK A",data.data.terminal[0] )
+              setTermName(termNameData.data.terminal[0])
+              setChecks(data.data.terminal[0].verificationContent[0])
+              setInitCheck(termNameData.data.terminal[0].status)
+              console.log("did it work???", termNameData.data.terminal[0].status)
+              setCheckEnable(termNameData.data.terminal[0].status)
             }
           })
         }
@@ -140,13 +146,8 @@ export default function Terminal(name) {
       return setTerminal(stateCheck)
   }
 
-const configStr = (str) => {
-let parsedStr = str ?  "Required" : "Not Required"
-return parsedStr
-}
-
 const submitPut = async (reqBody) => {
-    let result = await authContext.API.getIndivTerminal(termName._id, undefined, reqBody);
+    let result = await authContext.API.getIndivTerminal(termName._id, true, reqBody);
       if (result.status === 200){
         console.log(result)
       //  setAppoitnment(result.data)
@@ -191,7 +192,22 @@ const submitPut = async (reqBody) => {
       );
     }
 
+    const configStr = (str) => {
+      console.log("str>>>???", str)
+    let parsedStr = str ?  "Required" : "Not Required"
+    return parsedStr
+    }
+
+  
      const renderTerminalView = (terminal) => {
+    //   console.log("***********OBJ**********", terminal, terminal.firstName)
+    
+      //  let setVal = undefined
+      //  if (terminal.termverificationContent[0]){
+      //    setVal = terminal.termverificationContent[0]
+      //  } else {
+      //    setVal = terminal
+      //  }
       return( 
       <div> <Card className={classes.root} variant="outlined">
       <CardContent>
@@ -279,6 +295,7 @@ const RenderDisableView = () => {
          </div>
        )}
      </PopupState>
+     <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
    </div> )
 }
 
@@ -289,7 +306,8 @@ const RenderDisableView = () => {
         {termName !== null && termName !== undefined ? <h3>{termName.name}</h3> : ""}
         {renderDisabled === true ? <RenderDisableView /> : ""}
         {terminal !== null && terminal !== undefined && renderDisabled === null ? 
-        <div> 
+      <div> 
+        {console.log("WHAT IS GOING ON>>>>??????", terminal)}
    <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <div>
@@ -312,7 +330,7 @@ const RenderDisableView = () => {
         </div>
       )}
     </PopupState>
-    {renderTerminalView(terminal)}
+     {renderTerminalView(terminal)}
         </div> 
          : "" }
       </div>
