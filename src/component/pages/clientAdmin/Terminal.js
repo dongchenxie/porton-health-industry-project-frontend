@@ -64,10 +64,12 @@ export default function Terminal(name) {
   React.useEffect(() => {
     const start = async () => {
      let termNameData = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3])
-     console.log("HEERE", termNameData)
      
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
-     console.log("HEERE", data)
+
+     console.log("IS IT HERE>>>?????", data)
+     console.log("IS IT HERE>>>?????", termNameData)
+
 
      if (termNameData.data.terminal[0].status === "DISABLED" && data.status === 400 ){
        setTermName(termNameData.data.terminal[0])

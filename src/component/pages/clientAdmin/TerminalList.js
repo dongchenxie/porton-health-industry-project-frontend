@@ -222,7 +222,6 @@ setQuery(e.target.value)
 //token pop-up features
 
 const renderToken = (token) => {
-  console.log(token, 'IN THE TOOOOOOKEN')
   return(
     <PopupState variant="popover" popupId="demo-popup-popover">
           {(popupState) => (
