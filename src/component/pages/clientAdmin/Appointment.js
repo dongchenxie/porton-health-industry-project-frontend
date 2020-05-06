@@ -1,6 +1,6 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
-import { useLocation, useRouteMatch, Link } from 'react-router-dom';
+import { useLocation, useRouteMatch, Link, useHistory } from 'react-router-dom';
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,6 +46,7 @@ export default function Appointment() {
   const classes = useStyles();
   let location = useLocation();
   let { path } = useRouteMatch();
+  const history = useHistory();
   
   const [error, setError] = React.useState(null);
   const [appoitnment, setAppoitnment] = React.useState(null);
@@ -107,6 +108,7 @@ export default function Appointment() {
   let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
         if (result.status === 200){
          setError("")
+         history.go()
         } else if (result.status === 400) {
          console.log(result)
          setError("Error submitting data to the server.")
@@ -118,6 +120,7 @@ export default function Appointment() {
   };
 
   const parseStatus = (str) =>{ 
+    console.log(str)
   if (str === 'CHECK_IN'){
     return str = "Checked In"
   } else if (str === 'PENDING'){
@@ -221,6 +224,7 @@ console.log(checkVal)
      let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
       if (result.status === 200){
        setError("")
+       history.go()
       } else if (result.status === 400) {
        console.log(result)
        setError("Error submitting data to the server.")

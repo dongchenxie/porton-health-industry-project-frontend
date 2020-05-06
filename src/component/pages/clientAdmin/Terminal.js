@@ -1,6 +1,6 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
-import { useLocation, useRouteMatch, Link } from 'react-router-dom';
+import { useLocation, useRouteMatch, Link, useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -44,6 +44,8 @@ export default function Terminal(name) {
   const classes = useStyles();
   let location = useLocation();
   let { path } = useRouteMatch();
+  const history = useHistory()
+
 
   const [error, setError] = React.useState(null);
   const [terminal, setTerminal] = React.useState(null);
@@ -137,6 +139,7 @@ export default function Terminal(name) {
          setError("Error submitting data to the server.")
        }
 
+      history.go()
       return setTerminal(stateCheck)
   }
 
@@ -146,6 +149,7 @@ const submitPut = async (path, reqBody) => {
         console.log(result)
       //  setAppoitnment(result.data)
          setError("")
+         history.go()
         } else if (result.status === 400) {
          console.log(result)
          setError("Error submitting data to the server.")
