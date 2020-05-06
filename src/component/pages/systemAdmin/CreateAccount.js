@@ -47,9 +47,6 @@ import Error from '../../middleware/Error'
 const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
 
 
-
-
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -106,6 +103,7 @@ const validationSchema = Yup.object().shape({
   .required('Role needed')
 })
 
+
 export default function SignUp() {
   const classes = useStyles();
     let history = useHistory();
@@ -137,46 +135,36 @@ export default function SignUp() {
     setRole(e.target.value);
   };
 
-  
-  
     const [state, setState] = React.useState({
       System_Admin: '',
       Client_Admin: '',
     });
 
-   
-  
-  
-   
-
      let { from } = location.state || { from: { pathname: "/" } };
-     const register = async () => {
-      console.log(result)
-       let result = await authContext.API.register(`${name}`, `${email}`, `${role}`,`${password}`);
+     const register = async (reqBody) => {
+      console.log(reqBody)
+ //      let result = await authContext.API.register(`${name}`, `${email}`, `${role}`,`${password}`);
       
-     if (result.status === 200) {
-        fetch(BASE_URL + '/register', 
-        { method : 'POST',
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(result)
-        })
-       return (result , alert("Your account has been successfully created"))
+    //  if (result.status === 200) {
+    //     fetch(BASE_URL + '/register', 
+    //     { method : 'POST',
+    //     headers: {
+    //       "Accept": "application/json",
+    //       "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify(result)
+    //     })
+    //    return (result , alert("Your account has been successfully created"))
        
-      }  else if(result.status === 400) {
-        console.log(result, error)
-        setError("Problem with server.")
-        return result
+    //   }  else if(result.status === 400) {
+    //     console.log(result, error)
+    //     setError("Problem with server.")
+    //     return result
         
-     }
+    //  }
     }
  
-        
-           
-         
-   
+    
           return (
             <Container component="main" maxWidth="xs">
               <CssBaseline />
@@ -198,11 +186,13 @@ export default function SignUp() {
                      setSubmitting(true)
         
                     setTimeout(() => {
-                      if(values.email === 'vibharana1@gmail.com'|| 'donna1@gmail.com' || 'test123@gmail.com' || 'kimo123@gmail.com'){
-                        setErrors({ email : 'The email has already been taken'})
-                        }else{
+                      // if (values.email == 'vibharana1@gmail.com'|| 'donna1@gmail.com' || 'test123@gmail.com' || 'kimo123@gmail.com'){
+                      //   console.log(values.email, "?????")
+                      //   return  setErrors({ email : 'The email has already been taken'})
+                      //   } else {
+                        register({firstName: values.firstName, lastName: values.lastName, email: values.email, role: values.role})
                           resetForm()
-                        }
+                      //  }
                       setSubmitting(false)
                     }, 2000)
                   }}>
@@ -216,8 +206,7 @@ export default function SignUp() {
                     handleBlur, 
                     handleSubmit,
                      isSubmitting }) => (
-        
-            
+   
                 <form className={classes.form} onSubmit={handleSubmit} noValidate>
              
                   <Grid container spacing={2}>
@@ -326,7 +315,6 @@ export default function SignUp() {
                        
                 </Select>
               {/* </FormControl> */}
-              
                     </Grid>
                     <Error touched={touched.role} message={errors.role}/>
                   </Grid>
@@ -342,22 +330,12 @@ export default function SignUp() {
                   >
                     Create a New Account
                   </Button>
-                 
                   <Grid container justify="flex-end">
-                   
                   </Grid>
                 </form>
-                
                 )}
-               
                 </Formik>
-         
               </div>
-              
-              
-
-              
-               
                 
               <Box mt={5}>
                 <Copyright />
@@ -365,9 +343,7 @@ export default function SignUp() {
             </Container>
           );
 
-         
-          
-        
+   
         function Copyright() {
           return (
             <Typography variant="body2" color="textSecondary" align="center">
