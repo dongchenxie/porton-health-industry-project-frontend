@@ -222,6 +222,7 @@ setQuery(e.target.value)
 //token pop-up features
 
 const renderToken = (token) => {
+  console.log(token, 'IN THE TOOOOOOKEN')
   return(
     <PopupState variant="popover" popupId="demo-popup-popover">
           {(popupState) => (
@@ -291,7 +292,9 @@ if (val === 'ENABLED'){
 }
 
 const parseRows = (column, value, row) => {
-  if (column === 'token' && row.status !== 'DELETED'){
+  if (column === 'token' && row.status === 'DELETED'){
+    return ""
+  } else if (column === 'token' && row.status !== 'DELETED'){
     return renderToken(value)
   } else if (column === 'action' && row.status !== 'DELETED'){
     return renderAction(row)

@@ -90,14 +90,10 @@ export default function Terminal(name) {
             if (result.role !== 'CLIENT_ADMIN'){
              return setError("404. Please try again.")
             } else {
-              console.log("IIIIIII", data.data.terminal[0])
               setTerminal(data.data.terminal[0].verificationContent[0])
-              console.log('HOME', data.data.terminal[0])
-              console.log("DID IT WORK A",data.data.terminal[0] )
               setTermName(termNameData.data.terminal[0])
               setChecks(data.data.terminal[0].verificationContent[0])
               setInitCheck(termNameData.data.terminal[0].status)
-              console.log("did it work???", termNameData.data.terminal[0].status)
               setCheckEnable(termNameData.data.terminal[0].status)
             }
           })
@@ -113,7 +109,7 @@ export default function Terminal(name) {
     "verificationContent": JSON.stringify(stateCheck) 
    }
    setError("Terminal has been deleted.")
-   return submitPut(reqBody)
+   return submitPut(false, reqBody)
   }
   
   const setChecks = (terminalObj) => {
@@ -146,8 +142,8 @@ export default function Terminal(name) {
       return setTerminal(stateCheck)
   }
 
-const submitPut = async (reqBody) => {
-    let result = await authContext.API.getIndivTerminal(termName._id, true, reqBody);
+const submitPut = async (path, reqBody) => {
+    let result = await authContext.API.getIndivTerminal(termName._id, path, reqBody);
       if (result.status === 200){
         console.log(result)
       //  setAppoitnment(result.data)
@@ -165,7 +161,7 @@ const submitPut = async (reqBody) => {
       "verificationContent": JSON.stringify(stateCheck) 
      }
 
-     submitPut(reqBody)
+     submitPut(false, reqBody)
     }
 
         const handleSwitch = (event) => {
@@ -193,7 +189,6 @@ const submitPut = async (reqBody) => {
     }
 
     const configStr = (str) => {
-      console.log("str>>>???", str)
     let parsedStr = str ?  "Required" : "Not Required"
     return parsedStr
     }
@@ -307,7 +302,6 @@ const RenderDisableView = () => {
         {renderDisabled === true ? <RenderDisableView /> : ""}
         {terminal !== null && terminal !== undefined && renderDisabled === null ? 
       <div> 
-        {console.log("WHAT IS GOING ON>>>>??????", terminal)}
    <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <div>
