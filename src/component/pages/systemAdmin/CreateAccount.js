@@ -1,7 +1,9 @@
-import React, {useRef,useEffect} from 'react';
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-undef */
+import React from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup'
-import MuiAlert from '@material-ui/lab/Alert';
+
 //import AlertTitle from '@material-ui/lab/AlertTitle';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -40,9 +42,9 @@ import {
 import AuthContext from "../../../data/AuthContext";
 import AuthAPI from "../../../data/DataAccessService";
 import Error from '../../middleware/Error'
-import AuthService from '../../../Services/AuthService'
-import Message from '../../middleware/Message'
-//const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
+// import AuthService from '../../../Services/AuthService'
+// import Message from '../../middleware/Message'
+const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
 
 
 
@@ -73,12 +75,7 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
-  root: {
-    width: '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
-  },
+ 
 
 }));
 
@@ -114,62 +111,34 @@ export default function SignUp() {
     let history = useHistory();
     let location = useLocation();
     const authContext = React.useContext(AuthContext);
+    const [error, setError] = React.useState(null);
+    
     let [name, setName] = React.useState("");
-    const [user,setUser] = React.useState({firstName: "", lastName: "", password : "", role : ""});
-    const [message,setMessage] = React.useState(null);
-    let timerID = useRef(null);
-
-    useEffect(()=>{
-      return ()=>{
-          clearTimeout(timerID);
-      }
-  },[]);
-
-  const onChange = e =>{
-    setUser({...user,[e.target.name] : e.target.value});
-}
-const resetForm = ()=>{
-   setUser({firstName : "", lastName : "", password : "",role : ""});
- }
-
- const onSubmit = e =>{
-   e.preventDefault();
-  AuthService.register(user).then(data=>{
-      const { message } = data;
-       setMessage(message);
-       resetForm();
-       if(!message.msgError){
-           timerID = setTimeout(()=>{
-               history.push('/login');
-            },2000)
-    }
- })}
-   
   const handleNameChange = (e) => {
     console.log(e.target.value);
     setName(e.target.value);
   }
+
   let [email, setEmail] = React.useState("");
   const handleEmailChange = (e) => {
     console.log(e.target.value);
     setEmail(e.target.value);
   };
+
   let [password, setPassword] = React.useState("");
   const handlePasswordChange = (e) => {
     console.log(e.target.value);
     setPassword(e.target.value);
   };
+
   let [role, setRole] = React.useState("");
   const handleRoleChange = (e) => {
     console.log(e.target.value);
     setRole(e.target.value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-  }
-
+  
+  
     const [state, setState] = React.useState({
       System_Admin: '',
       Client_Admin: '',
@@ -180,37 +149,40 @@ const resetForm = ()=>{
   
    
 
-
-
-  let { from } = location.state || { from: { pathname: "/" } };
-      let register = async() => {
-          let result =await authContext.API.register(`${name}`, `${email}`, `${password}`, `${role}`)
-          if(result.status === 200){
-           console.log(result)
-          return alert("Its a success")
-          }else if(result.status === 400){
-            console.log(result)
-           return alert('Server error')
-          }
-
-          // 
-          //    return alert("Account successfully created")
-             
-          // }else{
-          //     console.log (result)
-              
-          //     }
-              
-          } 
+     let { from } = location.state || { from: { pathname: "/" } };
+     const register = async () => {
+      console.log(result)
+       let result = await authContext.API.register(`${name}`, `${email}`, `${role}`,`${password}`);
+      
+     if (result.status === 200) {
+        fetch(BASE_URL + '/register', 
+        { method : 'POST',
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(result)
+        })
+       return (result , alert("Your account has been successfully created"))
+       
+      }  else if(result.status === 400) {
+        console.log(result, error)
+        setError("Problem with server.")
+        return result
+        
+     }
+    }
+ 
+        
+           
          
-
-
+   
           return (
             <Container component="main" maxWidth="xs">
               <CssBaseline />
               <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-             
+                <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                  Create A New Account
@@ -221,13 +193,18 @@ const resetForm = ()=>{
                     email: '',
                      role: ''}}
                   validationSchema={validationSchema}
-                  onSubmit={(values, {setSubmitting, resetForm}) => {
-                    setSubmitting(true)
+                  onSubmit={( values, {setSubmitting, resetForm, setErrors}) => {
+             
+                     setSubmitting(true)
         
                     setTimeout(() => {
-                      resetForm()
+                      if(values.email === 'vibharana1@gmail.com'|| 'donna1@gmail.com' || 'test123@gmail.com' || 'kimo123@gmail.com'){
+                        setErrors({ email : 'The email has already been taken'})
+                        }else{
+                          resetForm()
+                        }
                       setSubmitting(false)
-                    }, 500)
+                    }, 2000)
                   }}>
         
                   
@@ -241,7 +218,7 @@ const resetForm = ()=>{
                      isSubmitting }) => (
         
             
-                <form className={classes.form} onSubmit={onSubmit} noValidate>
+                <form className={classes.form} onSubmit={handleSubmit} noValidate>
              
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
@@ -256,10 +233,10 @@ const resetForm = ()=>{
   
                         label="First Name"
                         autoFocus
-                        // onChange={onChange} 
+                       
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        // value ={user.firstName}
+                      
                         value={values.firstName}
                         className={touched.firstName && errors.firstName ? "has-error" : null}/>
                         <Error touched={touched.firstName} message={errors.firstName}/>
@@ -270,42 +247,36 @@ const resetForm = ()=>{
                         required
                         fullWidth
                         id="lastName"
-                        
                         label="Last Name"
                         name="lastName"
-                       
+
                         autoComplete="lname"
-                        // onChange={onChange} 
+                        
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        // value ={user.lastName}
+                       
                         value={values.lastName}
                         className={touched.lastName && errors.lastName ? "has-error" : null}
                       />
-                       <Error touched={touched.firstName} message={errors.lastName}/>
+                       <Error touched={touched.lastName} message={errors.lastName}/>
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
                         variant="outlined"
                         required 
                         fullWidth
-                      
                         id="email"
-                        
                         label="Email Address"
                         name="email"
                         type = "email"
                         autoComplete="email"
-                        // onChange={onChange} 
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        // value ={user.email}
                         value={values.email}
                         className={touched.email && errors.email ? "has-error" : null}
-                       
-                        //  onChange={e => onChange(e)}
                       />
-                       <Error touched={touched.firstName} message={errors.email}/>
+                       <Error touched={touched.email} message={errors.email}/>
+
                     </Grid>
                     <Grid item xs={12} >
                       <TextField
@@ -317,10 +288,10 @@ const resetForm = ()=>{
                         type="password"
                         id="password"
                         autoComplete="current-password"
-                        // onChange={onChange} 
+                        
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        // value ={user.password}
+                      
                         value={values.password}
                         className={touched.password && errors.password ? "has-error" : null}
                       />
@@ -348,12 +319,11 @@ const resetForm = ()=>{
                   <option aria-label="None" value="{state.role}" />
                   <option value = "SYSTEM_ADMIN" >System Admin</option>
                   <option value = "CLIENT_ADMIN">Client Admin</option>
-                  onChange={onChange} 
-                  onChange={handleChange}
+                 
+                        onChange={handleChange}
                         onBlur={handleBlur}
-                        value ={user.role}
                         value={values.role}
-                  
+                       
                 </Select>
               {/* </FormControl> */}
               
@@ -373,9 +343,6 @@ const resetForm = ()=>{
                     Create a New Account
                   </Button>
                  
-                  
-        
-                  
                   <Grid container justify="flex-end">
                    
                   </Grid>
@@ -384,13 +351,22 @@ const resetForm = ()=>{
                 )}
                
                 </Formik>
-                {message ? <Message message={message}/> : null}
+         
               </div>
+              
+              
+
+              
+               
+                
               <Box mt={5}>
                 <Copyright />
               </Box>
             </Container>
           );
+
+         
+          
         
         function Copyright() {
           return (
@@ -403,5 +379,5 @@ const resetForm = ()=>{
               {'.'}
             </Typography>
           );
-          }
-        }
+        }}
+      
