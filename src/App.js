@@ -157,6 +157,41 @@ function App() {
         })
         return result
       },
+      registerUserAccount:  async function (reqBody) {
+        console.log(reqBody)
+
+        let result = await axios.post(`${baseURL}user/register`, reqBody
+         ).catch((e) => {
+          console.log(e.response)
+          return { error: e }//Error example
+        })
+        if (result.status === 200) {
+          console.log(result)
+          return { status: 200, data: result };
+        } else {
+          return result
+        }
+
+
+        // let result = await axios(
+        //   {
+        //     method: "POST",
+        //     body: reqBody,
+        //     url: `${baseURL}user/register`,
+        //     headers: {
+        //       "auth-token":localStorage.getItem("token"),
+        //       'Access-Control-Allow-Origin': '*'
+        //     }
+        //   }
+        // ).catch((e) => 
+        //   { return { error: e }} )
+        // if (result.status === 200) {
+        //   return { status: 200, data: result.data };
+        // } else {
+        //   console.log("error", result)
+        //   return { status: 400, data: result };
+        // }
+      },
       getClinics: async function () {
       let result = await axios(
         {

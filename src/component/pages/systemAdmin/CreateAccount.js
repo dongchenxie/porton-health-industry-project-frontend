@@ -140,10 +140,9 @@ export default function SignUp() {
       Client_Admin: '',
     });
 
-     let { from } = location.state || { from: { pathname: "/" } };
-     const register = async (reqBody) => {
-      console.log(reqBody)
- //      let result = await authContext.API.register(`${name}`, `${email}`, `${role}`,`${password}`);
+     const handleRegister = async (reqBody) => {
+       console.log(reqBody)
+      let result = await authContext.API.registerUserAccount(reqBody);
       
     //  if (result.status === 200) {
     //     fetch(BASE_URL + '/register', 
@@ -162,8 +161,18 @@ export default function SignUp() {
     //     return result
         
     //  }
+
+    
+    if (result.status === 200){
+      console.log(result)
+    //  setAppoitnment(result.data)
+      //  setError("")
+      } else if (result.status === 400) {
+       console.log(result)
+      //  setError("Error submitting data to the server.")
+     }
+
     }
- 
     
           return (
             <Container component="main" maxWidth="xs">
@@ -190,7 +199,7 @@ export default function SignUp() {
                       //   console.log(values.email, "?????")
                       //   return  setErrors({ email : 'The email has already been taken'})
                       //   } else {
-                        register({firstName: values.firstName, lastName: values.lastName, email: values.email, role: values.role})
+                        handleRegister({"firstName": values.firstName.toString(), "lastName": values.lastName.toString(), "email": values.email.toString(), "password": values.password.toString(), "role": values.role.toString()})
                           resetForm()
                       //  }
                       setSubmitting(false)
