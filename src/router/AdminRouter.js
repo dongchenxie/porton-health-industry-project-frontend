@@ -47,7 +47,6 @@ import AppointmentList from '../component/pages/clientAdmin/AppointmentList'
 import Appointment from '../component/pages/clientAdmin/Appointment'
 
 //shared:
-import About from '../component/pages/shared/About'
 import Profile from '../component/pages/shared/Profile'
 
 //App styles:
@@ -206,12 +205,6 @@ export default function AdminRouter(props) {
           <ListItemText primary="Home" />
         </ListItem >
       </Link>
-
-      <Link to={`${url}/about`} style={{textDecoration: 'none', color: 'inherit'}}>
-        <ListItem button>
-          <ListItemText primary="About" />
-        </ListItem >
-      </Link>  
       
       <Link to={`${url}/profile`} style={{textDecoration: 'none', color: 'inherit'}}>
         
@@ -333,9 +326,6 @@ export default function AdminRouter(props) {
               <Route exact path={path}>
                 <Home />
               </Route>
-              <PrivateRoute path={`${path}/about`}>
-                <About />
-              </PrivateRoute>
               <Route path={`${path}/profile`}>
                 <Profile />
               </Route>

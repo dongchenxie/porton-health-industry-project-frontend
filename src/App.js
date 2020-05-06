@@ -133,7 +133,6 @@ function App() {
       password: password
   })
       .then(function (response) {
-        console.log(response)
           return response
       })
       .catch(function (error) {
@@ -143,12 +142,10 @@ function App() {
       return result
     },
     updateUserEnabled: async function (id, status) {
-      console.log("inside function")
       let result = await axios.put(`${baseURL}user/permission/${id}`, {
         isEnabled: status
     })
         .then(function (response) {
-          console.log(response)
             return response
         })
         .catch(function (error) {
@@ -278,6 +275,7 @@ function App() {
         if (putParam){
           let result = await axios.put(terminalURL, putParam)
           .then(function (response) {
+            console.log(response)
               return response
           })
           .catch(function (error) {
@@ -299,9 +297,11 @@ function App() {
         ).catch((e) => 
           { return { error: e }} )
         if (result.status === 200) {
+          console.log(result)
           return { status: 200, data: result.data };
         } else {
           console.log("error", result)
+          console.log(terminalURL)
           return { status: 400, data: result };
         }
       }

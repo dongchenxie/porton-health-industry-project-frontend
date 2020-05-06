@@ -49,9 +49,10 @@ export default function Users() {
     const [apiResult, setapiResult] = React.useState(null);
     const [users, setUsers]  = React.useState(null);
     const [initialSort, setInitialSort]  = React.useState(null);
+    let sortKey = {firstName: "asc", lastName: "asc", role: "asc"}
 
     const [error, setError] = React.useState(null);
-    const [direction, setDirection] = React.useState("asc")
+    const [direction, setDirection] = React.useState(sortKey)
     const [searchToggle, setSearchToggle] = React.useState(false);
     const [pageTotal, setPageTotal] = React.useState(null);
 
@@ -142,14 +143,17 @@ export default function Users() {
     if (col === 'email'){
     //bugfix here....
     } else {
-    if(direction === "asc"){
+    if(direction[col] === "asc"){
       let sorted = users.sort(function(a, b){
         if(a[col] > b[col]) { return 1; }
         if(a[col] < b[col]) { return -1; }  
         return 0;
     })  
     setUsers(sorted)
-    setDirection("desc")
+    setDirection(prevState => ({
+      ...prevState,
+      [col]: "desc"
+      }));
     } else {
       let sorted = users.sort(function(a, b){
         if(a[col] < b[col]) { return 1; }
@@ -157,7 +161,10 @@ export default function Users() {
         return 0;
     })  
      setUsers(sorted)
-     setDirection("asc")
+     setDirection(prevState => ({
+      ...prevState,
+      [col]: "asc"
+      }));
     }
   }
 }
@@ -183,14 +190,25 @@ const clearSearch = () => {
   setPage(1)
 }
 
+const parseValue = (value) => {
+  if (value === 'CLIENT_ADMIN'){
+    value = 'Client Admin'
+    return value
+  } else if (value === 'SYSTEM_ADMIN'){
+    value = "System Admin"
+    return value
+  }
+  return value
+}
+
     return(
     <div> 
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
     <div>
       <Paper className={classes.root}>
-      {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch}>Clear Search</Button> : ""}
-      <TextField id="outlined-basic" label="Search By Field" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+      {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginLeft: '2%', marginTop: '2%'}} onClick={clearSearch}>Clear Search</Button> : ""}
+      <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{float: 'right', marginTop: '2%', marginRight: '2%', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead >
@@ -201,7 +219,7 @@ const clearSearch = () => {
                   align={column.align}
                   style={{ minWidth: column.minWidth, backgroundColor: '#df0f6a', color: 'white' }} >
                   {column.label}
-                  {column.id !== 'action' && column.id !== 'email' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction}> </MuiTableSortLabel> : ""}
+                  {column.id !== 'action' && column.id !== 'email' ? <MuiTableSortLabel active onClick={() => sortTable(column.id) } direction={direction[column.id]}> </MuiTableSortLabel> : ""}
                 </TableCell>
               ))}
             </TableRow>
@@ -211,7 +229,7 @@ const clearSearch = () => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                   {columns.map((column, id) => {
-                    const value = row[column.id];
+                    const value = parseValue(row[column.id])
                     return (
                       <TableCell key={column.id} key={id} align={column.align}>
                         {column.id === 'action' ? renderAction(row) : value}
