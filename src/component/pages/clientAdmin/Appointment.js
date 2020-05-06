@@ -51,7 +51,7 @@ export default function Appointment() {
   const [appoitnment, setAppoitnment] = React.useState(null);
   const [comment, setComment] = React.useState(null);
   const [checkVal, setCheckVal] = React.useState(null);
-   const [initCheck, setInitCheck] = React.useState(null);
+  const [initCheck, setInitCheck] = React.useState(null);
 
   React.useEffect(() => {
     const start = async () => {
@@ -100,12 +100,11 @@ export default function Appointment() {
       "status": appoitnment.status,
       "comment": comment,
       "clinic": appoitnment.clinic,
-      "patient": appoitnment.patient
+      "patient": appoitnment.patient._id
   };
 
-       let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
+  let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
         if (result.status === 200){
-         setAppoitnment(result.data)
          setError("")
         } else if (result.status === 400) {
          console.log(result)
@@ -117,10 +116,23 @@ export default function Appointment() {
     setComment(e.target.value);
   };
 
-  const handleStatus = (e) => {
-    alert('hello')
-  };
+  const parseStatus = (str) =>{ 
+  if (str === 'CHECK_IN'){
+    return str = "Checked In"
+  } else if (str === 'PENDING'){
+    return str = "Pending Status"
+  } else if (str === 'CANCELED') {
+   return str = "Canceled"
+    } else if (str === 'NOT_SHOW') {
+      return str = "Patient Did Not Attend"
+    }
+  }
 
+const parseDate = (dateStr) => {
+  let d = new Date(dateStr)
+  let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
+  return format(Date()).toString().split("-").join(" ")
+}
 
   const renderAppointment = () => {
     return( 
@@ -128,10 +140,10 @@ export default function Appointment() {
     <CardContent>
     <Grid container spacing={1}>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Patient Name:", appoitnment.patient)}
+   {formRow("Patient Name:", appoitnment.patient.firstName + " " + appoitnment.patient.lastName)}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Appointment Time:", appoitnment.appointmentTime.split('T')[0])}
+   {formRow("Appointment Time:", parseDate(appoitnment.appointmentTime.split('T')[0]))}
    </Grid>
    <Grid container item xs={12} spacing={3}>
    {formRow("Doctor:", appoitnment.doctorName)}
@@ -143,7 +155,7 @@ export default function Appointment() {
    {formRow("Comments:", appoitnment.comment)}
    </Grid> : ""}
    <Grid container item xs={12} spacing={3}>
-   {formRow("Appointment Status:", appoitnment.status)}
+   {formRow("Appointment Status:", parseStatus(appoitnment.status))}
    </Grid>
   </Grid>
  </CardContent>
@@ -202,12 +214,13 @@ const updateStatus = async () => {
     "status": checkVal,
     "comment": appoitnment.comment,
     "clinic": appoitnment.clinic,
-    "patient": appoitnment.patient
+    "patient": appoitnment.patient._id
 };
+
+console.log(checkVal)
 
      let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
       if (result.status === 200){
-       setAppoitnment(result.data)
        setError("")
       } else if (result.status === 400) {
        console.log(result)

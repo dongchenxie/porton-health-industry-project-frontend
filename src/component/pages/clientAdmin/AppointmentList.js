@@ -250,8 +250,10 @@ const sortTable = (col) => {
 const parseStatus = (str) => {
   if (str === 'CHECK_IN'){
     return str = "Checked In"
-  } else if (str === 'NOT_SHOW'){
-    return str = "Not Shown"
+  } else if (str === 'PENDING'){
+    return str = "Pending Appointment"
+  } else if (str === 'NOT_SHOWN'){
+    return str = "Patient Did Not Show Up"
   } else if (str === 'CANCELED') {
    return str = "Canceled"
   }
