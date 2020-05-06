@@ -52,12 +52,13 @@ export default function Appointment() {
   const [comment, setComment] = React.useState(null);
   const [checkVal, setCheckVal] = React.useState(null);
   const [initCheck, setInitCheck] = React.useState(null);
+  const [helper, setHelper] = React.useState(null);
 
   React.useEffect(() => {
     const start = async () => {
       let data = await authContext.API.getIndivAppointment(location.pathname.toString().split("/")[3]) 
       console.log(data)
-      if (data === undefined){
+      if (data === undefined || data.error){
         console.log("error")
         setError("Error grabbing data from the server.")
       } else {
@@ -90,7 +91,7 @@ export default function Appointment() {
 
   const submitComment = async (e) => {
     if (comment === "" || comment === null){
-      return setError("Can not be blank.")
+      return setHelper("Can not be blank.")
     }
 
     let reqBody = {
@@ -136,7 +137,7 @@ const parseDate = (dateStr) => {
 
   const renderAppointment = () => {
     return( 
-    <div> <Card className={classes.root} variant="outlined">
+    <div style={{marginBottom: '2%'}}> <Card className={classes.root} variant="outlined">
     <CardContent>
     <Grid container spacing={1}>
    <Grid container item xs={12} spacing={3}>
@@ -197,8 +198,6 @@ const parseDate = (dateStr) => {
    <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComment}>Submit</Button>
   </CardActions>
   </Card>
-  
-  <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
   </div>)
 }
 
@@ -258,6 +257,8 @@ const StatusChange = () => {
       <div>
         {error !== null ? error : "" }
         {appoitnment !== null && appoitnment !== undefined ? renderAppointment(appoitnment) : ""}
+        <div style={{display: 'block', marginBottom: '2%'}}>{helper !== null ? helper : "" }</div> 
+        <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
       </div>
     ) 
   }
