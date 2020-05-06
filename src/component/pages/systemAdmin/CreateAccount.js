@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef,useEffect} from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup'
 import MuiAlert from '@material-ui/lab/Alert';
@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Snackbar from '@material-ui/core/Snackbar';
+
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -40,12 +40,12 @@ import {
 import AuthContext from "../../../data/AuthContext";
 import AuthAPI from "../../../data/DataAccessService";
 import Error from '../../middleware/Error'
+import AuthService from '../../../Services/AuthService'
+import Message from '../../middleware/Message'
 //const BASE_URL = "http://localhost:3333/api/user"; //not sure about port number, just put it for further testing
 
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -115,7 +115,36 @@ export default function SignUp() {
     let location = useLocation();
     const authContext = React.useContext(AuthContext);
     let [name, setName] = React.useState("");
-    const [open, setOpen] = React.useState(false);
+    const [user,setUser] = React.useState({firstName: "", lastName: "", password : "", role : ""});
+    const [message,setMessage] = React.useState(null);
+    let timerID = useRef(null);
+
+    useEffect(()=>{
+      return ()=>{
+          clearTimeout(timerID);
+      }
+  },[]);
+
+  const onChange = e =>{
+    setUser({...user,[e.target.name] : e.target.value});
+}
+const resetForm = ()=>{
+  setUser({firstName : "", lastName : "", password : "",role : ""});
+}
+
+const onSubmit = e =>{
+  e.preventDefault();
+  AuthService.register(user).then(data=>{
+      const { message } = data;
+      setMessage(message);
+      resetForm();
+       if(!message.msgError){
+          timerID = setTimeout(()=>{
+               history.push('/login');
+           },2000)
+    }
+})}
+   
   const handleNameChange = (e) => {
     console.log(e.target.value);
     setName(e.target.value);
@@ -146,17 +175,7 @@ export default function SignUp() {
       Client_Admin: '',
     });
 
-    const handleClick = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = (event, reason) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-  
-      setOpen(false);
-    };
+   
   
   
    
@@ -215,7 +234,7 @@ export default function SignUp() {
                      isSubmitting }) => (
         
             
-                <form className={classes.form} onSubmit={handleSubmit} noValidate>
+                <form className={classes.form} onSubmit={onSubmit} noValidate>
              
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
@@ -230,8 +249,10 @@ export default function SignUp() {
   
                         label="First Name"
                         autoFocus
+                        onChange={onChange} 
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        value ={user.firstName}
                         value={values.firstName}
                         className={touched.firstName && errors.firstName ? "has-error" : null}/>
                         <Error touched={touched.firstName} message={errors.firstName}/>
@@ -247,8 +268,10 @@ export default function SignUp() {
                         name="lastName"
                        
                         autoComplete="lname"
+                        onChange={onChange} 
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        value ={user.lastName}
                         value={values.lastName}
                         className={touched.lastName && errors.lastName ? "has-error" : null}
                       />
@@ -265,9 +288,11 @@ export default function SignUp() {
                         label="Email Address"
                         name="email"
                         type = "email"
-                        //autoComplete="email"
+                        autoComplete="email"
+                        onChange={onChange} 
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        value ={user.email}
                         value={values.email}
                         className={touched.email && errors.email ? "has-error" : null}
                        
@@ -285,8 +310,10 @@ export default function SignUp() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        onChange={onChange} 
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        value ={user.password}
                         value={values.password}
                         className={touched.password && errors.password ? "has-error" : null}
                       />
@@ -314,8 +341,10 @@ export default function SignUp() {
                   <option aria-label="None" value="{state.role}" />
                   <option value = "SYSTEM_ADMIN" >System Admin</option>
                   <option value = "CLIENT_ADMIN">Client Admin</option>
+                  onChange={onChange} 
                   onChange={handleChange}
                         onBlur={handleBlur}
+                        value ={user.role}
                         value={values.role}
                   
                 </Select>
@@ -325,9 +354,6 @@ export default function SignUp() {
                     <Error touched={touched.role} message={errors.role}/>
                   </Grid>
                   <Button
-                   // eslint-disable-next-line no-undef
-                   onClick={handleClick}
-
                     type="submit"
                     disabled={isSubmitting}
                     fullWidth
@@ -340,22 +366,18 @@ export default function SignUp() {
                     Create a New Account
                   </Button>
                  
-                  <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-               
-                 <Alert onClose={handleClose} severity="success">
-              Your account has been successfully created!
-        </Alert>
-       
                   
-         </Snackbar>
         
                   
                   <Grid container justify="flex-end">
                    
                   </Grid>
                 </form>
+                
                 )}
+               
                 </Formik>
+                {message ? <Message message={message}/> : null}
               </div>
               <Box mt={5}>
                 <Copyright />
