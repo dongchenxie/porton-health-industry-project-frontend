@@ -163,7 +163,6 @@ function App() {
           console.log(e.response)
           return { error: e.response, status: e.response.status }
         })
-        console.log("WAIT CONDITION", result)
         if (result.status === 201) {
           console.log(result)
           return { status: 201, data: result.data };

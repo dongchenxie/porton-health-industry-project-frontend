@@ -30,6 +30,7 @@ import AuthAPI from "../../../data/DataAccessService";
 import Error from '../../middleware/Error'
 // import AuthService from '../../../Services/AuthService'
 // import Message from '../../middleware/Message'
+import Copywrite from '../shared/Copywrite'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -91,33 +92,30 @@ const validationSchema = Yup.object().shape({
 
 export default function SignUp() {
   const classes = useStyles();
-    let history = useHistory();
-    let location = useLocation();
-    const authContext = React.useContext(AuthContext);
-   const [errorHelper, setErrorHelper] = React.useState(null);
+  let history = useHistory();
+  let location = useLocation();
+  const authContext = React.useContext(AuthContext);
+  const [errorHelper, setErrorHelper] = React.useState(null);
+  const [authError, setAuthError] = React.useState(null);
     
     let [name, setName] = React.useState("");
   const handleNameChange = (e) => {
-    console.log(e.target.value);
-    setName(e.target.value);
+    return setName(e.target.value);
   }
 
   let [email, setEmail] = React.useState("");
   const handleEmailChange = (e) => {
-    console.log(e.target.value);
-    setEmail(e.target.value);
+    return setEmail(e.target.value);
   };
 
   let [password, setPassword] = React.useState("");
   const handlePasswordChange = (e) => {
-    console.log(e.target.value);
-    setPassword(e.target.value);
+    return setPassword(e.target.value);
   };
 
   let [role, setRole] = React.useState("");
   const handleRoleChange = (e) => {
-    console.log(e.target.value);
-    setRole(e.target.value);
+     return setRole(e.target.value);
   };
 
     const [state, setState] = React.useState({
@@ -125,9 +123,20 @@ export default function SignUp() {
       Client_Admin: '',
     });
 
-     const handleRegister = async (reqBody) => {
-      let result = await authContext.API.registerUserAccount(reqBody);
-      console.log("here you called the function", result)
+    React.useEffect(() => {
+      const start = async () => {
+          authContext.API.readToken(authContext.authState).then(function(result){
+            if (result.role !== 'SYSTEM_ADMIN'){
+             return setAuthError("404. Please try again.")
+            } 
+          })
+      }
+      start()
+    }, [])
+
+
+  const handleRegister = async (reqBody) => {
+    let result = await authContext.API.registerUserAccount(reqBody);
     
     if (result && result.status === 201){
       console.log(result)
@@ -152,6 +161,8 @@ export default function SignUp() {
     }
     
           return (
+            <div>
+              {authError ?  authError : 
             <Container component="main" maxWidth="xs">
               <CssBaseline />
               <div className={classes.paper}>
@@ -306,7 +317,6 @@ export default function SignUp() {
                     color="primary"
                     // eslint-disable-next-line no-undef
                     className={classes.submit}
-                    
                   >
                     Create a New Account
                   </Button>
@@ -318,22 +328,10 @@ export default function SignUp() {
               </div>
                 
               <Box mt={5}>
-                <Copyright />
+                <Copywrite/>
               </Box>
             </Container>
-          );
-
-   
-        function Copyright() {
-          return (
-            <Typography variant="body2" color="textSecondary" align="center">
-              {'Copyright © '}
-              <Link color="inherit" href="https://material-ui.com/">
-                Porton Health Check-In Kiosk
-              </Link>{' '}
-              {new Date().getFullYear()}
-              {'.'}
-            </Typography>
-          );
-        }}
-      
+            }
+          </div>
+         )
+}

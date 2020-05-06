@@ -48,6 +48,7 @@ import Appointment from '../component/pages/clientAdmin/Appointment'
 
 //shared:
 import Profile from '../component/pages/shared/Profile'
+import Copywrite from "../component/pages/shared/Copywrite";
 
 //App styles:
 const drawerWidth = 240;
@@ -370,5 +371,9 @@ export default function AdminRouter(props) {
 
 
 function Home() {
-  return <h2>Home (not secure data)</h2>;
+  return (<div>
+    <h2>Home (not secure data)</h2>
+    <Copywrite />
+    </div>
+  );
 }
