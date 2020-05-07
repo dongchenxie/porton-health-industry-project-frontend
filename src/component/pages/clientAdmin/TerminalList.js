@@ -1,7 +1,7 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
 
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch, useHistory } from "react-router-dom";
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,6 +26,7 @@ import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
 import Modal from '@material-ui/core/Modal';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 
@@ -80,6 +81,9 @@ export default function TerminalList() {
   const [hash, setHash] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   let [userCreateName, setUserCreateName] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+  const history = useHistory();
+
 
   React.useEffect(() => {
     const start = async () => {
@@ -194,7 +198,33 @@ const clearSearch = () => {
   const createTerminal = async () => {
     //POST to client/terminal endpoint.
     let data = await authContext.API.createClientTerminal(userCreateName)
-    handleClose()
+
+    function tick() {
+      setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+     }
+
+     if (data.status === 201){
+      let timer = setInterval(tick, 20);
+      const finsihProcess = () => {
+        setError("")
+        clearInterval(timer)
+        handleClose()
+        return history.go()
+      }
+   
+      let finish = setTimeout(finsihProcess, 1000);
+     } else if (data.status === 400){
+
+      let timer = setInterval(tick, 20);
+      const finsihProcess = () => {
+      setError("Could not create new terminal. Try again.")
+      clearInterval(timer)
+      handleClose()
+      return setProgress(0)
+      }
+      let finish = setTimeout(finsihProcess, 1000);
+     }
+
   }
 
   const body = (
@@ -213,6 +243,9 @@ const clearSearch = () => {
         <div>
         <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginTop: '2%', display: 'block'}} onClick={createTerminal}>Submit</Button>
         </div>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+           <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '3%', marginBottom: '1%', display: 'inline-block'}} value={progress} />
+       </div>
     </div>
   );
 
@@ -352,7 +385,6 @@ const renderAction = (terminal) => {
 
 return(
   <div> 
-          {error !== null ? error : ""}
           {terminals !== null && terminals !== undefined ? 
   <div>
     <div style={{marginTop: '2%', marginBottom: '2%'}}><h3  style={{display: 'inline'}}> Terminals: </h3> <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', display: 'inline', marginLeft: '2%'}} onClick={handleOpen}>Create New</Button> </div>
@@ -414,6 +446,7 @@ return(
   </Paper>
 </div>
       : "" }
+<span style={{marginTop: '4%', color: 'red'}}>{error !== null ? error : ""}</span> 
 </div>
   ) 
 }
