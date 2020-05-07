@@ -141,7 +141,7 @@ export default function SignUp() {
       return setTimeout(() => {
         history.go()
       }, 1000)
-      } else if ( result.data.error.data.error == 'Email already exists.') {
+      } else if ( result.data.error.data.error === 'Email already exists.') {
         console.log(result)
        setErrorHelper("Email Already exists. Try again.")
        return setTimeout(() => {
