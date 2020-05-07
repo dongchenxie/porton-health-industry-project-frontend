@@ -69,10 +69,25 @@ export default function TerminalLogin(props) {
     setPassword(e.target.value);
   };
   let { from } = location.state || { from: { pathname: "/" } };
-
+  React.useEffect(()=>{
+    if(  localStorage.getItem("terminal-token")){
+      props.setIsAuthed(true)
+    }
+  },[])
   const login = async () => {
     console.log("terminal login page!")
-     props.setIsAuthed(true)
+    const result=await authContext.API.TerminalLogin(password)
+    console.log(result)
+    if(result.status === 200){
+      localStorage.setItem("terminal-token", result.token)
+      props.setIsAuthed(true)
+      
+    }else{
+      console.log(result)
+      alert(result.error.response)
+    }
+     
+     
     // let result = await authContext.API.login(`${username}`, `${password}`);
     // //testing purpose "results var"
     // // let result = await authContext.API.login("xxx@x.com", "password");
@@ -123,7 +138,7 @@ export default function TerminalLogin(props) {
               label="Token"
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="token"
               onChange={handlePasswordChange}
             />
             <Button

@@ -37,7 +37,7 @@ function getSteps() {
 
 
 
-export default function HorizontalLinearStepper() {
+export default function HorizontalLinearStepper(props) {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
@@ -48,11 +48,11 @@ export default function HorizontalLinearStepper() {
     function getStepContent(step) {
         switch (step) {
             case 0:
-                return (< AppointmentList handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
+                return (< AppointmentList setIsAuthed={props.setIsAuthed} userInfo={userInfo} handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
             case 1:
-                return (<  Verification  handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
+                return (<  Verification  setIsAuthed={props.setIsAuthed} userInfo={userInfo} handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
             case 2:
-                return (<AppointmentComfirmPage userInfo={userInfo}  handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
+                return (<AppointmentComfirmPage setIsAuthed={props.setIsAuthed} userInfo={userInfo}  handleNext={handleNext} activeStep={activeStep} steps={steps} setUserInfo={setUserInfo}/>);
             default:
                 return (< TimePickerWidget />);
         }
