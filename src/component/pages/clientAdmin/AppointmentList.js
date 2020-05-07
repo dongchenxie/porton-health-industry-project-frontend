@@ -22,6 +22,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
+import Appointment from "./Appointment";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -279,9 +280,16 @@ const parseStatus = (str) => {
 const parseDate = (datestr) => {
   let parse = datestr.split(" ")
   let timeStamp = parse[1]
-  let d = new Date(parse[0])
-  let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
-  return format(Date()).toString().split("-").join(" ") + " " + timeStamp
+  let subParse = parse[0].split("-")
+  let properDate = `${subParse[1]}-${subParse[2]}-${subParse[0]}`
+  
+  let d = new Date(properDate)
+//  let days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+// console.log(days[d.getUTCDay()], "???");
+   let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
+  // console.log(format, "????")
+  let t = format(Date()).toString().split("-").join(" ") + " " + timeStamp
+  return t
 }
 
 return(
