@@ -22,6 +22,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
+import Appointment from "./Appointment";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const startStamp = "T00:00:00.000Z";
-const endStamp = "T23:59:59.999Z";
+const endStamp = "T22:58:58.000Z";
 const today = new Date().toISOString().split("T")[0]
 
 const query = {term: undefined, start: undefined, end: undefined, page: undefined}
@@ -66,7 +67,7 @@ export default function AppointmentList() {
 
   let sortKey = {doctorName: "asc", appointmentTime: "asc", patient: "asc", status: "asc"}
   const [direction, setDirection] = React.useState(sortKey)
-  const [page, setPage] = React.useState(1);
+  let [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
   const [helper, setHelper] = React.useState(null);
 
@@ -75,7 +76,7 @@ export default function AppointmentList() {
 
   React.useEffect(() => {
     const start = async () => {
-      callAPI(query)
+      return callAPI(query)
     }
     start()
   }, [])
@@ -83,6 +84,7 @@ export default function AppointmentList() {
   const callAPI = async (query) => {
     let apiData = undefined
     apiData = await authContext.API.getClientAppointments(query.term, query.start, query.end, query.page) 
+    console.log(apiData)
   if (apiData === undefined){
     console.log("error")
     setError("Error grabbing data from the server.")
@@ -108,7 +110,6 @@ export default function AppointmentList() {
         setHelper("")
         setMeta(apiData.data.metadata)
         setAppoitnments(formatAppoitments(apiData.data.data))
-        setPage(apiData.data.metadata.totalPages)
         }
       }
     })
@@ -198,6 +199,14 @@ const clearSearch = () => {
     }
    };
    
+
+
+////////////////////////////////////////////
+////////////////////////////////////////////
+  //  I MAY NEED TO FIX THIS PART>>>>>>
+  //  ////////////////////////////////////
+  //  /////////////////////////////////////
+  
      const handleToday = () => {
        let a = today + startStamp
        let b = today + endStamp
@@ -271,9 +280,16 @@ const parseStatus = (str) => {
 const parseDate = (datestr) => {
   let parse = datestr.split(" ")
   let timeStamp = parse[1]
-  let d = new Date(parse[0])
-  let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
-  return format(Date()).toString().split("-").join(" ") + " " + timeStamp
+  let subParse = parse[0].split("-")
+  let properDate = `${subParse[1]}-${subParse[2]}-${subParse[0]}`
+  
+  let d = new Date(properDate)
+//  let days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+// console.log(days[d.getUTCDay()], "???");
+   let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
+  // console.log(format, "????")
+  let t = format(Date()).toString().split("-").join(" ") + " " + timeStamp
+  return t
 }
 
 return(
@@ -312,11 +328,12 @@ return(
         />      
         </Grid>
       </MuiPickersUtilsProvider>
-      <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '4%', marginTop: '2%', marginRight: '2%', float: 'right'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+      <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '1%', marginTop: '2%', marginRight: '2%', float: 'right'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
 
       {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginRight: '1%', marginLeft: '2%', marginTop: '4%'}} onClick={clearSearch}>Clear Search</Button> : ""}
 
     <TableContainer className={classes.container}>
+    {helper !== null ? <div style={{marginTop: '2%', marginLeft: '2%', marginBottom: '2%'}}>{helper}</div> : "" }
       <Table stickyHeader aria-label="sticky table">
         <TableHead >
           <TableRow>
@@ -364,7 +381,6 @@ return(
 
       </Table>
     </TableContainer>
-    {helper !== null ? <div style={{marginTop: '2%', marginLeft: '2%'}}>{helper}</div> : "" }
   </Paper>
 </div>
       : "" }

@@ -280,6 +280,7 @@ export default function UserDetail() {
       </div>)
   }
 
+
   return (<div>
     {error !== null ? error : ""}
     {user !== null && user !== undefined ? renderUser(user) : ""}

@@ -21,6 +21,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles({
@@ -54,6 +55,11 @@ export default function Appointment() {
   const [checkVal, setCheckVal] = React.useState(null);
   const [initCheck, setInitCheck] = React.useState(null);
   const [helper, setHelper] = React.useState(null);
+  const [statusHelper, setStatusHelper] = React.useState(null);
+
+  const [progress, setProgress] = React.useState(0);
+  const [progress2, setProgress2] = React.useState(0);
+  const timerRef = React.useRef();
 
   React.useEffect(() => {
     const start = async () => {
@@ -108,19 +114,34 @@ export default function Appointment() {
   let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
         if (result.status === 200){
          setError("")
-         history.go()
+         let timer = setInterval(tick, 20);
+         const finsihProcess = () => {
+         clearInterval(timer)
+         return history.go()
+         }
+         let finish = setTimeout(finsihProcess, 1500);
         } else if (result.status === 400) {
-         console.log(result)
-         setError("Error submitting data to the server.")
+         
+          console.log(result)
+         let timer = setInterval(tick, 20);
+         const finsihProcess = () => {
+           clearInterval(timer)
+           history.go()
+           return setError("Error submitting data to the server.")
+         }
+         let finish = setTimeout(finsihProcess, 1500);
         }
-  }
+
+        function tick() {
+          setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+        }
+      }
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
 
   const parseStatus = (str) =>{ 
-    console.log(str)
   if (str === 'CHECK_IN'){
     return str = "Checked In"
   } else if (str === 'PENDING'){
@@ -168,7 +189,7 @@ const parseDate = (dateStr) => {
  <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <div>
-       <Button size="small" variant="contained" color="primary" style={{marginTop:"2%", marginBottom: '2%'}} {...bindTrigger(popupState)}>Change Appointment Status </Button>
+       <Button size="small" variant="contained" color="primary" style={{marginTop:"2%", marginLeft: '1%', marginBottom: '5%'}} {...bindTrigger(popupState)}>Change Appointment Status </Button>
           <Popover
             {...bindPopover(popupState)}
             anchorOrigin={{
@@ -187,7 +208,8 @@ const parseDate = (dateStr) => {
         </div>
       )}
     </PopupState>
-    
+
+   <div style={{marginBottom: '-1%'}}>
    <TextField
           multiline={true}
           fullWidth={true}
@@ -198,7 +220,9 @@ const parseDate = (dateStr) => {
           variant="outlined"
           onChange={handleCommentChange}
         />
-   <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComment}>Submit</Button>
+     </div>    
+   <Button size="small" variant="contained" color="primary"  onClick={submitComment}>Submit</Button>
+   <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '2%', marginBottom: '-2%'}} value={progress} />
   </CardActions>
   </Card>
   </div>)
@@ -206,8 +230,9 @@ const parseDate = (dateStr) => {
 
 const updateStatus = async () => {
   if (checkVal === initCheck ){
-    return
-  }
+    console.log("here")
+    return setStatusHelper("Status is identical.") 
+   }
 
   let reqBody = {
     "doctorName": appoitnment.doctorName,
@@ -219,16 +244,30 @@ const updateStatus = async () => {
     "patient": appoitnment.patient._id
 };
 
-console.log(checkVal)
-
      let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
       if (result.status === 200){
-       setError("")
-       history.go()
+        setStatusHelper("")
+        setError("")
+      let timer = setInterval(tock, 20);
+       const finsihProcess2 = () => {
+         clearInterval(timer)
+         return history.go()
+         }
+         let finish = setTimeout(finsihProcess2, 1500);
       } else if (result.status === 400) {
+        setStatusHelper("")
        console.log(result)
-       setError("Error submitting data to the server.")
+      let timer = setInterval(tock, 20);
+      const finsihProcess2 = () => {
+        clearInterval(timer)
+        return  setError("Error submitting data to the server.")
+        }
+        let finish = setTimeout(finsihProcess2, 1500);
       }
+      
+      function tock() {
+        setProgress2((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+       }
 }
 
 const handleCheck = (event) => {
@@ -251,9 +290,13 @@ const StatusChange = () => {
       </RadioGroup>
       <Button onClick={updateStatus} fullWidth variant="contained"color="primary" > Confirm </Button>
     </FormControl>
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+      <div style={{display: 'block', marginBottom: '2%'}}>{statusHelper !== null ? statusHelper : "" }</div> 
+        <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '3%', marginBottom: '1%', display: 'inline-block'}} value={progress2} />
+      </div>
         </div>
-      </Container>
-    </div>
+    </Container>
+  </div>
   )  
 }
 

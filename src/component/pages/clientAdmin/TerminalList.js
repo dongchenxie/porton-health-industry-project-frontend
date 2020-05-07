@@ -63,7 +63,7 @@ export default function TerminalList() {
 
   let sortKey = {name: "asc", status: "asc"}
   const [direction, setDirection] = React.useState(sortKey)
-  const [page, setPage] = React.useState(1);
+  let [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
   const [query, setQuery] = React.useState(undefined);
   const [hash, setHash] = React.useState(null);
