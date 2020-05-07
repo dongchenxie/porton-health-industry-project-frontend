@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const startStamp = "T00:00:00.000Z";
-const endStamp = "T23:59:59.999Z";
+const endStamp = "T22:58:58.000Z";
 const today = new Date().toISOString().split("T")[0]
 
 const query = {term: undefined, start: undefined, end: undefined, page: undefined}
@@ -198,6 +198,14 @@ const clearSearch = () => {
     }
    };
    
+
+
+////////////////////////////////////////////
+////////////////////////////////////////////
+  //  I MAY NEED TO FIX THIS PART>>>>>>
+  //  ////////////////////////////////////
+  //  /////////////////////////////////////
+  
      const handleToday = () => {
        let a = today + startStamp
        let b = today + endStamp
