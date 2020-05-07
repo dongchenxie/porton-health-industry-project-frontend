@@ -317,6 +317,7 @@ return(
       {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginRight: '1%', marginLeft: '2%', marginTop: '4%'}} onClick={clearSearch}>Clear Search</Button> : ""}
 
     <TableContainer className={classes.container}>
+    {helper !== null ? <div style={{marginTop: '2%', marginLeft: '2%', marginBottom: '2%'}}>{helper}</div> : "" }
       <Table stickyHeader aria-label="sticky table">
         <TableHead >
           <TableRow>
@@ -364,7 +365,6 @@ return(
 
       </Table>
     </TableContainer>
-    {helper !== null ? <div style={{marginTop: '2%', marginLeft: '2%'}}>{helper}</div> : "" }
   </Paper>
 </div>
       : "" }

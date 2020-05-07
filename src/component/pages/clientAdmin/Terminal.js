@@ -316,6 +316,7 @@ const RenderDisableView = () => {
          </div>
        )}
      </PopupState>
+     <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '3%', marginBottom: '1%', display: 'inline-block'}} value={progress2} />
    </div> )
 }
 

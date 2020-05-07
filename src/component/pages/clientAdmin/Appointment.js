@@ -21,6 +21,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles({
@@ -54,6 +55,10 @@ export default function Appointment() {
   const [checkVal, setCheckVal] = React.useState(null);
   const [initCheck, setInitCheck] = React.useState(null);
   const [helper, setHelper] = React.useState(null);
+
+  const [progress, setProgress] = React.useState(0);
+  const [progress2, setProgress2] = React.useState(0);
+  const timerRef = React.useRef();
 
   React.useEffect(() => {
     const start = async () => {
@@ -108,12 +113,28 @@ export default function Appointment() {
   let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
         if (result.status === 200){
          setError("")
-         history.go()
+         let timer = setInterval(tick, 20);
+         const finsihProcess = () => {
+         clearInterval(timer)
+         return history.go()
+         }
+         let finish = setTimeout(finsihProcess, 2000);
         } else if (result.status === 400) {
-         console.log(result)
-         setError("Error submitting data to the server.")
+         
+          console.log(result)
+         let timer = setInterval(tick, 20);
+         const finsihProcess = () => {
+           clearInterval(timer)
+           history.go()
+           return setError("Error submitting data to the server.")
+         }
+         let finish = setTimeout(finsihProcess, 2000);
         }
-  }
+
+        function tick() {
+          setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+        }
+      }
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
@@ -199,6 +220,7 @@ const parseDate = (dateStr) => {
           onChange={handleCommentChange}
         />
    <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComment}>Submit</Button>
+   <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '2%', marginBottom: '-2%'}} value={progress} />
   </CardActions>
   </Card>
   </div>)
@@ -223,12 +245,28 @@ console.log(checkVal)
 
      let result = await authContext.API.updateAppointment(appoitnment['_id'], reqBody);
       if (result.status === 200){
-       setError("")
-       history.go()
+       
+        setError("")
+      let timer = setInterval(tock, 20);
+       const finsihProcess2 = () => {
+         clearInterval(timer)
+         return history.go()
+         }
+         let finish = setTimeout(finsihProcess2, 2000);
       } else if (result.status === 400) {
+
        console.log(result)
-       setError("Error submitting data to the server.")
+      let timer = setInterval(tock, 20);
+      const finsihProcess2 = () => {
+        clearInterval(timer)
+        return  setError("Error submitting data to the server.")
+        }
+        let finish = setTimeout(finsihProcess2, 2000);
       }
+      
+      function tock() {
+        setProgress2((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+       }
 }
 
 const handleCheck = (event) => {
@@ -251,9 +289,12 @@ const StatusChange = () => {
       </RadioGroup>
       <Button onClick={updateStatus} fullWidth variant="contained"color="primary" > Confirm </Button>
     </FormControl>
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '3%', marginBottom: '1%', display: 'inline-block'}} value={progress2} />
+      </div>
         </div>
-      </Container>
-    </div>
+    </Container>
+  </div>
   )  
 }
 
