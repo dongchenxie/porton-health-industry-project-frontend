@@ -26,8 +26,7 @@ import {
 import AuthContext from "../../../data/AuthContext";
 import AuthAPI from "../../../data/DataAccessService";
 import Error from '../../middleware/Error'
-// import AuthService from '../../../Services/AuthService'
-// import Message from '../../middleware/Message'
+
 import Copywrite from '../shared/Copywrite'
 
 const useStyles = makeStyles((theme) => ({
