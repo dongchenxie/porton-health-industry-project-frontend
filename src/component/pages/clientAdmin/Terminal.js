@@ -19,7 +19,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
-import { da } from "date-fns/locale";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles({
   root: {
@@ -54,6 +55,8 @@ export default function Terminal(name) {
   const [checkEnable, setCheckEnable] = React.useState(null);
   const [initCheck, setInitCheck] = React.useState(null);
   const [renderDisabled, setRenderDisabled] = React.useState(null);
+  const [progress, setProgress] = React.useState(0);
+
 
   let checkvals = {
   firstName: null,
@@ -138,6 +141,15 @@ export default function Terminal(name) {
          console.log(result)
          setError("Error submitting data to the server.")
        }
+       function tick() {
+        // reset when reaching 100%
+        setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+      }
+  
+      const timer = setInterval(tick, 20);
+      return () => {
+        clearInterval(timer);
+    };
 
       history.go()
       return setTerminal(stateCheck)
@@ -196,16 +208,8 @@ const submitPut = async (path, reqBody) => {
     }
 
   
-     const renderTerminalView = (terminal) => {
-    //   console.log("***********OBJ**********", terminal, terminal.firstName)
-    
-      //  let setVal = undefined
-      //  if (terminal.termverificationContent[0]){
-      //    setVal = terminal.termverificationContent[0]
-      //  } else {
-      //    setVal = terminal
-      //  }
-      return( 
+  const renderTerminalView = (terminal) => {
+    return( 
       <div> <Card className={classes.root} variant="outlined">
       <CardContent>
       <Grid container spacing={1}>
@@ -230,11 +234,13 @@ const submitPut = async (path, reqBody) => {
    <CardActions style={{display: 'block', width: '50%'}}>   
   
      <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComfirm}>Comfirm</Button>
+     <CircularProgress variant="determinate" value={progress} />
     </CardActions>
     </Card>
   
     <Button variant="contained" onClick={delTerminal} style={{marginTop: '3%', marginBottom: '1%', backgroundColor: 'blue', color: 'white', display: 'block'}}> Delete Terminal </Button>
-    </div>)
+    </div>
+    )
   }
 
 
