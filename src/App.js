@@ -185,8 +185,69 @@ function App() {
         return { status: 200, token: result.data.token };//Success example
       } else {
         console.log(result.response)
-        return { status: 200,error:result}
+        return { status: result.error.response.status,error:result.error}
       }
+    },
+    TerminalGetAppointments: async function(min_ahead,page,perPage){
+      let result = await axios(
+        {
+          method: "get",
+          url: `${baseURL}terminal/appointments?min_ahead=${min_ahead}&perPage=${perPage}&page=${page}`,
+          headers: {
+            "terminal-token": localStorage.getItem("terminal-token"),
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+      ).catch((e) => { return { error: e } })
+      if (result.status === 200) {
+        console.log(result.data)
+        return { status: 200, data: result.data };
+      } else {
+        console.log( JSON.stringify(result.error.response))
+        return { status: result.error.response.status,error:result.error}
+      }
+    },
+    TerminalGetVerificationContent: async function(){
+      let result= await axios({
+          method: "get",
+          url: `${baseURL}terminal/verificationcontent`,
+          headers: {
+            "terminal-token": localStorage.getItem("terminal-token"),
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+      ).catch((e) => { return { error: e } })
+      if (result.status === 200) {
+        console.log(result.data)
+        return { status: 200, data: result.data };
+      } else {
+        console.log( JSON.stringify(result.error.response))
+        return { status: result.error.response.status,error:result.error}
+      }
+    },
+    TerminalCheckin:async function(inputData){
+      console.log(inputData)
+      let result= await axios({
+        method: "post",
+        url: `${baseURL}terminal/checkin`,
+        headers: {
+          "terminal-token": localStorage.getItem("terminal-token"),
+          'Access-Control-Allow-Origin': '*'
+        },
+        data:inputData
+        // data:{
+        //   appointmentId:"5eb257c9ae63c8254c917c30",
+        //   content:JSON.stringify({lastName:"Simon",dateOfBirth:"1980-01-01"})
+        // }
+      }
+    ).catch((e) => { return { error: e } })
+    if (result.status === 200) {
+      console.log(result.data)
+      return { status: 200, data: result.data };
+    } else {
+      console.log( JSON.stringify(result.error.response))
+      return { status: result.error.response.status,error:result.error}
+    }
     }
   }
 

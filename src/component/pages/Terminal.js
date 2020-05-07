@@ -21,7 +21,7 @@ export default function Terminal() {
 
     return(
       <div>
-        {isAuthed?<CheckIn/>:<TerminalLogin setIsAuthed={setIsAuthed}/>}
+        {isAuthed?<CheckIn setIsAuthed={setIsAuthed}/>:<TerminalLogin setIsAuthed={setIsAuthed}/>}
       </div>
     ) 
   }

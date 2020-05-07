@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import AuthContext from "../../data/AuthContext"
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -22,18 +23,74 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function LayoutTextFields(props) {
-  const classes = useStyles();
-  const verificationContent = {
+  const authContext = React.useContext(AuthContext)
+  const [userInput,setUserInput]=React.useState({})
+  const [verificationContent, getVerificationContent] = React.useState({
     firstName: true,
     lastName: true,
     phoneNumber: true,
     careCardNumber: false,
     phoneNumberLast4: true,
     careCardLast4: false
+  })
+  React.useEffect(() => {
+    console.log(props.userInfo)
+    const start = async () => {
+      const result = await authContext.API.TerminalGetVerificationContent()
+      if (result.status === 401) {
+        alert("failure to login")
+        localStorage.removeItem("terminal-token")
+        props.setIsAuthed(false)
+      } else if (result.status === 200) {
+   
+        getVerificationContent(result.data.terminal[0].verificationContent[0])
+      } else {
+        alert("unkonwn error")
+      }
+    }
+    start()
+  }, [])
+  const handleCheckin =async () => {
+    props.setUserInfo((state)=>{
+      return {...state,content:userInput}
+    })
+    const userInfo=props.userInfo
+    userInfo["content"]=JSON.stringify(userInput)
+ 
+    const result=await authContext.API.TerminalCheckin(userInfo)
+    if (result.status === 401) {
+      alert("failure to login")
+      localStorage.removeItem("terminal-token")
+      props.setIsAuthed(false)
+    } else if (result.status === 200) {
+      console.log(result.data)
+      props.setUserInfo((state)=>{
+        return{...state,appointmentData:result.data}})
+      props.handleNext()
+    } else {
+      if(typeof result.error.response.data=="string"){
+        alert(result.error.response.data)
+      }else{
+        alert(result.error.response.data.error)
+      }
+      
+     
+    }
+    console.log(result)
+    
   }
+  const handleInputChange=(e, term)=>{
+    console.log(userInput)
+    const value=e.target.value
+    setUserInput((state)=>{
+      return{...state,[term]:value}
+    })
+  }
+  const classes = useStyles();
   const availableTerms = [
     "firstName",
     "lastName",
+    "dateOfBirth",
     "phoneNumber",
     "careCardNumber",
     "phoneNumberLast4",
@@ -44,6 +101,7 @@ export default function LayoutTextFields(props) {
     lastName: "Last Name",
     phoneNumber: "Phone Number",
     careCardNumber: "Care Card Number",
+    dateOfBirth: "Date of Birth",
     phoneNumberLast4: "Last 4 digits of phone number",
     careCardLast4: "Last 4 digits of care card number"
   }
@@ -51,16 +109,17 @@ export default function LayoutTextFields(props) {
     <div className={classes.root}>
       <Typography variant="h5" component="h6" className={classes.textCenter}>Please Provide the Below Informaiton to Verify Your Check In</Typography>
       {availableTerms.map((term) => {
-        console.log(term)
+      
         if (verificationContent[term]) {
           return (<TextField required
             id="standard-full-width"
-
+            onChange={(e)=>{handleInputChange(e, term)}}
             label={ItemName[term]}
             style={{ margin: 8, paddingRight: 16 }}
             fullWidth
             variant="outlined"
             margin="normal"
+            helperText={term == "dateOfBirth" ? "Your Input should be in a format of YYYY-MM-DD eg: 1990-01-01" : ""}
             InputLabelProps={{
               shrink: true,
             }}
@@ -76,7 +135,7 @@ export default function LayoutTextFields(props) {
         <Button
           variant="contained"
           color="primary"
-          onClick={props.handleNext}
+          onClick={handleCheckin}
           className={classes.button}
         >
           {props.activeStep === props.steps.length - 1 ? 'Comfirm' : 'Complete Your Check In'}
