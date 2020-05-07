@@ -179,9 +179,10 @@ const clearSearch = () => {
   setPage(1)
 }
 
-  ///////
-  //NEED: post terminal
-  ///////
+
+
+//create terminal modal features:
+
 
   const handleOpen = () => {
     setOpen(true);
@@ -277,15 +278,14 @@ const sortTable = (col) => {
 }
 
 const handleChangePage = async (pageDir) => {
- if (pageDir == 'r' && page + 1 <= setapiResult.totalPages && query !== undefined){
+ if (pageDir == 'r' && page + 1 <= apiResult.totalPages){
    setPage(page += 1)
    return callAPI(query, page)
- } else if (pageDir == 'l' && page - 1 >= 1 && query !== undefined){
+ } else if (pageDir == 'l' && page - 1 >= 1){
    setPage(page -= 1)
  return  callAPI(query, page)
  }
 };
-
 
 const handleSearchChange = (e) => {
 setSearch(e.target.value);
@@ -294,6 +294,7 @@ setQuery(e.target.value)
 
 
 //token pop-up features
+
 
 const renderToken = (token) => {
   return(
@@ -387,7 +388,7 @@ return(
   <div> 
           {terminals !== null && terminals !== undefined ? 
   <div>
-    <div style={{marginTop: '2%', marginBottom: '2%'}}><h3  style={{display: 'inline'}}> Terminals: </h3> <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', display: 'inline', marginLeft: '2%'}} onClick={handleOpen}>Create New</Button> </div>
+    <div style={{marginTop: '2%', marginBottom: '2%'}}><h3  style={{display: 'inline'}}> Terminals: </h3> <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', display: 'inline', marginLeft: '1%'}} onClick={handleOpen}>Create New</Button> </div>
     <Paper className={classes.root}>
     <Modal
         open={open}
