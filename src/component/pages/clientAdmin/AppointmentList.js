@@ -66,7 +66,7 @@ export default function AppointmentList() {
 
   let sortKey = {doctorName: "asc", appointmentTime: "asc", patient: "asc", status: "asc"}
   const [direction, setDirection] = React.useState(sortKey)
-  const [page, setPage] = React.useState(1);
+  let [page, setPage] = React.useState(1);
   const [searchToggle, setSearchToggle] = React.useState(null);
   const [helper, setHelper] = React.useState(null);
 
@@ -75,7 +75,7 @@ export default function AppointmentList() {
 
   React.useEffect(() => {
     const start = async () => {
-      callAPI(query)
+      return callAPI(query)
     }
     start()
   }, [])
@@ -83,6 +83,7 @@ export default function AppointmentList() {
   const callAPI = async (query) => {
     let apiData = undefined
     apiData = await authContext.API.getClientAppointments(query.term, query.start, query.end, query.page) 
+    console.log(apiData)
   if (apiData === undefined){
     console.log("error")
     setError("Error grabbing data from the server.")
@@ -108,7 +109,6 @@ export default function AppointmentList() {
         setHelper("")
         setMeta(apiData.data.metadata)
         setAppoitnments(formatAppoitments(apiData.data.data))
-        setPage(apiData.data.metadata.totalPages)
         }
       }
     })
@@ -312,7 +312,7 @@ return(
         />      
         </Grid>
       </MuiPickersUtilsProvider>
-      <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '4%', marginTop: '2%', marginRight: '2%', float: 'right'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+      <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '1%', marginTop: '2%', marginRight: '2%', float: 'right'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
 
       {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginRight: '1%', marginLeft: '2%', marginTop: '4%'}} onClick={clearSearch}>Clear Search</Button> : ""}
 
