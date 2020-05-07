@@ -25,6 +25,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
+import Modal from '@material-ui/core/Modal';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +49,15 @@ const useStyles = makeStyles((theme) => ({
       marginTop: '2%',
       maxHeight: '100%',
     },
+    paper: {
+      width: 800,
+      height: 300,
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      transform: `translate(  50%, 50%)`
+    }
   }));
 
 
@@ -67,7 +78,8 @@ export default function TerminalList() {
   const [searchToggle, setSearchToggle] = React.useState(null);
   const [query, setQuery] = React.useState(undefined);
   const [hash, setHash] = React.useState(null);
-
+  const [open, setOpen] = React.useState(false);
+  let [userCreateName, setUserCreateName] = React.useState(false);
 
   React.useEffect(() => {
     const start = async () => {
@@ -166,11 +178,44 @@ const clearSearch = () => {
   ///////
   //NEED: post terminal
   ///////
-const createTerminal = async () => {
-  //POST to client/terminal endpoint.
-  let data = await authContext.API.createClientTerminal("TESTFROMREACT")
-  console.log(data)
-}
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleUserCreateName = (e) => {
+    setUserCreateName(e.target.value);
+  }
+
+  const createTerminal = async () => {
+    //POST to client/terminal endpoint.
+    let data = await authContext.API.createClientTerminal(userCreateName)
+    handleClose()
+  }
+
+  const body = (
+    <div  className={classes.paper}>
+      <h2 id="simple-modal-title"> Enter Terminal Name: </h2>
+      <TextField
+          multiline={false}
+          fullWidth={true}
+          label="None"
+          id="outlined-margin-none"
+          className={classes.textField}
+          label="Name:"
+          variant="outlined"
+          onChange={handleUserCreateName}
+        />
+        <div>
+        <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginTop: '2%', display: 'block'}} onClick={createTerminal}>Submit</Button>
+        </div>
+    </div>
+  );
+
 
 const sortTable = (col) => {
   if(direction[col] === "asc"){
@@ -310,11 +355,19 @@ return(
           {error !== null ? error : ""}
           {terminals !== null && terminals !== undefined ? 
   <div>
-    <h3>  Terminals: </h3>
+    <div style={{marginTop: '2%', marginBottom: '2%'}}><h3  style={{display: 'inline'}}> Terminals: </h3> <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', display: 'inline', marginLeft: '2%'}} onClick={handleOpen}>Create New</Button> </div>
     <Paper className={classes.root}>
-    <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginLeft: '1%', marginTop: '2%'}} onClick={createTerminal}>Create New</Button>
-    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch} style={{marginRight: '2%', marginLeft: '1%', marginTop: '1%'}}>Clear Search</Button> : ""}
-    <TextField id="outlined-basic" label="Search By Field" size="small" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+    <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
+
+    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch} style={{marginLeft: '2%', marginTop: '2%'}}>Clear Search</Button> : ""}
+    <TextField id="outlined-basic" label="Search By Field" size="small" variant="outlined" style={{float: 'right', marginBottom: '2%', marginTop: '2%', marginRight: '1%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
         <TableHead className>

@@ -402,7 +402,7 @@ function App() {
     createClientTerminal: async function (param) {
         let result = await axios(
           {
-            method: "POST",
+            method: "post",
             url: `${baseURL}client/terminal/${param}`,
             headers: {
               "auth-token":localStorage.getItem("token"),
@@ -411,8 +411,8 @@ function App() {
           }
         ).catch((e) => 
           { return { error: e }} )
-        if (result.status === 200) {
-          return { status: 200, data: result.data };
+        if (result.status === 201) {
+          return { status: 201, data: result.data };
         } else {
           console.log("error", result)
           return { status: 400, data: result };
