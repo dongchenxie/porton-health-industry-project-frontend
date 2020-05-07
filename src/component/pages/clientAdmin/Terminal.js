@@ -56,6 +56,8 @@ export default function Terminal(name) {
   const [initCheck, setInitCheck] = React.useState(null);
   const [renderDisabled, setRenderDisabled] = React.useState(null);
   const [progress, setProgress] = React.useState(0);
+  const timerRef = React.useRef();
+
 
 
   let checkvals = {
@@ -141,18 +143,24 @@ export default function Terminal(name) {
          console.log(result)
          setError("Error submitting data to the server.")
        }
-       function tick() {
-        // reset when reaching 100%
-        setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
-      }
+        function tick() {
+          // reset when reaching 100%
+         setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+        }
   
-      const timer = setInterval(tick, 20);
-      return () => {
-        clearInterval(timer);
-    };
+     const timer = setInterval(tick, 10);
+          return () => {
+            if (progress === 100){
+              clearInterval(timer);
+            }
+           
+          };
+   
+    // timerRef.current = setTimeout(() => {
+    //   history.go()
+    //  return setTerminal(stateCheck)
+    // }, 1000);
 
-      history.go()
-      return setTerminal(stateCheck)
   }
 
 const submitPut = async (path, reqBody) => {
