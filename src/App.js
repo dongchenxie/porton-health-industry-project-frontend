@@ -152,9 +152,24 @@ function App() {
           console.log(error)
           return { error, status: 400 }
         })
-      return result
-    },
-    getClinics: async function () {
+
+        return result
+      },
+      registerUserAccount:  async function (reqBody) {
+        let result = await axios.post(`${baseURL}user/register`, reqBody
+         ).catch((e) => {
+          console.log(e.response)
+          return { error: e.response, status: e.response.status }
+        })
+        if (result.status === 201) {
+          console.log(result)
+          return { status: 201, data: result.data };
+        } else if (result.status === 400) {
+           return { status: 400, data: result };
+        }
+      },
+      getClinics: async function () {
+
       let result = await axios(
         {
           method: "get",
