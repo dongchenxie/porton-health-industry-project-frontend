@@ -56,8 +56,8 @@ export default function Terminal(name) {
   const [initCheck, setInitCheck] = React.useState(null);
   const [renderDisabled, setRenderDisabled] = React.useState(null);
   const [progress, setProgress] = React.useState(0);
+  const [progress2, setProgress2] = React.useState(0);
   const timerRef = React.useRef();
-
 
 
   let checkvals = {
@@ -143,24 +143,21 @@ export default function Terminal(name) {
          console.log(result)
          setError("Error submitting data to the server.")
        }
-        function tick() {
-          // reset when reaching 100%
-         setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
-        }
-  
-     const timer = setInterval(tick, 10);
-          return () => {
-            if (progress === 100){
-              clearInterval(timer);
-            }
-           
-          };
-   
-    // timerRef.current = setTimeout(() => {
-    //   history.go()
-    //  return setTerminal(stateCheck)
-    // }, 1000);
+      
 
+   function tick() {
+    setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+   }
+ 
+  let timer = setInterval(tick, 20);
+
+   const finsihProcess = () => {
+     clearInterval(timer)
+     history.go()
+     return setTerminal(stateCheck)
+   }
+
+   let finish = setTimeout(finsihProcess, 2000);
   }
 
 const submitPut = async (path, reqBody) => {
@@ -182,9 +179,20 @@ const submitPut = async (path, reqBody) => {
       "status": checkEnable,
       "verificationContent": JSON.stringify(stateCheck) 
      }
+     
+   function tock() {
+    setProgress2((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+   }
+ 
+  let timer = setInterval(tock, 20);
 
-     submitPut(false, reqBody)
-    }
+   const finsihProcess2 = () => {
+     clearInterval(timer)
+     history.go()
+     return submitPut(false, reqBody)
+     }
+     let finish = setTimeout(finsihProcess2, 2000);
+  }
 
         const handleSwitch = (event) => {
       let keyType = event.target.value
@@ -241,8 +249,8 @@ const submitPut = async (path, reqBody) => {
   
    <CardActions style={{display: 'block', width: '50%'}}>   
   
-     <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComfirm}>Comfirm</Button>
-     <CircularProgress variant="determinate" value={progress} />
+     <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComfirm}>Confirm</Button>
+     <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '2%', marginBottom: '-2%'}} value={progress} />
     </CardActions>
     </Card>
   
@@ -274,7 +282,10 @@ const EnableTerminal = () => {
       </RadioGroup>
       <Button onClick={updateStatus} fullWidth variant="contained"color="primary"> Confirm </Button>
     </FormControl>
-        </div>
+    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+    <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '3%', marginBottom: '1%', display: 'inline-block'}} value={progress2} />
+    </div>
+  </div>
       </Container>
     </div>
   );     
