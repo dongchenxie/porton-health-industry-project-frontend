@@ -247,15 +247,7 @@ export default function AdminRouter(props) {
           </Typography>
             {authContext.authState.isAuthenticated ? (
               <div>
-                <IconButton
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleProfileMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
+                
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}

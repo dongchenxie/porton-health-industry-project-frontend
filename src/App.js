@@ -130,6 +130,12 @@ function App() {
       let result = await axios.put(`${baseURL}user/passwordReset/${id}`, {
         password: password
 
+      }, 
+      {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+          'Access-Control-Allow-Origin': '*'
+        }
       })
         .then(function (response) {
           console.log(response)
@@ -144,6 +150,12 @@ function App() {
     updateUserEnabled: async function (id, status) {
       let result = await axios.put(`${baseURL}user/permission/${id}`, {
         isEnabled: status
+      },
+      {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+          'Access-Control-Allow-Origin': '*'
+        }
       })
         .then(function (response) {
           return response
@@ -157,7 +169,13 @@ function App() {
     },
     registerUserAccount: async function (reqBody) {
       let result = await axios.post(`${baseURL}user/register`, reqBody
-      ).catch((e) => {
+      ,
+      {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+          'Access-Control-Allow-Origin': '*'
+        }
+      }).catch((e) => {
         console.log(e.response)
         return { error: e.response, status: e.response.status }
       })
@@ -319,7 +337,12 @@ function App() {
       }
     },
     updateAppointment: async function (id, reqBody) {
-      let result = await axios.put(`${baseURL}client/appointment/${id}`, reqBody)
+      let result = await axios.put(`${baseURL}client/appointment/${id}`, reqBody, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+          'Access-Control-Allow-Origin': '*'
+        }
+      })
         .then(function (response) {
           return response
         })
