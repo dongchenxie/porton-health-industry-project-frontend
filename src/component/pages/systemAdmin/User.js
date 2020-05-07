@@ -253,8 +253,7 @@ export default function UserDetail() {
         inputProps={{ 'aria-label': 'primary checkbox' }}
       />
       </Typography>
-
-         </CardActions>
+      </CardActions>
        </Card>
        <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
        </div>)

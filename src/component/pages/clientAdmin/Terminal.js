@@ -19,7 +19,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
-import { da } from "date-fns/locale";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles({
   root: {
@@ -54,6 +55,9 @@ export default function Terminal(name) {
   const [checkEnable, setCheckEnable] = React.useState(null);
   const [initCheck, setInitCheck] = React.useState(null);
   const [renderDisabled, setRenderDisabled] = React.useState(null);
+  const [progress, setProgress] = React.useState(0);
+  const [progress2, setProgress2] = React.useState(0);
+  const timerRef = React.useRef();
 
   let checkvals = {
   firstName: null,
@@ -139,8 +143,19 @@ export default function Terminal(name) {
          setError("Error submitting data to the server.")
        }
 
-      history.go()
-      return setTerminal(stateCheck)
+   function tick() {
+    setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+   }
+ 
+  let timer = setInterval(tick, 20);
+
+   const finsihProcess = () => {
+     clearInterval(timer)
+     history.go()
+     return setTerminal(stateCheck)
+   }
+
+   let finish = setTimeout(finsihProcess, 2000);
   }
 
 const submitPut = async (path, reqBody) => {
@@ -162,9 +177,20 @@ const submitPut = async (path, reqBody) => {
       "status": checkEnable,
       "verificationContent": JSON.stringify(stateCheck) 
      }
+     
+   function tock() {
+    setProgress2((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+   }
+ 
+  let timer = setInterval(tock, 20);
 
-     submitPut(false, reqBody)
-    }
+   const finsihProcess2 = () => {
+     clearInterval(timer)
+     history.go()
+     return submitPut(false, reqBody)
+     }
+     let finish = setTimeout(finsihProcess2, 2000);
+  }
 
         const handleSwitch = (event) => {
       let keyType = event.target.value
@@ -196,16 +222,8 @@ const submitPut = async (path, reqBody) => {
     }
 
   
-     const renderTerminalView = (terminal) => {
-    //   console.log("***********OBJ**********", terminal, terminal.firstName)
-    
-      //  let setVal = undefined
-      //  if (terminal.termverificationContent[0]){
-      //    setVal = terminal.termverificationContent[0]
-      //  } else {
-      //    setVal = terminal
-      //  }
-      return( 
+  const renderTerminalView = (terminal) => {
+    return( 
       <div> <Card className={classes.root} variant="outlined">
       <CardContent>
       <Grid container spacing={1}>
@@ -229,12 +247,14 @@ const submitPut = async (path, reqBody) => {
   
    <CardActions style={{display: 'block', width: '50%'}}>   
   
-     <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComfirm}>Comfirm</Button>
+     <Button size="small" variant="contained" color="primary" style={{marginTop:"2%"}} onClick={submitComfirm}>Confirm</Button>
+     <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '2%', marginBottom: '-2%'}} value={progress} />
     </CardActions>
     </Card>
   
     <Button variant="contained" onClick={delTerminal} style={{marginTop: '3%', marginBottom: '1%', backgroundColor: 'blue', color: 'white', display: 'block'}}> Delete Terminal </Button>
-    </div>)
+    </div>
+    )
   }
 
 
@@ -260,7 +280,10 @@ const EnableTerminal = () => {
       </RadioGroup>
       <Button onClick={updateStatus} fullWidth variant="contained"color="primary"> Confirm </Button>
     </FormControl>
-        </div>
+    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+    <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '3%', marginBottom: '1%', display: 'inline-block'}} value={progress2} />
+    </div>
+  </div>
       </Container>
     </div>
   );     
@@ -291,6 +314,7 @@ const RenderDisableView = () => {
          </div>
        )}
      </PopupState>
+     <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '3%', marginBottom: '1%', display: 'inline-block'}} value={progress2} />
    </div> )
 }
 
