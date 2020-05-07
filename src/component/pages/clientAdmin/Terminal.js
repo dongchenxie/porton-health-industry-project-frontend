@@ -59,7 +59,6 @@ export default function Terminal(name) {
   const [progress2, setProgress2] = React.useState(0);
   const timerRef = React.useRef();
 
-
   let checkvals = {
   firstName: null,
   lastName: null,
@@ -143,7 +142,6 @@ export default function Terminal(name) {
          console.log(result)
          setError("Error submitting data to the server.")
        }
-      
 
    function tick() {
     setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
