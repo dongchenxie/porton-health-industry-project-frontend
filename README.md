@@ -75,69 +75,55 @@ Client Admin has access to appointments and check-in terminals.
 </UL>
 
 <h3>Terminals</h3>
-<h3>Report API</h3>
-
-
-
-<h3>End</h3>
 <UL>
-<li>Mongo Databases</li>
-<li>Swagger interface</li>
-<li>Report API</li>
+<li>Search by Name </li>
+<li>Sort by Name </li>
+<li>Sort by Status </li>
+  <li>Token field provides Terminal startup login token (security PIN) </li>
+<li><h3>Terminal Info/Settings</h3>
+<UL>
+<li>Toggle Terminal Enable/Disable </li>
+<li>DELETE Terminal (preserves data in Database) </li>
+<li>Toggle Security verifications on Terminal *Only if Terminal is Enabled </li>
+</UL> </li>
 </UL>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Search by Name
-Sort by Name
-Sort by Status
-Token field provides Terminal startup login token (security PIN)
-Terminal Info/Settings
-Toggle Terminal Enable/Disable 
-DELETE Terminal (preserves data in Database)
-Toggle Security verifications on Terminal *Only if Terminal is Enabled
-
-
-
+<h3>System-Admin Portal</h3>
 System Admin portal is meant for an overall System Administration and has limited access to appointment data.
 This is to create segregation of duties and data.  As a System Admin may be an IT technician and not be medical staff.  However, if required System Admin can create a Client Admin account for maintenance.
 
-Create Account
-Search by Name
-Sort by Name
-Sort by Status
-Token field provides Terminal startup login token (security PIN)
-Terminal Info/Settings
-Toggle Terminal Enable/Disable 
-DELETE Terminal (preserves data in Database)
-Toggle Security verifications on Terminal *Only if Terminal is Enabled
-Account List
-Search by First Name
-Search by Last Name
-Search by Email
-Sort by First Name
-Sort by Last Name
-Sort by Role
-Client Info/Settings
-Account User Details
-Reset Password
-Toggle Enable/Disable 
+<h3>Create Account</h3>
+<UL>
+<li>Search by Name </li>
+<li>Sort by Name </li>
+<li>Report </li>
+  <li>Sort by Status </li>
+  <li>Token field provides Terminal startup login token (security PIN) </li>
+  <li>Terminal Info/Settings </li>
+  <li><UL>
+<li>Toggle Terminal Enable/Disable  </li>
+<li>DELETE Terminal (preserves data in Database) </li>
+<li>Toggle Security verifications on Terminal *Only if Terminal is Enabled </li>
+</UL> </li>
+</UL>
 
-
-
-
+<h3>Account List</h3>
+<UL>
+<li>Search by First Name </li>
+<li>Search by Last Name </li>
+<li>Search by Email </li>
+  <li>Sort by First Name </li>
+<li>Sort by Last Name </li>
+<li>Sort by Role </li>
+  <li><h3>Client Info/Settings</h3>
+<UL>
+<li>Account User Details </li>
+<li>Reset Password </li>
+<li>Toggle Enable/Disable  </li>
+</UL>
+ </li>
+</UL>
 
 
 
