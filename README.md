@@ -1,3 +1,177 @@
+<h2>App Intro: </h2>
+  <br>Team
+<br>Don - Leading Man
+<br>Brian
+<br>Tom
+<br>Kimo
+<br>Vibha
+
+<h3> The Goal</h3>
+<p>The goal was to create a Check-in App that balanced data privacy and ease of use. 
+In addition, administration capabilities in a separate App/Portal.</p>
+
+This App has the capability to operate independently of the ERM API.
+Specific tech details will be discussed by Don shortly.
+
+To achieve this in the:
+
+<UL><b>Front-End Portals</b>
+  
+<li>Check-in</li>
+<li>Client-admin </li>
+<li>System-admin</li>
+<li>Terminal view</li>
+</UL>
+ 
+
+<UL><b>Back-End</b>
+<li>Mongo Databases</li>
+<li>Swagger interface</li>
+<li>Report API</li>
+</UL>
+
+<b>Secure Check-In (Terminal Front-End)</b>
+
+Each terminal has a security check prior to startup to ensure no unwanted terminal log-ins.
+
+<b>Landing page for Patient check-in </b>
+<UL>
+<li>provides only generic information, protecting any data which may be seen as sensitive, until patient identity is confirmed.</li>
+<li>Only appointments within 15min +/- with pending status show</li>
+<li>Current default setting of max per page is 5 (this can be customized)</li>
+</UL>
+
+<b>Checkin-Verification fields</b>
+<UL>
+<li>can be enabled/disabled and overall what verification is required can be customized.</li>
+<li>Swagger interface</li>
+<li>Report API</li>
+</UL>
+ 
+ <b>Confirmation Details</b>
+<UL>
+<li>Once a patient has passed check-in, details are revealed to confirm and incorrect details can be addressed.</li>
+</UL>
+Patient input has been limited to control data integrity.
+
+<b>Client-Admin Portal</b>
+Client Admin has access to appointments and check-in terminals.
+
+  <b>Appointments</b>
+<UL>
+<li>Search by Name</li>
+<li>Sort by Name</li>
+<li>Sort by Time</li>
+  <li>Sort by Doctor</li>
+  <li>Sort by Status</li>
+  <li>Pagination feature (max 10 per page)</li>
+  <li><b>Appointment Action</b>
+<UL>
+<li>Provides details of appointment</li>
+<li>Allows staff to add appointment comments</li>
+<li>Allows for appointment status override</li>
+</UL></li>
+</UL>
+
+<b>Terminals</b>
+<UL>
+<li>Search by Name </li>
+<li>Sort by Name </li>
+<li>Sort by Status </li>
+  <li>Token field provides Terminal startup login token (security PIN) </li>
+<li><b>Terminal Info/Settings</b>
+<UL>
+<li>Toggle Terminal Enable/Disable </li>
+<li>DELETE Terminal (preserves data in Database) </li>
+<li>Toggle Security verifications on Terminal *Only if Terminal is Enabled </li>
+</UL> </li>
+</UL>
+
+
+<b>System-Admin Portal</b>
+System Admin portal is meant for an overall System Administration and has limited access to appointment data.
+This is to create segregation of duties and data.  As a System Admin may be an IT technician and not be medical staff.  However, if required System Admin can create a Client Admin account for maintenance.
+
+<b>Create Account</b>
+<UL>
+<li>Search by Name </li>
+<li>Sort by Name </li>
+<li>Report </li>
+  <li>Sort by Status </li>
+  <li>Token field provides Terminal startup login token (security PIN) </li>
+  
+  <li><b> Terminal Info/Settings</b>
+  <UL>
+<li>Toggle Terminal Enable/Disable  </li>
+<li>DELETE Terminal (preserves data in Database) </li>
+<li>Toggle Security verifications on Terminal *Only if Terminal is Enabled </li>
+</UL> </li>
+</UL>
+
+<b>Account List</b>
+<UL>
+<li>Search by First Name </li>
+<li>Search by Last Name </li>
+<li>Search by Email </li>
+  <li>Sort by First Name </li>
+<li>Sort by Last Name </li>
+<li>Sort by Role </li>
+  <li><b>Client Info/Settings</b>
+<UL>
+<li>Account User Details </li>
+<li>Reset Password </li>
+<li>Toggle Enable/Disable  </li>
+</UL>
+ </li>
+</UL>
+
+
+
+<h2>Quick Start: </h2>
+
+### Please make sure backend is running before starting 
+
+### `npm i`
+
+### `npm start`
+
+<h2>Configure Backend Connection: </h2>
+<p>
+  If you want to connent to a different backend URL, please change the URL in App.js to
+
+</p>
+
+### `const baseURL = "http://localhost:3333/api/"`
+
+to
+
+### `const baseURL = [YOUR_URL]`
+  
+<h2>Default Access Path for Different Users: </h2>
+
+<h4> System Admin:</h4> 
+
+### `http://localhost:3000/login`
+
+<h4> Client Admin:</h4> 
+
+For Managing Appointments and Terminals:
+
+### `http://localhost:3000/login`
+
+For Login into Terminals:
+
+### `http://localhost:3000`
+
+<h4> Patient:</h4> 
+
+### `http://localhost:3000`
+<h2>Use Case Diagram: </h2>
+
+![Use Case Diagram](https://raw.githubusercontent.com/xdc811/porton-health-industry-project-frontend/master/use%20case.png?token=AI5BWR7HIHWHPAVPVTQYUJS6X3RIW)
+
+<h2>Wireframe: </h2>
+
 [Wireframe can be seen here](https://xd.adobe.com/view/983b094b-89e7-46ce-760d-65839e1bd7ce-ee0a/)
 
 <h2>Development Accounts: </h2>
