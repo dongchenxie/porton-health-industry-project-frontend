@@ -212,15 +212,15 @@ const clearSearch = () => {
        let b = today + endStamp
    
        setDateA(a)
-       setDateB(b)
+       setDateB(a)
        setError("")
        setSearch("")
        setSearchToggle(false)
        setPage(1)
 
       query.term = undefined
-      query.start = a
-      query.end = b
+      query.start = undefined
+      query.end = undefined
       query.page = undefined
 
       return callAPI(query)
@@ -277,6 +277,12 @@ const parseStatus = (str) => {
   }
 }
 
+const parseTime = (str) => {
+  let time = str.split(':');
+  let meridiemTime = time[0] >= 12 && (time[0]-12 || 12) + ':' + time[1] + ' PM' || (Number(time[0]) || 12) + ':' + time[1] + ' AM';
+  return meridiemTime
+}
+
 const parseDate = (datestr) => {
   let parse = datestr.split(" ")
   let timeStamp = parse[1]
@@ -288,7 +294,7 @@ const parseDate = (datestr) => {
 // console.log(days[d.getUTCDay()], "???");
    let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
   // console.log(format, "????")
-  let t = format(Date()).toString().split("-").join(" ") + " " + timeStamp
+  let t = format(Date()).toString().split("-").join(" ") + " " + parseTime(timeStamp)
   return t
 }
 
@@ -333,10 +339,10 @@ return(
         </Grid>
       </MuiPickersUtilsProvider>
 
-      {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginRight: '1%', marginLeft: '2%', marginTop: '4%'}} onClick={clearSearch}>Clear Search</Button> : ""}
+      {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginRight: '1%', marginLeft: '1%', marginTop: '2%'}} onClick={clearSearch}>Clear Search</Button> : ""}
 
     <TableContainer className={classes.container}>
-    {helper !== null ? <div style={{marginTop: '2%', marginLeft: '2%', marginBottom: '2%'}}>{helper}</div> : "" }
+    {helper !== null ? <div style={{ marginLeft: '1%', marginBottom: '1%'}}>{helper}</div> : "" }
       <Table stickyHeader aria-label="sticky table">
         <TableHead >
           <TableRow>
