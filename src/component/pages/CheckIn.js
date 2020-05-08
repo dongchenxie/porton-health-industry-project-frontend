@@ -148,7 +148,7 @@ export default function HorizontalLinearStepper(props) {
                         </Paper>
                     </Grid>
                 </Grid>
-                <Link to={`${url}login`} style={{ textDecoration: 'none', color: 'inherit' }}> Admins click here to log in. </Link>
+                
             </div>
 
         </Container>
