@@ -89,6 +89,7 @@ export default function AppointmentList() {
   } else if (apiData.data === undefined){
     console.log("error", apiData)
     setError("Error grabbing data from the server.")
+    alert("Invalid dates seleceted, try again.")
   } else {
     authContext.API.readToken(authContext.authState).then(function(result){
       if (result.role !== 'CLIENT_ADMIN'){
