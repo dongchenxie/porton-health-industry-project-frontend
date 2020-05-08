@@ -13,16 +13,17 @@ This App has the capability to operate independently of the ERM API.
 Specific tech details will be discussed by Don shortly.
 
 To achieve this in the:
-<b>Front-End Portals</b>
-<UL>
+
+<UL><b>Front-End Portals</b>
+  
 <li>Check-in</li>
 <li>Client-admin </li>
 <li>System-admin</li>
 <li>Terminal view</li>
 </UL>
  
-<b>Back-End</b>
-<UL>
+
+<UL><b>Back-End</b>
 <li>Mongo Databases</li>
 <li>Swagger interface</li>
 <li>Report API</li>
