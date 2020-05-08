@@ -15,8 +15,7 @@ This App has the capability to operate independently of the ERM API.
 Specific tech details will be discussed by Don shortly.
 
 To achieve this in the:
-
-<h3>Front-End Portals</h3>
+<b>Front-End Portals</b>
 <UL>
 <li>Check-in</li>
 <li>Client-admin </li>
@@ -24,41 +23,41 @@ To achieve this in the:
 <li>Terminal view</li>
 </UL>
  
-<h3>Back-End</h3>
+<b>Back-End</b>
 <UL>
 <li>Mongo Databases</li>
 <li>Swagger interface</li>
 <li>Report API</li>
 </UL>
 
-<h3>Secure Check-In (Terminal Front-End)</h3>
+<b>Secure Check-In (Terminal Front-End)</b>
 
 Each terminal has a security check prior to startup to ensure no unwanted terminal log-ins.
 
-<h3>Landing page for Patient check-in </h3>
+<b>Landing page for Patient check-in </b>
 <UL>
 <li>provides only generic information, protecting any data which may be seen as sensitive, until patient identity is confirmed.</li>
 <li>Only appointments within 15min +/- with pending status show</li>
 <li>Current default setting of max per page is 5 (this can be customized)</li>
 </UL>
 
-<h3>Checkin-Verification fields</h3>
+<b>Checkin-Verification fields</b>
 <UL>
 <li>can be enabled/disabled and overall what verification is required can be customized.</li>
 <li>Swagger interface</li>
 <li>Report API</li>
 </UL>
  
- <h3>Confirmation Details</h3>
+ <b>Confirmation Details</b>
 <UL>
 <li>Once a patient has passed check-in, details are revealed to confirm and incorrect details can be addressed.</li>
 </UL>
 Patient input has been limited to control data integrity.
 
-<h3>Client-Admin Portal</h3>
+<b>Client-Admin Portal</b>
 Client Admin has access to appointments and check-in terminals.
 
-  <h3>Appointments</h3>
+  <b>Appointments</b>
 <UL>
 <li>Search by Name</li>
 <li>Sort by Name</li>
@@ -66,7 +65,7 @@ Client Admin has access to appointments and check-in terminals.
   <li>Sort by Doctor</li>
   <li>Sort by Status</li>
   <li>Pagination feature (max 10 per page)</li>
-  <li><h3>Appointment Action</h3>
+  <li><b>Appointment Action</b>
 <UL>
 <li>Provides details of appointment</li>
 <li>Allows staff to add appointment comments</li>
@@ -74,13 +73,13 @@ Client Admin has access to appointments and check-in terminals.
 </UL></li>
 </UL>
 
-<h3>Terminals</h3>
+<b>Terminals</b>
 <UL>
 <li>Search by Name </li>
 <li>Sort by Name </li>
 <li>Sort by Status </li>
   <li>Token field provides Terminal startup login token (security PIN) </li>
-<li><h3>Terminal Info/Settings</h3>
+<li><b>Terminal Info/Settings</b>
 <UL>
 <li>Toggle Terminal Enable/Disable </li>
 <li>DELETE Terminal (preserves data in Database) </li>
@@ -89,11 +88,11 @@ Client Admin has access to appointments and check-in terminals.
 </UL>
 
 
-<h3>System-Admin Portal</h3>
+<b>System-Admin Portal</b>
 System Admin portal is meant for an overall System Administration and has limited access to appointment data.
 This is to create segregation of duties and data.  As a System Admin may be an IT technician and not be medical staff.  However, if required System Admin can create a Client Admin account for maintenance.
 
-<h3>Create Account</h3>
+<b>Create Account</b>
 <UL>
 <li>Search by Name </li>
 <li>Sort by Name </li>
@@ -108,7 +107,7 @@ This is to create segregation of duties and data.  As a System Admin may be an I
 </UL> </li>
 </UL>
 
-<h3>Account List</h3>
+<b>Account List</b>
 <UL>
 <li>Search by First Name </li>
 <li>Search by Last Name </li>
@@ -116,7 +115,7 @@ This is to create segregation of duties and data.  As a System Admin may be an I
   <li>Sort by First Name </li>
 <li>Sort by Last Name </li>
 <li>Sort by Role </li>
-  <li><h3>Client Info/Settings</h3>
+  <li><b>Client Info/Settings</b>
 <UL>
 <li>Account User Details </li>
 <li>Reset Password </li>
