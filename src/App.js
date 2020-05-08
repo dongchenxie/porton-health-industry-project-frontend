@@ -41,7 +41,6 @@ function App() {
       })
     },
     readToken: async function (currentSetAuthState) {
-      console.log(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
       let result = await axios.get(`${baseURL}user/readToken/${localStorage.getItem('token')}`)
       // .catch((e) => {
       //   console.log( "error reading token: ", 
@@ -92,7 +91,6 @@ function App() {
         urlParam = `${baseURL}users`
       }
 
-      console.log(urlParam)
       let result = await axios(
         {
           method: "get",
@@ -138,7 +136,6 @@ function App() {
         }
       })
         .then(function (response) {
-          console.log(response)
           return response
         })
         .catch(function (error) {
@@ -180,7 +177,6 @@ function App() {
         return { error: e.response, status: e.response.status }
       })
       if (result.status === 201) {
-        console.log(result)
         return { status: 201, data: result.data };
       } else if (result.status === 400) {
         return { status: 400, data: result };
@@ -212,9 +208,7 @@ function App() {
         console.log(e.response)
         return { error: e }//Error example
       })
-      console.log("after login request")
       if (result.status === 200) {
-        console.log("OK")
         return { status: 200, token: result.data.token };//Success example
       } else {
         console.log(result.response)
