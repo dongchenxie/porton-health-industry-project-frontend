@@ -421,40 +421,40 @@ function App() {
     createClientTerminal: async function (param) {
       let result = await axios(
         {
-          method: "POST",
+          method: "post",
           url: `${baseURL}client/terminal/${param}`,
           headers: {
-            "auth-token": localStorage.getItem("token"),
+            "auth-token":localStorage.getItem("token"),
             'Access-Control-Allow-Origin': '*'
           }
         }
-      ).catch((e) => { return { error: e } })
-      if (result.status === 200) {
-        return { status: 200, data: result.data };
+      ).catch((e) => 
+        { return { error: e }} )
+      if (result.status === 201) {
+        return { status: 201, data: result.data };
       } else {
         console.log("error", result)
         return { status: 400, data: result };
       }
-
-    },
-    updateUser:async function (data,userId){
-      let result = await axios({
-        method: "PUT",
-        url: `${baseURL}user/${userId}`,
-        headers: {
-          "auth-token": localStorage.getItem("token"),
-          'Access-Control-Allow-Origin': '*'
-        },
-        data:data
-      }).catch((e) => { return { error: e } })
-      if (result.status === 200) {
-        return { status: 200, data: result.data };
-      } else {
-        console.log("error", result)
-        return { status: 400, data: result };
-      }
+  },
+  updateUser:async function (data,userId){
+    let result = await axios({
+      method: "PUT",
+      url: `${baseURL}user/${userId}`,
+      headers: {
+        "auth-token": localStorage.getItem("token"),
+        'Access-Control-Allow-Origin': '*'
+      },
+      data:data
+    }).catch((e) => { return { error: e } })
+    if (result.status === 200) {
+      return { status: 200, data: result.data };
+    } else {
+      console.log("error", result)
+      return { status: 400, data: result };
     }
-
+    }
+    
   }
 
   //The state 

@@ -1,6 +1,7 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
 import { useLocation, useRouteMatch, Link, useHistory } from 'react-router-dom';
+import Copywrite from '../shared/Copywrite'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -20,9 +21,10 @@ import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Modal from '@material-ui/core/Modal';
+import TextField from '@material-ui/core/TextField';
 
-
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
   },
@@ -36,8 +38,17 @@ const useStyles = makeStyles({
   },
   pos: {
     marginBottom: 12,
-  }
-});
+  },
+  paper: {
+    width: 800,
+    height: 300,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    transform: `translate(  50%, 50%)`
+  },
+}));
 
 
 export default function Terminal(name) {
@@ -58,6 +69,10 @@ export default function Terminal(name) {
   const [progress, setProgress] = React.useState(0);
   const [progress2, setProgress2] = React.useState(0);
   const timerRef = React.useRef();
+  const [open, setOpen] = React.useState(false);
+  const [userVerifyName, setUserVerifyName] = React.useState("");
+  const [helper, setHelper] = React.useState("");
+
 
   let checkvals = {
   firstName: null,
@@ -85,7 +100,7 @@ export default function Terminal(name) {
        return setRenderDisabled(true)
      } else if (data === undefined || termNameData === undefined || termNameData === null || data === null || data.status == 400){
           console.log("error")
-          return setError("Error grabbing data from the server.")
+          return setError("Terminal is deleted.")
         } else {
           /////
           //MIGHT NEED TO FIX ORDER OF TOKEN VERIFICATION.....
@@ -107,15 +122,52 @@ export default function Terminal(name) {
   }, [])
 
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleUserCreateName = (e) => {
+    setUserVerifyName(e.target.value);
+  }
+
   const delTerminal = () => {
-    let reqBody = {"name": termName.name,
-    "status": 'DELETED',
-    "verificationContent": JSON.stringify(stateCheck) 
-   }
+    if (userVerifyName !== termName.name){
+      return setHelper("Names do not match. Try Again.")
+    } else {
+    
+    let reqBody = { "name": termName.name, "status": 'DELETED', "verificationContent": JSON.stringify(stateCheck) }
    setError("Terminal has been deleted.")
    return submitPut(false, reqBody)
+   }
   }
-  
+
+  const body = (
+    <div  className={classes.paper}>
+      <h2 id="simple-modal-title"> Enter Terminal Name to Confirm: </h2>
+      <TextField
+          multiline={false}
+          fullWidth={true}
+          label="None"
+          id="outlined-margin-none"
+          className={classes.textField}
+          label="Name:"
+          variant="outlined"
+          onChange={handleUserCreateName}
+        />
+        <div>
+        <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginTop: '2%', display: 'block'}} onClick={delTerminal}>Submit</Button>
+        </div>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+           <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '3%', marginBottom: '1%', display: 'inline-block'}} value={progress2} />
+           <span style={{marginTop: '3%', color: 'red'}}>{helper !== null ? helper : ""}</span> 
+        </div>
+    </div>
+  );
+
   const setChecks = (terminalObj) => {
     for (var property in terminalObj) {
       for ( var compareProp in checkvals ) {
@@ -147,7 +199,7 @@ export default function Terminal(name) {
     setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
    }
  
-  let timer = setInterval(tick, 20);
+  let timer = setInterval(tick, 30);
 
    const finsihProcess = () => {
      clearInterval(timer)
@@ -155,7 +207,7 @@ export default function Terminal(name) {
      return setTerminal(stateCheck)
    }
 
-   let finish = setTimeout(finsihProcess, 2000);
+   let finish = setTimeout(finsihProcess, 1000);
   }
 
 const submitPut = async (path, reqBody) => {
@@ -164,10 +216,12 @@ const submitPut = async (path, reqBody) => {
         console.log(result)
       //  setAppoitnment(result.data)
          setError("")
+         setHelper("")
          history.go()
         } else if (result.status === 400) {
          console.log(result)
          setError("Error submitting data to the server.")
+         setHelper("Error submitting data to the server.")
        }
        console.log(result)
     }
@@ -252,7 +306,7 @@ const submitPut = async (path, reqBody) => {
     </CardActions>
     </Card>
   
-    <Button variant="contained" onClick={delTerminal} style={{marginTop: '3%', marginBottom: '1%', backgroundColor: 'blue', color: 'white', display: 'block'}}> Delete Terminal </Button>
+    <Button variant="contained" onClick={handleOpen} style={{marginTop: '3%', marginBottom: '1%', backgroundColor: 'blue', color: 'white', display: 'block'}}> Delete Terminal </Button>
     </div>
     )
   }
@@ -281,7 +335,7 @@ const EnableTerminal = () => {
       <Button onClick={updateStatus} fullWidth variant="contained"color="primary"> Confirm </Button>
     </FormControl>
     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-    <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '3%', marginBottom: '1%', display: 'inline-block'}} value={progress2} />
+   
     </div>
   </div>
       </Container>
@@ -325,7 +379,15 @@ const RenderDisableView = () => {
         {termName !== null && termName !== undefined ? <h3>{termName.name}</h3> : ""}
         {renderDisabled === true ? <RenderDisableView /> : ""}
         {terminal !== null && terminal !== undefined && renderDisabled === null ? 
-      <div> 
+  <div> 
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
    <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <div>
@@ -352,6 +414,7 @@ const RenderDisableView = () => {
         </div> 
          : "" }
     <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white', display: 'block'}}> Return to list </Button> </Link>
+    <div style={{marginTop: '4%'}}> <Copywrite /> </div>
       </div>
     ) 
   }

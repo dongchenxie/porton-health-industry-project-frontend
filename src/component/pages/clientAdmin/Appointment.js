@@ -1,6 +1,7 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
 import { useLocation, useRouteMatch, Link, useHistory } from 'react-router-dom';
+import Copywrite from '../shared/Copywrite'
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -119,17 +120,17 @@ export default function Appointment() {
          clearInterval(timer)
          return history.go()
          }
-         let finish = setTimeout(finsihProcess, 1500);
+         let finish = setTimeout(finsihProcess, 1000);
         } else if (result.status === 400) {
          
           console.log(result)
-         let timer = setInterval(tick, 20);
+         let timer = setInterval(tick, 30);
          const finsihProcess = () => {
            clearInterval(timer)
            history.go()
            return setError("Error submitting data to the server.")
          }
-         let finish = setTimeout(finsihProcess, 1500);
+         let finish = setTimeout(finsihProcess, 1000);
         }
 
         function tick() {
@@ -153,10 +154,18 @@ export default function Appointment() {
     }
   }
 
+  const parseTime = (str) => {
+  let time = str.split(':');
+  let meridiemTime = time[0] >= 12 && (time[0]-12 || 12) + ':' + time[1] + ' PM' || (Number(time[0]) || 12) + ':' + time[1] + ' AM';
+  return meridiemTime
+}
+
 const parseDate = (dateStr) => {
-  let d = new Date(dateStr)
+  let date = dateStr.split('T')[0]
+  let timeStamp = dateStr.split('T')[1]
+  let d = new Date(date)
   let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
-  return format(Date()).toString().split("-").join(" ")
+  return  parseTime(timeStamp) + ", " + format(Date()).toString().split("-").join(" ")
 }
 
   const renderAppointment = () => {
@@ -168,7 +177,7 @@ const parseDate = (dateStr) => {
    {formRow("Patient Name:", appoitnment.patient.firstName + " " + appoitnment.patient.lastName)}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Appointment Time:", parseDate(appoitnment.appointmentTime.split('T')[0]))}
+   {formRow("Appointment Time:", parseDate(appoitnment.appointmentTime))}
    </Grid>
    <Grid container item xs={12} spacing={3}>
    {formRow("Doctor:", appoitnment.doctorName)}
@@ -222,7 +231,7 @@ const parseDate = (dateStr) => {
         />
      </div>    
    <Button size="small" variant="contained" color="primary"  onClick={submitComment}>Submit</Button>
-   <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '2%', marginBottom: '-2%'}} value={progress} />
+   <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '2%'}} value={progress} />
   </CardActions>
   </Card>
   </div>)
@@ -248,21 +257,21 @@ const updateStatus = async () => {
       if (result.status === 200){
         setStatusHelper("")
         setError("")
-      let timer = setInterval(tock, 20);
+      let timer = setInterval(tock, 30);
        const finsihProcess2 = () => {
          clearInterval(timer)
          return history.go()
          }
-         let finish = setTimeout(finsihProcess2, 1500);
+         let finish = setTimeout(finsihProcess2, 1000);
       } else if (result.status === 400) {
         setStatusHelper("")
        console.log(result)
-      let timer = setInterval(tock, 20);
+      let timer = setInterval(tock, 30);
       const finsihProcess2 = () => {
         clearInterval(timer)
         return  setError("Error submitting data to the server.")
         }
-        let finish = setTimeout(finsihProcess2, 1500);
+        let finish = setTimeout(finsihProcess2, 1000);
       }
       
       function tock() {
@@ -306,6 +315,7 @@ const StatusChange = () => {
         {appoitnment !== null && appoitnment !== undefined ? renderAppointment(appoitnment) : ""}
         <div style={{display: 'block', marginBottom: '2%'}}>{helper !== null ? helper : "" }</div> 
         <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
+        <div style={{marginTop: '4%'}}> <Copywrite /> </div>
       </div>
     ) 
   }

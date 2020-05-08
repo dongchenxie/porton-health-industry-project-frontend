@@ -47,7 +47,6 @@ import AppointmentList from '../component/pages/clientAdmin/AppointmentList'
 import Appointment from '../component/pages/clientAdmin/Appointment'
 
 //shared:
-import Profile from '../component/pages/shared/Profile'
 import Copywrite from "../component/pages/shared/Copywrite";
 
 //App styles:
@@ -206,13 +205,6 @@ export default function AdminRouter(props) {
           <ListItemText primary="Home" />
         </ListItem >
       </Link>
-  
-      <Link to={`${url}/profile`} style={{textDecoration: 'none', color: 'inherit'}}>
-        {/* WHAT IS PURPOSE OF THIS FUNCTION? */}
-        <ListItem button onClick={handleProfileClose}>
-          <ListItemText primary="Profile" />
-        </ListItem >
-      </Link>  
 
         <ListItem button onClick={handleSignOut}>
           <ListItemText primary="Sign Out" />
@@ -318,9 +310,6 @@ export default function AdminRouter(props) {
               <Route exact path={path}>
                 <Home />
               </Route>
-              <Route path={`${path}/profile`}>
-                <Profile />
-              </Route>
               <PrivateRoute path={`${path}/users/:id`}>
                 <UserDetail />
               </PrivateRoute>
@@ -358,7 +347,7 @@ export default function AdminRouter(props) {
 function Home() {
   return (<div>
     <h2>Home (not secure data)</h2>
-    <Copywrite />
+    <div style={{marginTop: '4%'}}> <Copywrite /> </div>
     </div>
   );
 }

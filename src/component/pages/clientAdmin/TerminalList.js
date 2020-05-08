@@ -1,7 +1,8 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
+import Copywrite from '../shared/Copywrite'
 
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch, useHistory } from "react-router-dom";
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,13 +20,11 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import TextField from '@material-ui/core/TextField';
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
-
+import Modal from '@material-ui/core/Modal';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,6 +46,15 @@ const useStyles = makeStyles((theme) => ({
       marginTop: '2%',
       maxHeight: '100%',
     },
+    paper: {
+      width: 800,
+      height: 300,
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      transform: `translate(  50%, 50%)`
+    }
   }));
 
 
@@ -67,6 +75,10 @@ export default function TerminalList() {
   const [searchToggle, setSearchToggle] = React.useState(null);
   const [query, setQuery] = React.useState(undefined);
   const [hash, setHash] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  let [userCreateName, setUserCreateName] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+  const history = useHistory();
 
 
   React.useEffect(() => {
@@ -142,8 +154,6 @@ const callAPI = async (query, page) => {
  }
 }
 
-
-  //may be bug here...
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
     setSearchToggle(true)
@@ -163,56 +173,73 @@ const clearSearch = () => {
   setPage(1)
 }
 
-  ///////
-  //NEED: post terminal
-  ///////
-const createTerminal = async () => {
-  //POST to client/terminal endpoint.
-  let data = await authContext.API.createClientTerminal("TESTFROMREACT")
-  console.log(data)
-}
 
-const sortTable = (col) => {
-  if(direction[col] === "asc"){
-    let sorted = terminals.sort(function(a, b){
-      if(a[col] > b[col]) { return 1; }
-      if(a[col] < b[col]) { return -1; }  
-     return 0;
-  })  
-  setTerminals(sorted)
-  return setDirection(prevState => ({
-  ...prevState,
-  [col]: "desc"
-  }));
-  } else {
-    let sorted = terminals.sort(function(a, b) {
-      if(a[col] < b[col]) { return 1; }
-      if(a[col] > b[col]) { return -1; }
-      return 0;
-  })  
-  setTerminals(sorted)
-  return setDirection(prevState => ({
-    ...prevState,
-    [col]: "asc"
-    }));
+//create terminal modal features:
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleUserCreateName = (e) => {
+    setUserCreateName(e.target.value);
   }
-}
 
-const handleChangePage = async (pageDir) => {
- if (pageDir == 'r' && page + 1 <= setapiResult.totalPages && query !== undefined){
-   setPage(page += 1)
-   return callAPI(query, page)
- } else if (pageDir == 'l' && page - 1 >= 1 && query !== undefined){
-   setPage(page -= 1)
- return  callAPI(query, page)
- }
-};
+  const createTerminal = async () => {
+    //POST to client/terminal endpoint.
+    let data = await authContext.API.createClientTerminal(userCreateName)
 
+    function tick() {
+      setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+     }
 
-const handleSearchChange = (e) => {
-setSearch(e.target.value);
-setQuery(e.target.value)
-};
+     if (data.status === 201){
+      let timer = setInterval(tick, 20);
+      const finsihProcess = () => {
+        setError("")
+        clearInterval(timer)
+        handleClose()
+        return history.go()
+      }
+   
+      let finish = setTimeout(finsihProcess, 1000);
+     } else if (data.status === 400){
+
+      let timer = setInterval(tick, 20);
+      const finsihProcess = () => {
+      setError("Could not create new terminal. Try again.")
+      clearInterval(timer)
+      handleClose()
+      return setProgress(0)
+      }
+      let finish = setTimeout(finsihProcess, 1000);
+     }
+  }
+
+  const body = (
+    <div  className={classes.paper}>
+      <h2 id="simple-modal-title"> Enter Terminal Name: </h2>
+      <TextField
+          multiline={false}
+          fullWidth={true}
+          label="None"
+          id="outlined-margin-none"
+          className={classes.textField}
+          label="Name:"
+          variant="outlined"
+          onChange={handleUserCreateName}
+        />
+        <div>
+        <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginTop: '2%', display: 'block'}} onClick={createTerminal}>Submit</Button>
+        </div>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+           <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '3%', marginBottom: '1%', display: 'inline-block'}} value={progress} />
+       </div>
+    </div>
+  );
 
 
 //token pop-up features
@@ -275,6 +302,47 @@ return local.join("")
 
 //create tables:
 
+const sortTable = (col) => {
+  if(direction[col] === "asc"){
+    let sorted = terminals.sort(function(a, b){
+      if(a[col] > b[col]) { return 1; }
+      if(a[col] < b[col]) { return -1; }  
+     return 0;
+  })  
+  setTerminals(sorted)
+  return setDirection(prevState => ({
+  ...prevState,
+  [col]: "desc"
+  }));
+  } else {
+    let sorted = terminals.sort(function(a, b) {
+      if(a[col] < b[col]) { return 1; }
+      if(a[col] > b[col]) { return -1; }
+      return 0;
+  })  
+  setTerminals(sorted)
+  return setDirection(prevState => ({
+    ...prevState,
+    [col]: "asc"
+    }));
+  }
+}
+
+const handleChangePage = async (pageDir) => {
+ if (pageDir == 'r' && page + 1 <= apiResult.totalPages){
+   setPage(page += 1)
+   return callAPI(query, page)
+ } else if (pageDir == 'l' && page - 1 >= 1){
+   setPage(page -= 1)
+ return  callAPI(query, page)
+ }
+};
+
+const handleSearchChange = (e) => {
+setSearch(e.target.value);
+setQuery(e.target.value)
+};
+
 const parseStatus = (val) => {
 if (val === 'ENABLED'){
   val = 'Enabled'
@@ -307,14 +375,21 @@ const renderAction = (terminal) => {
 
 return(
   <div> 
-          {error !== null ? error : ""}
           {terminals !== null && terminals !== undefined ? 
   <div>
-    <h3>  Terminals: </h3>
+    <div style={{marginTop: '2%', marginBottom: '2%'}}><h3  style={{display: 'inline'}}> Terminals: </h3> <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', display: 'inline', marginLeft: '1%'}} onClick={handleOpen}>Create New</Button> </div>
     <Paper className={classes.root}>
-    <Button size="small" variant="contained" color="primary" style={{marginRight: '2%', marginLeft: '1%', marginTop: '2%'}} onClick={createTerminal}>Create New</Button>
-    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch} style={{marginRight: '2%', marginLeft: '1%', marginTop: '1%'}}>Clear Search</Button> : ""}
-    <TextField id="outlined-basic" label="Search By Field" size="small" variant="outlined" style={{float: 'right', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+    <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
+
+    {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch} style={{marginLeft: '2%', marginTop: '2%'}}>Clear Search</Button> : ""}
+    <TextField id="outlined-basic" label="Search By Field" size="small" variant="outlined" style={{float: 'right', marginBottom: '2%', marginTop: '2%', marginRight: '1%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
         <TableHead className>
@@ -361,6 +436,8 @@ return(
   </Paper>
 </div>
       : "" }
+  <span style={{marginTop: '4%', color: 'red'}}>{error !== null ? error : ""}</span> 
+  <div style={{marginTop: '4%'}}> <Copywrite /> </div>
 </div>
   ) 
 }

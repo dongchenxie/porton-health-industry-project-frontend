@@ -65,17 +65,17 @@ export default function PasswordReset(userId) {
           clearInterval(timer)
           return history.go()
           }
-          let finish = setTimeout(finsihProcess, 1000);
+          let finish = setTimeout(finsihProcess, 800);
 
        } else if(result.status === 400) {
         console.log(result)
-        let timer = setInterval(tock, 20);
+        let timer = setInterval(tock, 30);
   
         const finsihProcess = () => {
           clearInterval(timer)
           return  alert("Server error")
           }
-          let finish = setTimeout(finsihProcess, 2000);
+          let finish = setTimeout(finsihProcess, 800);
        }
      } else if (password.length < 6) {
       setHelper("Password must be at least 6 charecters long. Please try again.")
