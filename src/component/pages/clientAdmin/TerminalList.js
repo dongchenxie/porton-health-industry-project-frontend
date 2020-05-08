@@ -436,8 +436,7 @@ return(
   </Paper>
 </div>
       : "" }
-<span style={{marginTop: '4%', color: 'red'}}>{error !== null ? error : ""}</span> 
-
+  <span style={{marginTop: '4%', color: 'red'}}>{error !== null ? error : ""}</span> 
   <div style={{marginTop: '4%'}}> <Copywrite /> </div>
 </div>
   ) 
