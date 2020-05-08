@@ -12,7 +12,6 @@ function App() {
   */
   const dataAccessService = {
     login: async function (username, password) {// API call without the token
-      console.log("login")
       let result = await axios.post(`${baseURL}user/login`, {
         "email": username,
         "password": password
@@ -20,13 +19,11 @@ function App() {
         console.log(e.response)
         return { error: e }//Error example
       })
-      console.log("after login request")
       if (result.status === 200) {
         localStorage.setItem("token", result.token)
         setAuthState((prev) => {
           return { ...prev, isAuthenticated: true, token: result.data.token }
         })
-        console.log("success with calling login API")
         return { status: 200, token: result.data.token };//Success example
       } else {
         return result
@@ -47,7 +44,6 @@ function App() {
       //   return { error: e }//Error example
       // })
       if (result.status === 200) {
-        console.log("login ok")
         localStorage.setItem("user", JSON.stringify(result.data))
         // setAuthState.currentSetAuthState((prev) => {
         //   return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
@@ -227,7 +223,6 @@ function App() {
         }
       ).catch((e) => { return { error: e } })
       if (result.status === 200) {
-        console.log(result.data)
         return { status: 200, data: result.data };
       } else {
         console.log(JSON.stringify(result.error.response))
@@ -245,7 +240,6 @@ function App() {
       }
       ).catch((e) => { return { error: e } })
       if (result.status === 200) {
-        console.log(result.data)
         return { status: 200, data: result.data };
       } else {
         console.log(JSON.stringify(result.error.response))
@@ -253,7 +247,6 @@ function App() {
       }
     },
     TerminalCheckin: async function (inputData) {
-      console.log(inputData)
       let result = await axios({
         method: "post",
         url: `${baseURL}terminal/checkin`,
@@ -269,7 +262,6 @@ function App() {
       }
       ).catch((e) => { return { error: e } })
       if (result.status === 200) {
-        console.log(result.data)
         return { status: 200, data: result.data };
       } else {
         console.log(JSON.stringify(result.error.response))
@@ -306,10 +298,8 @@ function App() {
         }
       ).catch((e) => { return { error: e } })
       if (result.status === 200) {
-        console.log(result)
         return { status: 200, data: result.data };
       } else {
-        console.log(result)
         return result
       }
     },
@@ -385,14 +375,12 @@ function App() {
           'Access-Control-Allow-Origin': '*'
         }})
           .then(function (response) {
-            console.log(response)
             return response
           })
           .catch(function (error) {
             console.log(error)
             return { error, status: 400 }
           })
-        console.log(result)
         return result
       } else {
         let result = await axios(
@@ -406,11 +394,9 @@ function App() {
           }
         ).catch((e) => { return { error: e } })
         if (result.status === 200) {
-          console.log(result)
           return { status: 200, data: result.data };
         } else {
           console.log("error", result)
-          console.log(terminalURL)
           return { status: 400, data: result };
         }
       }

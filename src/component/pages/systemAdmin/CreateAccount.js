@@ -136,7 +136,6 @@ export default function SignUp() {
     let result = await authContext.API.registerUserAccount(reqBody);
     
     if (result && result.status === 201){
-      console.log(result)
       alert("New Account Created.")
       setErrorHelper("New Account Created.")
       return setTimeout(() => {
