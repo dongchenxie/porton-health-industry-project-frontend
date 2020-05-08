@@ -1,10 +1,10 @@
 <h2>App Intro: </h2>
-  Team
-Don - Leading Man
-Brian
-Tom
-Kimo
-Vibha
+  <br>Team
+<br>Don - Leading Man
+<br>Brian
+<br>Tom
+<br>Kimo
+<br>Vibha
 
 The goal was to create a Check-in App that balanced data privacy and ease of use. 
 In addition, administration capabilities in a separate App/Portal.
@@ -97,8 +97,9 @@ This is to create segregation of duties and data.  As a System Admin may be an I
 <li>Report </li>
   <li>Sort by Status </li>
   <li>Token field provides Terminal startup login token (security PIN) </li>
-  <li>Terminal Info/Settings </li>
-  <li><UL>
+  
+  <li><b> Terminal Info/Settings</b>
+  <UL>
 <li>Toggle Terminal Enable/Disable  </li>
 <li>DELETE Terminal (preserves data in Database) </li>
 <li>Toggle Security verifications on Terminal *Only if Terminal is Enabled </li>
