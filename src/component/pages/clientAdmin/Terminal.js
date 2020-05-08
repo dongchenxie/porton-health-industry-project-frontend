@@ -324,7 +324,7 @@ const EnableTerminal = () => {
     <div>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={classes.paper}>
+        <div >
         <FormControl component="fieldset">
       <FormLabel component="legend">Status</FormLabel>
       <br/>

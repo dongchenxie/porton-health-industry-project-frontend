@@ -16,7 +16,7 @@ password: 123456
 client admin with seeded data:
 </h4>
 <p>
-email: b@b.com
+email: w@w.com
 </p>
 <p>
 password: password
