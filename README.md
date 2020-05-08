@@ -39,7 +39,7 @@ For Login into Terminals:
 
 ### `http://localhost:3000`
 <h2>Use Case Diagram: </h2>
-![Use Case Diagram](https://raw.githubusercontent.com/xdc811/porton-health-industry-project-frontend/master/use%20case.png?token=AI5BWRZOSETIYNWXLJ6ORLK6X3QKK)
+![Use Case Diagram](/use case.png)
 <h2>Development Accounts: </h2>
 
 <h4> system admin:</h4>
