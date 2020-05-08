@@ -137,6 +137,7 @@ export default function SignUp() {
     
     if (result && result.status === 201){
       console.log(result)
+      alert("New Account Created.")
       setErrorHelper("New Account Created.")
       return setTimeout(() => {
         history.go()

@@ -275,7 +275,7 @@ const DisplayToken = (token) => {
     <div>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={classes.paper}>
+        <div>
         <p>{token.token}</p>
         </div>
       </Container>
