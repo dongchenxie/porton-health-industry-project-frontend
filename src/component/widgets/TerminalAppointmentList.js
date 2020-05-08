@@ -49,14 +49,15 @@ export default function SimpleTable(props) {
     props.handleNext()
   }
   const authContext = React.useContext(AuthContext)
-  const getAppointments = async (min_ahead, page, perPage) => {
-    const result = await authContext.API.TerminalGetAppointments(15, page,perPage)
+  const getAppointments = async (min_ahead,thisPage , thisPerPage) => {
+    console.log("refresh")
+    const result = await authContext.API.TerminalGetAppointments(min_ahead,thisPage, thisPerPage)
     if (result.status === 401) {
       alert("failure to login")
       localStorage.removeItem("terminal-token")
       props.setIsAuthed(false)
     } else if (result.status === 200) {
-      console.log(result.data)
+      
       setData(result.data)
     } else {
       setEnabled(false)
@@ -64,13 +65,16 @@ export default function SimpleTable(props) {
     console.log(result)
   }
   React.useEffect(()=>{
-    props.setUserInfo({})
+    console.log(page)
+    getAppointments(15, page, 5)
+    const interval = setInterval(()=>{getAppointments(15, page, 5)}, 30000);
+    props.setUserInfo({}) 
+    return ()=>{
+      clearInterval(interval)
+    }
   },[])
   React.useEffect(() => {
-    getAppointments(30, page, 5)
-    console.log(props.userInfo)
-    const interval = setInterval(getAppointments, 5000);
-    return clearInterval(interval)
+    getAppointments(15, page, 5)  
   }, [page])
   const dataMask = (data = "loading") => {
     let result = ''

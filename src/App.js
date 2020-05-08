@@ -12,7 +12,7 @@ function App() {
   */
   const dataAccessService = {
     login: async function (username, password) {// API call without the token
-      console.log("login")
+    //  console.log("login")
       let result = await axios.post(`${baseURL}user/login`, {
         "email": username,
         "password": password
@@ -49,7 +49,7 @@ function App() {
       // })
       if (result.status === 200) {
         console.log("login ok")
-        localStorage.setItem("user", JSON.stringify(result.data))
+        
         // setAuthState.currentSetAuthState((prev) => {
         //   return { ...prev, isAuthenticated: true, token: result.data.token,role:result.data.role }
         // })

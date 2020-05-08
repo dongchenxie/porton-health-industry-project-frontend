@@ -42,7 +42,7 @@ export default function LayoutTextFields(props) {
         localStorage.removeItem("terminal-token")
         props.setIsAuthed(false)
       } else if (result.status === 200) {
-   
+        console.log("ok",result)
         getVerificationContent(result.data.terminal[0].verificationContent[0])
       } else {
         alert("unkonwn error")
@@ -58,6 +58,7 @@ export default function LayoutTextFields(props) {
     userInfo["content"]=JSON.stringify(userInput)
  
     const result=await authContext.API.TerminalCheckin(userInfo)
+    console.log(result)
     if (result.status === 401) {
       alert("failure to login")
       localStorage.removeItem("terminal-token")
@@ -76,7 +77,7 @@ export default function LayoutTextFields(props) {
       
      
     }
-    console.log(result)
+   
     
   }
   const handleInputChange=(e, term)=>{
@@ -110,7 +111,7 @@ export default function LayoutTextFields(props) {
       <Typography variant="h5" component="h6" className={classes.textCenter}>Please Provide the Below Informaiton to Verify Your Check In</Typography>
       {availableTerms.map((term) => {
       
-        if (verificationContent[term]) {
+        if (verificationContent&&verificationContent[term]) {
           return (<TextField required
             id="standard-full-width"
             onChange={(e)=>{handleInputChange(e, term)}}
