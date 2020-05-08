@@ -417,7 +417,6 @@ function App() {
           console.log("error", result)
           return { status: 400, data: result };
         }
-
     }
   }
 

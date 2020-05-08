@@ -303,6 +303,7 @@ return(
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <KeyboardDatePicker
+         style={{marginTop: '1%'}}
           disableToolbar
           variant="inline"
           format="MM/dd/yyyy"
@@ -316,6 +317,7 @@ return(
           }}
         />
         <KeyboardDatePicker
+         style={{marginTop: '1%'}}
           margin="normal"
           id="date-picker-inline"
           label="To"
@@ -326,9 +328,10 @@ return(
             'aria-label': 'change date',
           }}
         />      
+
+    <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '1%', marginTop: '2%', marginRight: '2%', float: 'right', display: 'inline'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
         </Grid>
       </MuiPickersUtilsProvider>
-      <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '1%', marginTop: '2%', marginRight: '2%', float: 'right'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
 
       {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginRight: '1%', marginLeft: '2%', marginTop: '4%'}} onClick={clearSearch}>Clear Search</Button> : ""}
 

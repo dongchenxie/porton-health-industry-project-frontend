@@ -19,16 +19,11 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import TextField from '@material-ui/core/TextField';
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
 import Modal from '@material-ui/core/Modal';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -158,8 +153,6 @@ const callAPI = async (query, page) => {
  }
 }
 
-
-  //may be bug here...
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
     setSearchToggle(true)
@@ -180,9 +173,7 @@ const clearSearch = () => {
 }
 
 
-
 //create terminal modal features:
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -225,7 +216,6 @@ const clearSearch = () => {
       }
       let finish = setTimeout(finsihProcess, 1000);
      }
-
   }
 
   const body = (
@@ -251,50 +241,7 @@ const clearSearch = () => {
   );
 
 
-const sortTable = (col) => {
-  if(direction[col] === "asc"){
-    let sorted = terminals.sort(function(a, b){
-      if(a[col] > b[col]) { return 1; }
-      if(a[col] < b[col]) { return -1; }  
-     return 0;
-  })  
-  setTerminals(sorted)
-  return setDirection(prevState => ({
-  ...prevState,
-  [col]: "desc"
-  }));
-  } else {
-    let sorted = terminals.sort(function(a, b) {
-      if(a[col] < b[col]) { return 1; }
-      if(a[col] > b[col]) { return -1; }
-      return 0;
-  })  
-  setTerminals(sorted)
-  return setDirection(prevState => ({
-    ...prevState,
-    [col]: "asc"
-    }));
-  }
-}
-
-const handleChangePage = async (pageDir) => {
- if (pageDir == 'r' && page + 1 <= apiResult.totalPages){
-   setPage(page += 1)
-   return callAPI(query, page)
- } else if (pageDir == 'l' && page - 1 >= 1){
-   setPage(page -= 1)
- return  callAPI(query, page)
- }
-};
-
-const handleSearchChange = (e) => {
-setSearch(e.target.value);
-setQuery(e.target.value)
-};
-
-
 //token pop-up features
-
 
 const renderToken = (token) => {
   return(
@@ -353,6 +300,47 @@ return local.join("")
 
 
 //create tables:
+
+const sortTable = (col) => {
+  if(direction[col] === "asc"){
+    let sorted = terminals.sort(function(a, b){
+      if(a[col] > b[col]) { return 1; }
+      if(a[col] < b[col]) { return -1; }  
+     return 0;
+  })  
+  setTerminals(sorted)
+  return setDirection(prevState => ({
+  ...prevState,
+  [col]: "desc"
+  }));
+  } else {
+    let sorted = terminals.sort(function(a, b) {
+      if(a[col] < b[col]) { return 1; }
+      if(a[col] > b[col]) { return -1; }
+      return 0;
+  })  
+  setTerminals(sorted)
+  return setDirection(prevState => ({
+    ...prevState,
+    [col]: "asc"
+    }));
+  }
+}
+
+const handleChangePage = async (pageDir) => {
+ if (pageDir == 'r' && page + 1 <= apiResult.totalPages){
+   setPage(page += 1)
+   return callAPI(query, page)
+ } else if (pageDir == 'l' && page - 1 >= 1){
+   setPage(page -= 1)
+ return  callAPI(query, page)
+ }
+};
+
+const handleSearchChange = (e) => {
+setSearch(e.target.value);
+setQuery(e.target.value)
+};
 
 const parseStatus = (val) => {
 if (val === 'ENABLED'){
