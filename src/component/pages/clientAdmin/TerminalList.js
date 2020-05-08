@@ -84,9 +84,8 @@ export default function TerminalList() {
   React.useEffect(() => {
     const start = async () => {
        let data = await authContext.API.getClientTerminals()
-       console.log(data)
        if (data === undefined || data.error){
-        console.log("error")
+        console.log("error", data)
         setError("Error grabbing data from the server.")
         }  else {
         authContext.API.readToken(authContext.authState).then(function(result){
@@ -95,12 +94,11 @@ export default function TerminalList() {
           } else {
             if (data.status === 400 || data.status === 404 ){
               setError("server error.")
-              console.log(data)
+              console.log(data, "error")
             } else {
             setapiResult(data.data.metadata)
             setTerminals(data.data.data)
             setInitialSort(data.data.data)
-            console.log(data)
             }
          }
         })
@@ -124,10 +122,9 @@ const callAPI = async (query, page) => {
   //old
   let apiData = undefined
    apiData = await authContext.API.getClientTerminals(query, page)
-  console.log(apiData)
 
   if (apiData === undefined && apiData.data === undefined){
-   console.log("error")
+   console.log("error", apiData)
    setError("Error grabbing data from the server.")
  }  else {
    authContext.API.readToken(authContext.authState).then(function(result){
@@ -147,7 +144,6 @@ const callAPI = async (query, page) => {
        setapiResult(apiData.data.metadata)
        setTerminals(apiData.data.data)
        setInitialSort(apiData.data.data)
-       console.log(apiData)
        }
     }
    })

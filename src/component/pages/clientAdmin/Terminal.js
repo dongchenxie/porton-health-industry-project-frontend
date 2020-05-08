@@ -90,8 +90,7 @@ export default function Terminal(name) {
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
 
      if (data.status === 400 && termNameData.status === 400 && termNameData.data.terminal === undefined) {
-      console.log(data)
-      console.log("error")
+      console.log(data, "error")
       return setError("Error grabbing data from the server.")
     } else if (termNameData.data.terminal[0].status === "DISABLED" && data.status === 400 ){
        setTermName(termNameData.data.terminal[0])
@@ -99,7 +98,7 @@ export default function Terminal(name) {
        setCheckEnable(termNameData.data.terminal[0].status)
        return setRenderDisabled(true)
      } else if (data === undefined || termNameData === undefined || termNameData === null || data === null || data.status == 400){
-          console.log("error")
+          console.log("error", data, termNameData)
           return setError("Terminal is deleted.")
         } else {
           /////
@@ -187,11 +186,10 @@ export default function Terminal(name) {
         
     let result = await authContext.API.getIndivTerminal(termName._id, undefined, reqBody);
       if (result.status === 200){
-        console.log(result)
       //  setAppoitnment(result.data)
          setError("")
         } else if (result.status === 400) {
-         console.log(result)
+         console.log(result, "error 400")
          setError("Error submitting data to the server.")
        }
 
@@ -213,17 +211,15 @@ export default function Terminal(name) {
 const submitPut = async (path, reqBody) => {
     let result = await authContext.API.getIndivTerminal(termName._id, path, reqBody);
       if (result.status === 200){
-        console.log(result)
       //  setAppoitnment(result.data)
          setError("")
          setHelper("")
          history.go()
         } else if (result.status === 400) {
-         console.log(result)
+         console.log(result, "status 400")
          setError("Error submitting data to the server.")
          setHelper("Error submitting data to the server.")
        }
-       console.log(result)
     }
 
     const updateStatus = async () => {
@@ -335,7 +331,6 @@ const submitPut = async (path, reqBody) => {
 //terminal popup functions:
 
 const handleCheckEnable = (event) => {
-  console.log(event.target.value)
    return setCheckEnable(event.target.value);
 }
 

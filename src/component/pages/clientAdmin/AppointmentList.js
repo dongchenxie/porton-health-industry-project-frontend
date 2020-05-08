@@ -84,12 +84,11 @@ export default function AppointmentList() {
   const callAPI = async (query) => {
     let apiData = undefined
     apiData = await authContext.API.getClientAppointments(query.term, query.start, query.end, query.page) 
-    console.log(apiData)
   if (apiData === undefined){
-    console.log("error")
+    console.log("error", apiData)
     setError("Error grabbing data from the server.")
   } else if (apiData.data === undefined){
-    console.log("error")
+    console.log("error", apiData)
     setError("Error grabbing data from the server.")
   } else {
     authContext.API.readToken(authContext.authState).then(function(result){
@@ -177,7 +176,6 @@ const clearSearch = () => {
 }
 
  const handleDateA = (date, event) => {
-   console.log(date)
     if (date != 'Invalid Date'){
       return setDateA(date.toISOString())  
     }
@@ -200,13 +198,8 @@ const clearSearch = () => {
    };
    
 
-
-////////////////////////////////////////////
-////////////////////////////////////////////
   //  I MAY NEED TO FIX THIS PART>>>>>>
-  //  ////////////////////////////////////
-  //  /////////////////////////////////////
-  
+
      const handleToday = () => {
        let a = today + startStamp
        let b = today + endStamp
@@ -290,10 +283,7 @@ const parseDate = (datestr) => {
   let properDate = `${subParse[1]}-${subParse[2]}-${subParse[0]}`
   
   let d = new Date(properDate)
-//  let days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
-// console.log(days[d.getUTCDay()], "???");
-   let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
-  // console.log(format, "????")
+  let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
   let t = format(Date()).toString().split("-").join(" ") + " " + parseTime(timeStamp)
   return t
 }
