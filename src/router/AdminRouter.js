@@ -139,8 +139,6 @@ export default function AdminRouter(props) {
       })
     }
     
-    console.log("context token", authContext.authState.token)
-    console.log("authState:", authContext.authState.isAuthenticated)
   }, []);
   // const handleLoginChange = (event) => {
   //   authContext.setAuthState((prev)=>{

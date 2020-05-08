@@ -65,9 +65,8 @@ export default function Appointment() {
   React.useEffect(() => {
     const start = async () => {
       let data = await authContext.API.getIndivAppointment(location.pathname.toString().split("/")[3]) 
-      console.log(data)
       if (data === undefined || data.error){
-        console.log("error")
+        console.log("error: ", data)
         setError("Error grabbing data from the server.")
       } else {
         authContext.API.readToken(authContext.authState).then(function(result){
@@ -122,8 +121,7 @@ export default function Appointment() {
          }
          let finish = setTimeout(finsihProcess, 1000);
         } else if (result.status === 400) {
-         
-          console.log(result)
+         console.log('400 error:', result)
          let timer = setInterval(tick, 30);
          const finsihProcess = () => {
            clearInterval(timer)
@@ -239,7 +237,6 @@ const parseDate = (dateStr) => {
 
 const updateStatus = async () => {
   if (checkVal === initCheck ){
-    console.log("here")
     return setStatusHelper("Status is identical.") 
    }
 
@@ -265,7 +262,7 @@ const updateStatus = async () => {
          let finish = setTimeout(finsihProcess2, 1000);
       } else if (result.status === 400) {
         setStatusHelper("")
-       console.log(result)
+       console.log("400 status:", result)
       let timer = setInterval(tock, 30);
       const finsihProcess2 = () => {
         clearInterval(timer)
@@ -295,7 +292,7 @@ const StatusChange = () => {
       <RadioGroup aria-label="status" name="status" onChange={handleCheck} aria-label="position" row>
         <FormControlLabel value="CHECK_IN" control={<Radio />} label="Checked In" labelPlacement="top" />
         <FormControlLabel value="PENDING" control={<Radio />} label="Pending" labelPlacement="top" />
-        <FormControlLabel value="NOT_SHOW" control={<Radio />} label="Canceled" labelPlacement="top" />
+        <FormControlLabel value="NOT_SHOW" control={<Radio />} label="Not Shown" labelPlacement="top" />
       </RadioGroup>
       <Button onClick={updateStatus} fullWidth variant="contained"color="primary" > Confirm </Button>
     </FormControl>

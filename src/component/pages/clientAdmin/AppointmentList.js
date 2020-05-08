@@ -84,12 +84,11 @@ export default function AppointmentList() {
   const callAPI = async (query) => {
     let apiData = undefined
     apiData = await authContext.API.getClientAppointments(query.term, query.start, query.end, query.page) 
-    console.log(apiData)
   if (apiData === undefined){
-    console.log("error")
+    console.log("error", apiData)
     setError("Error grabbing data from the server.")
   } else if (apiData.data === undefined){
-    console.log("error")
+    console.log("error", apiData)
     setError("Error grabbing data from the server.")
   } else {
     authContext.API.readToken(authContext.authState).then(function(result){
@@ -177,7 +176,6 @@ const clearSearch = () => {
 }
 
  const handleDateA = (date, event) => {
-   console.log(date)
     if (date != 'Invalid Date'){
       return setDateA(date.toISOString())  
     }
@@ -200,13 +198,8 @@ const clearSearch = () => {
    };
    
 
-
-////////////////////////////////////////////
-////////////////////////////////////////////
   //  I MAY NEED TO FIX THIS PART>>>>>>
-  //  ////////////////////////////////////
-  //  /////////////////////////////////////
-  
+
      const handleToday = () => {
        let a = today + startStamp
        let b = today + endStamp
@@ -270,7 +263,7 @@ const parseStatus = (str) => {
     return str = "Checked In"
   } else if (str === 'PENDING'){
     return str = "Pending Appointment"
-  } else if (str === 'NOT_SHOWN'){
+  } else if (str === 'NOT_SHOW'){
     return str = "Patient Did Not Show Up"
   } else if (str === 'CANCELED') {
    return str = "Canceled"
@@ -290,10 +283,7 @@ const parseDate = (datestr) => {
   let properDate = `${subParse[1]}-${subParse[2]}-${subParse[0]}`
   
   let d = new Date(properDate)
-//  let days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
-// console.log(days[d.getUTCDay()], "???");
-   let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
-  // console.log(format, "????")
+  let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
   let t = format(Date()).toString().split("-").join(" ") + " " + parseTime(timeStamp)
   return t
 }
@@ -335,7 +325,7 @@ return(
           }}
         />      
 
-       <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '1%', marginTop: '2%', marginRight: '2%', float: 'right', display: 'inline'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+       <TextField id="outlined-basic" label="Search" variant="outlined" size="small" style={{ marginBottom: '1%', marginTop: '2%', marginRight: '2%', float: 'right', display: 'inline'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
         </Grid>
       </MuiPickersUtilsProvider>
 

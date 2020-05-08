@@ -57,7 +57,6 @@ export default function PasswordReset(userId) {
     if (password === password2 && password.length >= 6) {
       let result = await authContext.API.resetUserPassword(userId.user, password);
        if (result.status === 200){
-        console.log(result)
         let timer = setInterval(tock, 20);
         const finsihProcess = async () => {
           setHelper("Password change Success");
@@ -68,7 +67,7 @@ export default function PasswordReset(userId) {
           let finish = setTimeout(finsihProcess, 800);
 
        } else if(result.status === 400) {
-        console.log(result)
+        console.log(result, "error")
         let timer = setInterval(tock, 30);
   
         const finsihProcess = () => {

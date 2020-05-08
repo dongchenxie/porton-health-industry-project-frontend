@@ -66,7 +66,7 @@ export default function Users() {
           console.log("error")
           setError("Error grabbing data from the server.")
         } else if (data.data === undefined){
-          console.log("error")
+          console.log("error", data)
           setError("Error grabbing data from the server.")
         } else {
           authContext.API.readToken(authContext.authState).then(function(result){
@@ -104,7 +104,7 @@ export default function Users() {
         console.log("error")
         setError("Error grabbing data from the server.")
       } else if (data.data === undefined){
-        console.log("error")
+        console.log("error", data)
         setError("Error grabbing data from the server.")
       } else {
         authContext.API.readToken(authContext.authState).then(function(result){
@@ -210,7 +210,7 @@ const parseValue = (value) => {
       <h3>User Accounts: </h3>
       <Paper className={classes.root}>
       {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginLeft: '2%', marginTop: '2%'}} onClick={clearSearch}>Clear Search</Button> : ""}
-      <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{float: 'right', marginTop: '2%', marginRight: '2%', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+      <TextField id="outlined-basic" label="Search" variant="outlined" size="small" style={{float: 'right', marginTop: '2%', marginRight: '2%', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead >

@@ -136,21 +136,20 @@ export default function SignUp() {
     let result = await authContext.API.registerUserAccount(reqBody);
     
     if (result && result.status === 201){
-      console.log(result)
       alert("New Account Created.")
       setErrorHelper("New Account Created.")
       return setTimeout(() => {
         history.go()
       }, 1000)
       } else if ( result.data.error.data.error === 'Email already exists.') {
-        console.log(result)
+        console.log(result, "error")
        setErrorHelper("Email Already exists. Try again.")
        return setTimeout(() => {
         history.go()
        }, 1000)
       }
       else if (result.status === 400){
-        console.log(result)
+        console.log(result, "error")
         setErrorHelper("Error submiting data to the server.")
        return setTimeout(() => {
         history.go()

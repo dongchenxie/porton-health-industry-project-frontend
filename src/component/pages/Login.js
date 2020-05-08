@@ -91,7 +91,7 @@ export default function CheckIn() {
         setError("Incorrect user name or password. Please try again.")
       } else {
         setError("Incorrect user name or password. Please try again.")
-        console.log(result);
+        console.log(result, "error");
       }
     }
   };

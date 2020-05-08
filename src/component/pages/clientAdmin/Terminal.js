@@ -78,9 +78,10 @@ export default function Terminal(name) {
   lastName: null,
   phoneNumber: null, 
   phoneNumberLast4: null,
-  careCardNumber: null
+  careCardNumber: null,
+  dateOfBirth: null,
+  careCardLast4: null
   }
-
 
   React.useEffect(() => {
     const start = async () => {
@@ -89,8 +90,7 @@ export default function Terminal(name) {
      let data = await authContext.API.getIndivTerminal(location.pathname.toString().split("/")[3], true)
 
      if (data.status === 400 && termNameData.status === 400 && termNameData.data.terminal === undefined) {
-      console.log(data)
-      console.log("error")
+      console.log(data, "error")
       return setError("Error grabbing data from the server.")
     } else if (termNameData.data.terminal[0].status === "DISABLED" && data.status === 400 ){
        setTermName(termNameData.data.terminal[0])
@@ -98,7 +98,7 @@ export default function Terminal(name) {
        setCheckEnable(termNameData.data.terminal[0].status)
        return setRenderDisabled(true)
      } else if (data === undefined || termNameData === undefined || termNameData === null || data === null || data.status == 400){
-          console.log("error")
+          console.log("error", data, termNameData)
           return setError("Terminal is deleted.")
         } else {
           /////
@@ -186,11 +186,10 @@ export default function Terminal(name) {
         
     let result = await authContext.API.getIndivTerminal(termName._id, undefined, reqBody);
       if (result.status === 200){
-        console.log(result)
       //  setAppoitnment(result.data)
          setError("")
         } else if (result.status === 400) {
-         console.log(result)
+         console.log(result, "error 400")
          setError("Error submitting data to the server.")
        }
 
@@ -212,17 +211,15 @@ export default function Terminal(name) {
 const submitPut = async (path, reqBody) => {
     let result = await authContext.API.getIndivTerminal(termName._id, path, reqBody);
       if (result.status === 200){
-        console.log(result)
       //  setAppoitnment(result.data)
          setError("")
          setHelper("")
          history.go()
         } else if (result.status === 400) {
-         console.log(result)
+         console.log(result, "status 400")
          setError("Error submitting data to the server.")
          setHelper("Error submitting data to the server.")
        }
-       console.log(result)
     }
 
     const updateStatus = async () => {
@@ -289,7 +286,6 @@ const submitPut = async (path, reqBody) => {
     return parsedStr
     }
 
-  
   const renderTerminalView = (terminal) => {
     return( 
       <div> <Card className={classes.root} variant="outlined">
@@ -302,10 +298,16 @@ const submitPut = async (path, reqBody) => {
      {formRow("Last Name:", configStr(terminal.lastName), 'lastName' )}
      </Grid>
      <Grid container item xs={12} spacing={3}>
+     {formRow("Date of Birth:", configStr(terminal.dateOfBirth), 'dateOfBirth' )}
+     </Grid>
+     <Grid container item xs={12} spacing={3}>
      {formRow("Phone Number:", configStr(terminal.phoneNumber), 'phoneNumber' )}
      </Grid>
      <Grid container item xs={12} spacing={3}>
      {formRow("Carecard Number:", configStr(terminal.careCardNumber), 'careCardNumber' )}
+     </Grid>
+     <Grid container item xs={12} spacing={3}>
+     {formRow("Last 4 Digits of Carecard:", configStr(terminal.careCardLast4), 'careCardLast4')}
      </Grid>
      <Grid container item xs={12} spacing={3}>
      {formRow("Last 4 Digits of Phone Number:", configStr(terminal.phoneNumberLast4), 'phoneNumberLast4')}
@@ -329,7 +331,6 @@ const submitPut = async (path, reqBody) => {
 //terminal popup functions:
 
 const handleCheckEnable = (event) => {
-  console.log(event.target.value)
    return setCheckEnable(event.target.value);
 }
 
