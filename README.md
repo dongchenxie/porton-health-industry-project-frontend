@@ -1,12 +1,10 @@
 <h2>App Intro: </h2>
-Team
-<UL>
-  <li>Don - Leading Man </li>
-<li>Brian</li>
-<li>Tom</li>
-<li>Kimo</li>
-<li>Vibha</li>
-</UL>
+  Team
+Don - Leading Man
+Brian
+Tom
+Kimo
+Vibha
 
 The goal was to create a Check-in App that balanced data privacy and ease of use. 
 In addition, administration capabilities in a separate App/Portal.
