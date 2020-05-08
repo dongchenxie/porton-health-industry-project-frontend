@@ -1,5 +1,6 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
+import Copywrite from '../shared/Copywrite'
 
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
 
@@ -436,6 +437,8 @@ return(
 </div>
       : "" }
 <span style={{marginTop: '4%', color: 'red'}}>{error !== null ? error : ""}</span> 
+
+  <div style={{marginTop: '4%'}}> <Copywrite /> </div>
 </div>
   ) 
 }

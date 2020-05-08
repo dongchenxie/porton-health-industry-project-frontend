@@ -1,6 +1,7 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
 import { useLocation, useRouteMatch, Link } from 'react-router-dom';
+import Copywrite from '../shared/Copywrite'
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -262,5 +263,6 @@ export default function UserDetail() {
     return(<div>
         {error !== null ? error : ""}
         {user !== null && user !== undefined ? renderUser(user) : ""}
+        <div style={{marginTop: '4%'}}> <Copywrite /> </div>
        </div>)
 }

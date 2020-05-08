@@ -1,6 +1,7 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
 import { useLocation, useRouteMatch, Link, useHistory } from 'react-router-dom';
+import Copywrite from '../shared/Copywrite'
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -314,6 +315,7 @@ const StatusChange = () => {
         {appoitnment !== null && appoitnment !== undefined ? renderAppointment(appoitnment) : ""}
         <div style={{display: 'block', marginBottom: '2%'}}>{helper !== null ? helper : "" }</div> 
         <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white'}}> Return to list </Button> </Link>
+        <div style={{marginTop: '4%'}}> <Copywrite /> </div>
       </div>
     ) 
   }

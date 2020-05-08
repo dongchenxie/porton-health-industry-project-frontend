@@ -1,6 +1,7 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
 import { Link, useRouteMatch } from "react-router-dom";
+import Copywrite from '../shared/Copywrite'
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -206,6 +207,7 @@ const parseValue = (value) => {
             {error !== null ? error : ""}
             {users !== null && users !== undefined ? 
     <div>
+      <h3>User Accounts: </h3>
       <Paper className={classes.root}>
       {searchToggle === true ? <Button size="small" variant="contained" color="primary" style={{marginLeft: '2%', marginTop: '2%'}} onClick={clearSearch}>Clear Search</Button> : ""}
       <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{float: 'right', marginTop: '2%', marginRight: '2%', marginBottom: '2%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
@@ -255,6 +257,7 @@ const parseValue = (value) => {
     </Paper>
   </div>
         : "" }
+  <div style={{marginTop: '4%'}}> <Copywrite /> </div>
   </div>
     ) 
   }

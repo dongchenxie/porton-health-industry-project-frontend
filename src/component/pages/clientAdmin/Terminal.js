@@ -1,6 +1,7 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
 import { useLocation, useRouteMatch, Link, useHistory } from 'react-router-dom';
+import Copywrite from '../shared/Copywrite'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -352,6 +353,7 @@ const RenderDisableView = () => {
         </div> 
          : "" }
     <Link to={`${path.substring(0, path.length - 4)}`} style={{textDecoration: 'none', color: 'inherit'}}> <Button variant="contained" style={{marginTop: '2%', backgroundColor: 'black', color: 'white', display: 'block'}}> Return to list </Button> </Link>
+    <div style={{marginTop: '4%'}}> <Copywrite /> </div>
       </div>
     ) 
   }

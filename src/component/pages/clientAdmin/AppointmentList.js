@@ -23,7 +23,6 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
-import Appointment from "./Appointment";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -394,7 +393,7 @@ return(
   </Paper>
 </div>
       : "" }
-      <Copywrite />
+      <div style={{marginTop: '4%'}}> <Copywrite /> </div>
 </div>
   ) 
 }

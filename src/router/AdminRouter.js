@@ -355,7 +355,7 @@ export default function AdminRouter(props) {
 function Home() {
   return (<div>
     <h2>Home (not secure data)</h2>
-    <Copywrite />
+    <div style={{marginTop: '4%'}}> <Copywrite /> </div>
     </div>
   );
 }
