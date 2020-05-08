@@ -199,7 +199,7 @@ export default function Terminal(name) {
     setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
    }
  
-  let timer = setInterval(tick, 20);
+  let timer = setInterval(tick, 30);
 
    const finsihProcess = () => {
      clearInterval(timer)
@@ -207,7 +207,7 @@ export default function Terminal(name) {
      return setTerminal(stateCheck)
    }
 
-   let finish = setTimeout(finsihProcess, 2000);
+   let finish = setTimeout(finsihProcess, 1000);
   }
 
 const submitPut = async (path, reqBody) => {

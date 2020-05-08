@@ -231,7 +231,7 @@ const parseDate = (dateStr) => {
         />
      </div>    
    <Button size="small" variant="contained" color="primary"  onClick={submitComment}>Submit</Button>
-   <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '2%', marginBottom: '-2%'}} value={progress} />
+   <CircularProgress variant="determinate" style={{ marginLeft: '4%', marginTop: '2%'}} value={progress} />
   </CardActions>
   </Card>
   </div>)
