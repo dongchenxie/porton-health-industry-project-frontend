@@ -38,7 +38,8 @@ For Login into Terminals:
 <h4> Patient:</h4> 
 
 ### `http://localhost:3000`
-
+<h2>Use Case Diagram: </h2>
+![Use Case Diagram](https://raw.githubusercontent.com/xdc811/porton-health-industry-project-frontend/master/use%20case.png?token=AI5BWRZOSETIYNWXLJ6ORLK6X3QKK)
 <h2>Development Accounts: </h2>
 
 <h4> system admin:</h4>
