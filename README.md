@@ -39,7 +39,9 @@ For Login into Terminals:
 
 ### `http://localhost:3000`
 <h2>Use Case Diagram: </h2>
+
 ![Use Case Diagram](/use case.png)
+
 <h2>Development Accounts: </h2>
 
 <h4> system admin:</h4>
