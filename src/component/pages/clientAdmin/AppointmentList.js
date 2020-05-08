@@ -52,7 +52,6 @@ const today = new Date().toISOString().split("T")[0]
 
 const query = {term: undefined, start: undefined, end: undefined, page: undefined}
 
-
 export default function AppointmentList() {
   const classes = useStyles();
   let { url } = useRouteMatch();
@@ -156,6 +155,7 @@ const handleSearchChange = (e) => {
 //may be bug here...
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
+    query.term = ""
     query.term = search
     setSearchToggle(true)
     setPage(1)
@@ -205,15 +205,15 @@ const clearSearch = () => {
        let b = today + endStamp
    
        setDateA(a)
-       setDateB(a)
+       setDateB(b)
        setError("")
        setSearch("")
        setSearchToggle(false)
        setPage(1)
 
       query.term = undefined
-      query.start = undefined
-      query.end = undefined
+      query.start = a
+      query.end = b
       query.page = undefined
 
       return callAPI(query)
