@@ -66,7 +66,7 @@ export default function Users() {
           console.log("error")
           setError("Error grabbing data from the server.")
         } else if (data.data === undefined){
-          console.log("error")
+          console.log("error", data)
           setError("Error grabbing data from the server.")
         } else {
           authContext.API.readToken(authContext.authState).then(function(result){
@@ -104,7 +104,7 @@ export default function Users() {
         console.log("error")
         setError("Error grabbing data from the server.")
       } else if (data.data === undefined){
-        console.log("error")
+        console.log("error", data)
         setError("Error grabbing data from the server.")
       } else {
         authContext.API.readToken(authContext.authState).then(function(result){

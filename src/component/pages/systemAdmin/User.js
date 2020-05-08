@@ -68,7 +68,7 @@ export default function UserDetail() {
         console.log("error")
         setError("Error grabbing data from the server.")
       } else if (data.data === undefined) {
-        console.log("error")
+        console.log("error", data)
         setError("Error grabbing data from the server.")
       } else {
         authContext.API.readToken(authContext.authState).then(function (result) {
@@ -92,11 +92,10 @@ export default function UserDetail() {
   const grabClinics = async () => {
     let result = await authContext.API.getClinics();
     if (result.status === 200) {
-      console.log(result.data)
       setClinics(result.data)
      
     } else if (result.status === 400) {
-      console.log(result, error)
+      console.log(result, "error")
       setError("Problem with server.")
       return result
     }
@@ -104,17 +103,12 @@ export default function UserDetail() {
 
   //match user ID with clinic.
   const handleClinicChange = async(e)=>{ 
-    
-    console.log(e.target.value)
-    console.log(user)
     let responseBody=user
     responseBody.clinic=e.target.value
     delete responseBody["date"]
     delete responseBody["isEnabled"]
     delete responseBody["_id"]
-    console.log(user)
     const result=await authContext.API.updateUser(responseBody,location.pathname.toString().split("/")[3])
-    console.log(result)
     if (result.status === 200) {
       alert("Update clinic success")
      
@@ -180,14 +174,11 @@ export default function UserDetail() {
         return result
       }
     } else if (result.status === 400) {
-      console.log(result, error)
+      console.log(result, "error")
       setError("Problem with server.")
       return result
     }
   };
-  const updateClinic = async () => {
-    
-  }
 
   const parseValue = (value) => {
     if (value === 'CLIENT_ADMIN') {
