@@ -385,7 +385,7 @@ return(
       </Modal>
 
     {searchToggle === true ? <Button size="small" variant="contained" color="primary" onClick={clearSearch} style={{marginLeft: '2%', marginTop: '2%'}}>Clear Search</Button> : ""}
-    <TextField id="outlined-basic" label="Search By Field" size="small" variant="outlined" style={{float: 'right', marginBottom: '2%', marginTop: '2%', marginRight: '1%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+    <TextField id="outlined-basic" label="Search" size="small" variant="outlined" style={{float: 'right', marginBottom: '2%', marginTop: '2%', marginRight: '1%'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
     <TableContainer className={classes.container}>
       <Table stickyHeader aria-label="sticky table">
         <TableHead className>

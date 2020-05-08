@@ -325,7 +325,7 @@ return(
           }}
         />      
 
-       <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '1%', marginTop: '2%', marginRight: '2%', float: 'right', display: 'inline'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+       <TextField id="outlined-basic" label="Search" variant="outlined" size="small" style={{ marginBottom: '1%', marginTop: '2%', marginRight: '2%', float: 'right', display: 'inline'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
         </Grid>
       </MuiPickersUtilsProvider>
 

@@ -292,7 +292,7 @@ const StatusChange = () => {
       <RadioGroup aria-label="status" name="status" onChange={handleCheck} aria-label="position" row>
         <FormControlLabel value="CHECK_IN" control={<Radio />} label="Checked In" labelPlacement="top" />
         <FormControlLabel value="PENDING" control={<Radio />} label="Pending" labelPlacement="top" />
-        <FormControlLabel value="NOT_SHOW" control={<Radio />} label="Canceled" labelPlacement="top" />
+        <FormControlLabel value="NOT_SHOW" control={<Radio />} label="Not Shown" labelPlacement="top" />
       </RadioGroup>
       <Button onClick={updateStatus} fullWidth variant="contained"color="primary" > Confirm </Button>
     </FormControl>
