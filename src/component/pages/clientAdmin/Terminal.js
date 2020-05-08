@@ -58,7 +58,6 @@ export default function Terminal(name) {
   let { path } = useRouteMatch();
   const history = useHistory()
 
-
   const [error, setError] = React.useState(null);
   const [terminal, setTerminal] = React.useState(null);
   const [termName, setTermName] = React.useState(null);
@@ -72,7 +71,7 @@ export default function Terminal(name) {
   const [open, setOpen] = React.useState(false);
   const [userVerifyName, setUserVerifyName] = React.useState("");
   const [helper, setHelper] = React.useState("");
-
+  const [statusHelper, setStatusHelper] =  React.useState(null);
 
   let checkvals = {
   firstName: null,
@@ -227,13 +226,24 @@ const submitPut = async (path, reqBody) => {
     }
 
     const updateStatus = async () => {
+      if (checkEnable === termName.status && termName.status === 'DISABLED') {
+        return setError("Identical Status.")
+      } else if (checkEnable === termName.status) {
+        return setStatusHelper("Identical Status.")
+      } else {
+        setStatusHelper("")
+
       let reqBody = {"name": termName.name,
       "status": checkEnable,
       "verificationContent": JSON.stringify(stateCheck) 
      }
      
    function tock() {
+    if (checkEnable === 'ENABLED'){
     setProgress2((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+    } else {
+    setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+    }
    }
  
   let timer = setInterval(tock, 20);
@@ -243,7 +253,8 @@ const submitPut = async (path, reqBody) => {
      history.go()
      return submitPut(false, reqBody)
      }
-     let finish = setTimeout(finsihProcess2, 2000);
+     let finish = setTimeout(finsihProcess2, 1000);
+    }
   }
 
         const handleSwitch = (event) => {
@@ -335,7 +346,7 @@ const EnableTerminal = () => {
       <Button onClick={updateStatus} fullWidth variant="contained"color="primary"> Confirm </Button>
     </FormControl>
     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-   
+            {statusHelper !== null ? statusHelper : ""}
     </div>
   </div>
       </Container>
