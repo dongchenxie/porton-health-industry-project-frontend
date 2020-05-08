@@ -1,4 +1,4 @@
-[Wireframe can be seen here](https://xd.adobe.com/view/983b094b-89e7-46ce-760d-65839e1bd7ce-ee0a/)
+
 <h2>Quick Start: </h2>
 
 ### Please make sure backend is running before starting 
@@ -41,6 +41,10 @@ For Login into Terminals:
 <h2>Use Case Diagram: </h2>
 
 ![Use Case Diagram](https://raw.githubusercontent.com/xdc811/porton-health-industry-project-frontend/master/use%20case.png?token=AI5BWR7HIHWHPAVPVTQYUJS6X3RIW)
+
+<h2>Wireframe: </h2>
+
+[Wireframe can be seen here](https://xd.adobe.com/view/983b094b-89e7-46ce-760d-65839e1bd7ce-ee0a/)
 
 <h2>Development Accounts: </h2>
 
