@@ -1,8 +1,12 @@
 [Wireframe can be seen here](https://xd.adobe.com/view/983b094b-89e7-46ce-760d-65839e1bd7ce-ee0a/)
 <h2>Quick Start: </h2>
+
 ### Please make sure backend is running before starting 
+
 ### `npm i`
+
 ### `npm start`
+
 <h2>Configure Backend Connection: </h2>
 <p>
   If you want to connent to a different backend URL, please change the URL App.js to
