@@ -8,9 +8,13 @@
   If you want to connent to a different backend URL, please change the URL App.js to
 
 </p>
+
 ### `const baseURL = "http://localhost:3333/api/"`
+
 to
+
 ### `const baseURL = [YOUR_URL]`
+
 <h2>Development Accounts: </h2>
 
 <h4> system admin:</h4>
