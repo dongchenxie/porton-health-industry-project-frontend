@@ -5,7 +5,7 @@
 <br>Tom
 <br>Kimo
 <br>Vibha
-
+<br />
 <p>The goal was to create a Check-in App that balanced data privacy and ease of use. 
 In addition, administration capabilities in a separate App/Portal.</p>
 
