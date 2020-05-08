@@ -1,3 +1,49 @@
+
+<h2>Quick Start: </h2>
+
+### Please make sure backend is running before starting 
+
+### `npm i`
+
+### `npm start`
+
+<h2>Configure Backend Connection: </h2>
+<p>
+  If you want to connent to a different backend URL, please change the URL in App.js to
+
+</p>
+
+### `const baseURL = "http://localhost:3333/api/"`
+
+to
+
+### `const baseURL = [YOUR_URL]`
+  
+<h2>Default Access Path for Different Users: </h2>
+
+<h4> System Admin:</h4> 
+
+### `http://localhost:3000/login`
+
+<h4> Client Admin:</h4> 
+
+For Managing Appointments and Terminals:
+
+### `http://localhost:3000/login`
+
+For Login into Terminals:
+
+### `http://localhost:3000`
+
+<h4> Patient:</h4> 
+
+### `http://localhost:3000`
+<h2>Use Case Diagram: </h2>
+
+![Use Case Diagram](https://raw.githubusercontent.com/xdc811/porton-health-industry-project-frontend/master/use%20case.png?token=AI5BWR7HIHWHPAVPVTQYUJS6X3RIW)
+
+<h2>Wireframe: </h2>
+
 [Wireframe can be seen here](https://xd.adobe.com/view/983b094b-89e7-46ce-760d-65839e1bd7ce-ee0a/)
 
 <h2>Development Accounts: </h2>
