@@ -386,7 +386,10 @@ function App() {
       }
 
       if (putParam) {
-        let result = await axios.put(terminalURL, putParam)
+        let result = await axios.put(terminalURL, putParam, { headers: {
+          "auth-token": localStorage.getItem("token"),
+          'Access-Control-Allow-Origin': '*'
+        }})
           .then(function (response) {
             console.log(response)
             return response

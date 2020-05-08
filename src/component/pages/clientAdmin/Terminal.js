@@ -198,7 +198,7 @@ export default function Terminal(name) {
     setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
    }
  
-  let timer = setInterval(tick, 30);
+  let timer = setInterval(tick, 10);
 
    const finsihProcess = () => {
      clearInterval(timer)
@@ -227,11 +227,14 @@ const submitPut = async (path, reqBody) => {
 
     const updateStatus = async () => {
       if (checkEnable === termName.status && termName.status === 'DISABLED') {
+        setHelper("")
         return setError("Identical Status.")
       } else if (checkEnable === termName.status) {
+        setError("")
         return setStatusHelper("Identical Status.")
       } else {
         setStatusHelper("")
+        setError("")
 
       let reqBody = {"name": termName.name,
       "status": checkEnable,
@@ -246,7 +249,7 @@ const submitPut = async (path, reqBody) => {
     }
    }
  
-  let timer = setInterval(tock, 20);
+  let timer = setInterval(tock, 10);
 
    const finsihProcess2 = () => {
      clearInterval(timer)
