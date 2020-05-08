@@ -119,17 +119,17 @@ export default function Appointment() {
          clearInterval(timer)
          return history.go()
          }
-         let finish = setTimeout(finsihProcess, 1500);
+         let finish = setTimeout(finsihProcess, 1000);
         } else if (result.status === 400) {
          
           console.log(result)
-         let timer = setInterval(tick, 20);
+         let timer = setInterval(tick, 30);
          const finsihProcess = () => {
            clearInterval(timer)
            history.go()
            return setError("Error submitting data to the server.")
          }
-         let finish = setTimeout(finsihProcess, 1500);
+         let finish = setTimeout(finsihProcess, 1000);
         }
 
         function tick() {
@@ -153,10 +153,18 @@ export default function Appointment() {
     }
   }
 
+  const parseTime = (str) => {
+  let time = str.split(':');
+  let meridiemTime = time[0] >= 12 && (time[0]-12 || 12) + ':' + time[1] + ' PM' || (Number(time[0]) || 12) + ':' + time[1] + ' AM';
+  return meridiemTime
+}
+
 const parseDate = (dateStr) => {
-  let d = new Date(dateStr)
+  let date = dateStr.split('T')[0]
+  let timeStamp = dateStr.split('T')[1]
+  let d = new Date(date)
   let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
-  return format(Date()).toString().split("-").join(" ")
+  return  parseTime(timeStamp) + ", " + format(Date()).toString().split("-").join(" ")
 }
 
   const renderAppointment = () => {
@@ -168,7 +176,7 @@ const parseDate = (dateStr) => {
    {formRow("Patient Name:", appoitnment.patient.firstName + " " + appoitnment.patient.lastName)}
    </Grid>
    <Grid container item xs={12} spacing={3}>
-   {formRow("Appointment Time:", parseDate(appoitnment.appointmentTime.split('T')[0]))}
+   {formRow("Appointment Time:", parseDate(appoitnment.appointmentTime))}
    </Grid>
    <Grid container item xs={12} spacing={3}>
    {formRow("Doctor:", appoitnment.doctorName)}
@@ -248,21 +256,21 @@ const updateStatus = async () => {
       if (result.status === 200){
         setStatusHelper("")
         setError("")
-      let timer = setInterval(tock, 20);
+      let timer = setInterval(tock, 30);
        const finsihProcess2 = () => {
          clearInterval(timer)
          return history.go()
          }
-         let finish = setTimeout(finsihProcess2, 1500);
+         let finish = setTimeout(finsihProcess2, 1000);
       } else if (result.status === 400) {
         setStatusHelper("")
        console.log(result)
-      let timer = setInterval(tock, 20);
+      let timer = setInterval(tock, 30);
       const finsihProcess2 = () => {
         clearInterval(timer)
         return  setError("Error submitting data to the server.")
         }
-        let finish = setTimeout(finsihProcess2, 1500);
+        let finish = setTimeout(finsihProcess2, 1000);
       }
       
       function tock() {

@@ -1,6 +1,7 @@
 import React from "react";
 import AuthContext from "../../../data/AuthContext"
 import { Link, useRouteMatch } from "react-router-dom";
+import Copywrite from '../shared/Copywrite'
 
 //material-ui components:
 import { makeStyles } from '@material-ui/core/styles';
@@ -303,7 +304,7 @@ return(
           {error !== null ? error : ""}
           {appointments !== null && appointments !== undefined ? 
   <div>
-    <h3>Appointments:      <Button size="small" variant="contained" color="primary" style={{marginLeft: '1%'}} onClick={handleToday}>Show Today</Button>
+    <h3>Appointments: <Button size="small" variant="contained" color="primary" style={{marginLeft: '1%'}} onClick={handleToday}>Show Today</Button>
 </h3> 
     <Paper className={classes.root}>
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -335,7 +336,7 @@ return(
           }}
         />      
 
-    <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '1%', marginTop: '2%', marginRight: '2%', float: 'right', display: 'inline'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
+       <TextField id="outlined-basic" label="Search By Field" variant="outlined" size="small" style={{ marginBottom: '1%', marginTop: '2%', marginRight: '2%', float: 'right', display: 'inline'}} onChange={handleSearchChange} onKeyPress={submitSearch}/> 
         </Grid>
       </MuiPickersUtilsProvider>
 
@@ -393,6 +394,7 @@ return(
   </Paper>
 </div>
       : "" }
+      <Copywrite />
 </div>
   ) 
 }
