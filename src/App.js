@@ -289,6 +289,8 @@ function App() {
         urlParam = `${baseURL}client/appointments?page=${queryPage}`
       }
 
+      console.log(urlParam)
+      
       let result = await axios(
         {
           method: "get",

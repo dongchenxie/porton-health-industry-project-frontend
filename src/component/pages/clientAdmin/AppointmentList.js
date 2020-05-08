@@ -52,7 +52,6 @@ const today = new Date().toISOString().split("T")[0]
 
 const query = {term: undefined, start: undefined, end: undefined, page: undefined}
 
-
 export default function AppointmentList() {
   const classes = useStyles();
   let { url } = useRouteMatch();
@@ -90,6 +89,7 @@ export default function AppointmentList() {
   } else if (apiData.data === undefined){
     console.log("error", apiData)
     setError("Error grabbing data from the server.")
+    alert("Invalid dates seleceted, try again.")
   } else {
     authContext.API.readToken(authContext.authState).then(function(result){
       if (result.role !== 'CLIENT_ADMIN'){
@@ -156,6 +156,7 @@ const handleSearchChange = (e) => {
 //may be bug here...
 const submitSearch = (event) => {
   if (event.key === "Enter" && search !== "") {
+    query.term = ""
     query.term = search
     setSearchToggle(true)
     setPage(1)
@@ -205,15 +206,15 @@ const clearSearch = () => {
        let b = today + endStamp
    
        setDateA(a)
-       setDateB(a)
+       setDateB(b)
        setError("")
        setSearch("")
        setSearchToggle(false)
        setPage(1)
 
       query.term = undefined
-      query.start = undefined
-      query.end = undefined
+      query.start = a
+      query.end = b
       query.page = undefined
 
       return callAPI(query)
