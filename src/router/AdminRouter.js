@@ -1,4 +1,6 @@
 import React from "react";
+import Logo from "../img/logo2.png"
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -168,6 +170,9 @@ export default function AdminRouter(props) {
   //sidebar nav component:
   const drawer = (
     <div>
+      <div style={{marginTop: '6%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '-20%'}}> 
+      <img style={{width: '78%', height: '22%'}} src={Logo}></img>
+      </div>
       <div className={classes.toolbar} />
       { role === "CLIENT_ADMIN" ? 
       <List>
@@ -345,9 +350,13 @@ export default function AdminRouter(props) {
 
 
 function Home() {
-  return (<div>
-    <h2>Home (not secure data)</h2>
-    <div style={{marginTop: '4%'}}> <Copywrite /> </div>
+  return (
+  <div>
+    <h2>Home: </h2>
+    <p>Welcome to the Porton Health administrator panel.</p>
+    <div style={{marginTop: '4%'}}>
+       <Copywrite /> 
     </div>
+  </div>
   );
 }
