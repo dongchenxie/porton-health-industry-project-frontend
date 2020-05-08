@@ -78,9 +78,10 @@ export default function Terminal(name) {
   lastName: null,
   phoneNumber: null, 
   phoneNumberLast4: null,
-  careCardNumber: null
+  careCardNumber: null,
+  dateOfBirth: null,
+  careCardLast4: null
   }
-
 
   React.useEffect(() => {
     const start = async () => {
@@ -289,7 +290,6 @@ const submitPut = async (path, reqBody) => {
     return parsedStr
     }
 
-  
   const renderTerminalView = (terminal) => {
     return( 
       <div> <Card className={classes.root} variant="outlined">
@@ -302,10 +302,16 @@ const submitPut = async (path, reqBody) => {
      {formRow("Last Name:", configStr(terminal.lastName), 'lastName' )}
      </Grid>
      <Grid container item xs={12} spacing={3}>
+     {formRow("Date of Birth:", configStr(terminal.dateOfBirth), 'dateOfBirth' )}
+     </Grid>
+     <Grid container item xs={12} spacing={3}>
      {formRow("Phone Number:", configStr(terminal.phoneNumber), 'phoneNumber' )}
      </Grid>
      <Grid container item xs={12} spacing={3}>
      {formRow("Carecard Number:", configStr(terminal.careCardNumber), 'careCardNumber' )}
+     </Grid>
+     <Grid container item xs={12} spacing={3}>
+     {formRow("Last 4 Digits of Carecard:", configStr(terminal.careCardLast4), 'careCardLast4')}
      </Grid>
      <Grid container item xs={12} spacing={3}>
      {formRow("Last 4 Digits of Phone Number:", configStr(terminal.phoneNumberLast4), 'phoneNumberLast4')}

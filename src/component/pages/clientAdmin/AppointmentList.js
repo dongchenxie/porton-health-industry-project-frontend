@@ -270,7 +270,7 @@ const parseStatus = (str) => {
     return str = "Checked In"
   } else if (str === 'PENDING'){
     return str = "Pending Appointment"
-  } else if (str === 'NOT_SHOWN'){
+  } else if (str === 'NOT_SHOW'){
     return str = "Patient Did Not Show Up"
   } else if (str === 'CANCELED') {
    return str = "Canceled"
