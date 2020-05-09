@@ -158,13 +158,16 @@ export default function Appointment() {
   return meridiemTime
 }
 
-const parseDate = (dateStr) => {
-  let date = dateStr.split('T')[0]
-  let timeStamp = dateStr.split('T')[1]
-  let d = new Date(date)
-  let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
-  return  parseTime(timeStamp) + ", " + format(Date()).toString().split("-").join(" ")
+const parseDate = (datestr) => {
+ 
+  const result= new Date(datestr)
+ 
+  
+  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute: 'numeric'};
+
+  return  result.toLocaleDateString("en-US", options)
 }
+
 
   const renderAppointment = () => {
     return( 

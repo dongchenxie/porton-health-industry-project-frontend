@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 const startStamp = "T00:00:00.000Z";
 const endStamp = "T22:58:58.000Z";
-const today = new Date().toISOString().split("T")[0]
+
 
 const query = {term: undefined, start: undefined, end: undefined, page: undefined}
 
@@ -70,19 +70,23 @@ export default function AppointmentList() {
   const [searchToggle, setSearchToggle] = React.useState(null);
   const [helper, setHelper] = React.useState(null);
 
-  const [dateA, setDateA] = React.useState(today);
-  const [dateB, setDateB] = React.useState(today);
+  const [dateA, setDateA] = React.useState();
+  const [dateB, setDateB] = React.useState();
 
   React.useEffect(() => {
     const start = async () => {
       return callAPI(query)
     }
+    handleToday()
     start()
   }, [])
   
   const callAPI = async (query) => {
     let apiData = undefined
-    apiData = await authContext.API.getClientAppointments(query.term, query.start, query.end, query.page) 
+    const start=query.start
+    const end=query.end
+    
+    apiData = await authContext.API.getClientAppointments(query.term, start, end, query.page) 
   if (apiData === undefined){
     console.log("error", apiData)
     setError("Error grabbing data from the server.")
@@ -91,6 +95,7 @@ export default function AppointmentList() {
     setError("Error grabbing data from the server.")
     alert("Invalid dates seleceted, try again.")
   } else {
+    
     authContext.API.readToken(authContext.authState).then(function(result){
       if (result.role !== 'CLIENT_ADMIN'){
        return setError("404. Please try again.")
@@ -177,21 +182,37 @@ const clearSearch = () => {
 }
 
  const handleDateA = (date, event) => {
+
     if (date != 'Invalid Date'){
-      return setDateA(date.toISOString())  
+
+      setDateA(date)
+      let val = date    
+    let adjustedDate=new Date(date);
+    adjustedDate.setHours(0,0,0,0)
+    // adjustedDate.setDate(date.getDate()-1)
+
+      query.term = undefined
+     query.start = adjustedDate
+     query.end = dateB
+     query.page = undefined
+
+     return callAPI(query)
+    } else {
+      return setError('Enter a Valid Date')
     }
   };
    
    const handleDateB = (date2) => {
     if (date2 != 'Invalid Date'){
       setDateB(date2)
-      let val = date2.toISOString()  
- 
+      let val = date2  
+      let adjustedDate=new Date(dateA);
+    adjustedDate.setDate(new Date(dateA).getDate())
      query.term = undefined
-     query.start = dateA
+     query.start =  dateA
      query.end = val
      query.page = undefined
-   
+
      return callAPI(query)
     } else {
       return setError('Enter a Valid Date')
@@ -202,8 +223,14 @@ const clearSearch = () => {
   //  I MAY NEED TO FIX THIS PART>>>>>>
 
      const handleToday = () => {
-       let a = today + startStamp
-       let b = today + endStamp
+      const tempDate=new Date()
+      const tempDate1=new Date()
+     
+      tempDate.setHours(0,0,0,0)
+ 
+       let a =   tempDate
+       tempDate1.setHours(22,59,0,0)
+       let b = tempDate1
    
        setDateA(a)
        setDateB(b)
@@ -278,15 +305,13 @@ const parseTime = (str) => {
 }
 
 const parseDate = (datestr) => {
-  let parse = datestr.split(" ")
-  let timeStamp = parse[1]
-  let subParse = parse[0].split("-")
-  let properDate = `${subParse[1]}-${subParse[2]}-${subParse[0]}`
+ 
+  const result= new Date(datestr)
+  result.setMinutes(result.getMinutes()-result.getTimezoneOffset())
   
-  let d = new Date(properDate)
-  let format= d=> d.toString().replace(/\w+ (\w+) (\d+) (\d+).*/,'$2-$1-$3');
-  let t = format(Date()).toString().split("-").join(" ") + " " + parseTime(timeStamp)
-  return t
+  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric',minute: 'numeric'};
+
+  return  result.toLocaleDateString("en-US", options)
 }
 
 return(
@@ -316,6 +341,8 @@ return(
         <KeyboardDatePicker
          style={{marginTop: '1%'}}
           margin="normal"
+          disableToolbar
+          variant="inline"
           id="date-picker-inline"
           label="To"
           format="MM/dd/yyyy"
